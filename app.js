@@ -1,4 +1,4 @@
-const API = "https://color-game-backend.onrender.com";
+const API = "https://color-game-backend1.onrender.com";
 
 const app = document.getElementById("app");
 
