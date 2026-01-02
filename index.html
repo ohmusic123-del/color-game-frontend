@@ -3,27 +3,49 @@
 <head>
   <title>Color Prediction</title>
   <style>
-    body { background:#111;color:white;text-align:center;font-family:Arial }
-    input,button { padding:10px;margin:5px }
-    .red{background:red}
-    .green{background:green}
-    .violet{background:purple}
+    body {
+      background: #000;
+      color: white;
+      text-align: center;
+      font-family: Arial;
+    }
+    input, button {
+      padding: 10px;
+      margin: 5px;
+      width: 200px;
+    }
+    .hidden { display: none; }
+    .red { background:red; color:white }
+    .green { background:green; color:white }
+    .violet { background:purple; color:white }
   </style>
 </head>
 <body>
 
 <h2>Login / Register</h2>
-<input id="mobile" placeholder="Mobile"><br>
-<input id="password" type="password" placeholder="Password"><br>
-<button onclick="register()">Register</button>
-<button onclick="login()">Login</button>
 
-<h3 id="wallet"></h3>
+<div id="auth">
+  <input id="mobile" placeholder="Mobile"><br>
+  <input id="password" type="password" placeholder="Password"><br>
+  <button onclick="register()">Register</button>
+  <button onclick="login()">Login</button>
+</div>
 
-<input id="amount" placeholder="Amount"><br>
-<button class="red" onclick="bet('RED')">RED</button>
-<button class="green" onclick="bet('GREEN')">GREEN</button>
-<button class="violet" onclick="bet('VIOLET')">VIOLET</button>
+<hr>
+
+<div id="game" class="hidden">
+  <h2>🎮 Color Prediction</h2>
+  <h3>Wallet: ₹<span id="wallet">0</span></h3>
+
+  <input id="amount" placeholder="Amount"><br><br>
+
+  <button class="red" onclick="bet('RED')">RED</button>
+  <button class="green" onclick="bet('GREEN')">GREEN</button>
+  <button class="violet" onclick="bet('VIOLET')">VIOLET</button>
+
+  <br><br>
+  <button onclick="logout()">Logout</button>
+</div>
 
 <script src="app.js"></script>
 </body>
