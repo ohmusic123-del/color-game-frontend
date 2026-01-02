@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Color Game</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body onload="loadGame()">
+
+  <div class="container">
+
+    <h2>🎮 Color Prediction Game</h2>
+
+    <div class="info">
+      <p>Wallet: ₹ <span id="wallet">0</span></p>
+      <p>Round: <span id="roundId">-</span></p>
+      <p>Time Left: <span id="timer">--</span> sec</p>
+    </div>
+
+    <input
+      type="number"
+      id="amount"
+      placeholder="Enter bet amount"
+      min="1"
+    >
+
+    <div class="buttons">
+      <button class="red" onclick="bet('RED')">RED</button>
+      <button class="green" onclick="bet('GREEN')">GREEN</button>
+      <button class="violet" onclick="bet('VIOLET')">VIOLET</button>
+    </div>
+
+    <p id="msg"></p>
+
+    <button class="logout" onclick="logout()">Logout</button>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+  </html>
