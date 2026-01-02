@@ -20,22 +20,26 @@ async function login() {
   const mobile = document.getElementById("mobile").value;
   const password = document.getElementById("password").value;
 
-  const res = await fetch(API + "/login", {
+  const res = await fetch("https://color-game-backend1.onrender.com/login", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ mobile, password })
   });
 
   const data = await res.json();
+  console.log("LOGIN RESPONSE:", data);
 
   if (data.token) {
     localStorage.setItem("token", data.token);
+
     document.getElementById("wallet").innerText = data.wallet;
 
     document.getElementById("auth").style.display = "none";
     document.getElementById("game").style.display = "block";
+
+    alert("Login successful");
   } else {
-    alert("Login failed");
+    alert(data.message || "Login failed");
   }
 }
 
