@@ -1,97 +1,85 @@
 const API = "https://color-game-backend1.onrender.com";
 
-/* =====================
-   LOGIN
-===================== */
-async function login() {
-  const mobile = document.getElementById("mobile").value;
-  const password = document.getElementById("password").value;
+// ✅ get token automatically
+const TOKEN = localStorage.getItem("token");
 
-  if (!mobile || !password) {
-    document.getElementById("msg").innerText = "Enter mobile & password";
-    return;
-  }
+// 🚫 block access if not logged in
+if (!TOKEN) {
+  window.location.href = "index.html";
+}
 
+// ---------------- LOAD GAME ----------------
+async function loadGame() {
   try {
-    const res = await fetch(API + "/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ mobile, password })
+    const res = await fetch(API + "/api/user/me", {
+      headers: {
+        Authorization: "Bearer " + TOKEN
+      }
     });
 
     const data = await res.json();
 
-    if (!res.ok) {
-      document.getElementById("msg").innerText = data.message;
-      return;
-    }
+    // ✅ FIXED wallet
+    document.getElementById("wallet").innerText =
+      data.wallet ?? data.balance ?? 0;
 
-    // SAVE TOKEN & WALLET
-    localStorage.setItem("token", data.token);
-    localStorage.setItem("wallet", data.wallet);
-
-    // GO TO GAME
-    window.location.href = "game.html";
+    startTimer();
 
   } catch (err) {
-    document.getElementById("msg").innerText = "Server error";
+    document.getElementById("wallet").innerText = "Error";
   }
 }
 
-/* =====================
-   GAME PAGE LOAD
-===================== */
-function loadGame() {
-  const token = localStorage.getItem("token");
-  if (!token) {
-    window.location.href = "index.html";
-    return;
-  }
-
-  document.getElementById("wallet").innerText =
-    localStorage.getItem("wallet");
-}
-
-/* =====================
-   PLACE BET
-===================== */
+// ---------------- PLACE BET ----------------
 async function placeBet(color) {
   const amount = document.getElementById("amount").value;
-  const token = localStorage.getItem("token");
 
   if (!amount || amount <= 0) {
     alert("Enter valid amount");
     return;
   }
 
-  const res = await fetch(API + "/bet", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": "Bearer " + token
-    },
-    body: JSON.stringify({ color, amount })
-  });
+  try {
+    const res = await fetch(API + "/api/game/bet", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + TOKEN
+      },
+      body: JSON.stringify({
+        color,
+        amount
+      })
+    });
 
-  const data = await res.json();
+    const data = await res.json();
 
-  if (!res.ok) {
-    alert(data.message);
-    return;
+    // ✅ FIXED wallet + result
+    document.getElementById("wallet").innerText =
+      data.wallet ?? data.balance ?? 0;
+
+    document.getElementById("msg").innerText =
+      data.message || data.result || "Bet placed";
+
+  } catch (err) {
+    document.getElementById("msg").innerText = "Server error";
   }
-
-  // UPDATE WALLET
-  localStorage.setItem("wallet", data.wallet);
-  document.getElementById("wallet").innerText = data.wallet;
-
-  document.getElementById("msg").innerText =
-    "Result: " + data.result;
 }
 
-/* =====================
-   LOGOUT
-===================== */
+// ---------------- TIMER ----------------
+function startTimer() {
+  let time = 30;
+  const timer = document.getElementById("timer");
+
+  setInterval(() => {
+    time--;
+    if (time <= 0) time = 30;
+    timer.innerText = time;
+  }, 1000);
+}
+
+// ---------------- LOGOUT ----------------
 function logout() {
-  localStorage.clear();
+  localStorage.removeItem("token");
   window.location.href = "index.html";
 }
