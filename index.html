@@ -1,55 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <title>Color Prediction Game</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <style>
-    body {
-      background: #111;
-      color: #fff;
-      font-family: Arial;
-      text-align: center;
-      padding-top: 40px;
-    }
-    input, button {
-      padding: 10px;
-      margin: 6px;
-      width: 80%;
-      max-width: 260px;
-      font-size: 16px;
-    }
-    .red { background: red; color: white; }
-    .green { background: green; color: white; }
-    .violet { background: purple; color: white; }
-    button { cursor: pointer; }
-  </style>
+  <title>Color Game</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-<!-- 🔐 LOGIN / REGISTER -->
 <div id="auth">
   <h2>Login / Register</h2>
-  <input id="mobile" placeholder="Mobile" />
-  <input id="password" type="password" placeholder="Password" />
-  <br />
+
+  <input id="mobile" placeholder="Mobile">
+  <input id="password" type="password" placeholder="Password">
+
+  <br><br>
   <button onclick="register()">Register</button>
   <button onclick="login()">Login</button>
 </div>
 
-<!-- 🎮 GAME (HIDDEN INITIALLY) -->
 <div id="game" style="display:none;">
-  <h2>🎮 Color Prediction</h2>
-  <p>💰 Wallet: ₹ <span id="wallet">0</span></p>
+  <h2>Wallet: ₹<span id="wallet">0</span></h2>
 
-  <input id="amount" placeholder="Enter Amount" />
-  <br />
-  <button class="red" onclick="bet('RED')">RED</button>
-  <button class="green" onclick="bet('GREEN')">GREEN</button>
-  <button class="violet" onclick="bet('VIOLET')">VIOLET</button>
-  <br /><br />
-  <button onclick="logout()">Logout</button>
+  <input id="amount" placeholder="Amount">
+
+  <br><br>
+  <button style="background:red" onclick="bet('RED')">RED</button>
+  <button style="background:green" onclick="bet('GREEN')">GREEN</button>
+  <button style="background:violet" onclick="bet('VIOLET')">VIOLET</button>
 </div>
 
 <script src="app.js"></script>
