@@ -1,36 +1,18 @@
 const API = "https://color-game-backend1.onrender.com";
 
-// DEBUG helper so you can see API responses
-async function safeFetch(url, options) {
-  try {
-    const res = await fetch(url, options);
-    const data = await res.json();
-    console.log("API RESPONSE:", data);
-    return data;
-  } catch (err) {
-    alert("Backend not reachable");
-    console.error(err);
-    return {};
-  }
-}
-
-// AUTO LOGIN
-if (localStorage.getItem("token")) {
-  showGame();
-}
-
 // REGISTER
 async function register() {
   const mobile = document.getElementById("mobile").value;
   const password = document.getElementById("password").value;
 
-  const data = await safeFetch(API + "/register", {
+  const res = await fetch(API + "/register", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ mobile, password })
   });
 
-  if (data.message) alert(data.message);
+  const data = await res.json();
+  alert(data.message);
 }
 
 // LOGIN
@@ -38,29 +20,31 @@ async function login() {
   const mobile = document.getElementById("mobile").value;
   const password = document.getElementById("password").value;
 
-  const data = await safeFetch(API + "/login", {
+  const res = await fetch(API + "/login", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ mobile, password })
   });
 
-  console.log("LOGIN DATA:", data);
+  const data = await res.json();
 
   if (data.token) {
     localStorage.setItem("token", data.token);
     document.getElementById("wallet").innerText = data.wallet;
-    showGame();
+
+    document.getElementById("auth").style.display = "none";
+    document.getElementById("game").style.display = "block";
   } else {
-    alert(data.message || "Login failed");
+    alert("Login failed");
   }
 }
 
-// PLACE BET
+// BET
 async function bet(color) {
   const amount = document.getElementById("amount").value;
   const token = localStorage.getItem("token");
 
-  const data = await safeFetch(API + "/bet", {
+  const res = await fetch(API + "/bet", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -69,20 +53,6 @@ async function bet(color) {
     body: JSON.stringify({ color, amount })
   });
 
-  if (data.message) alert(data.message);
-  if (data.wallet !== undefined) {
-    document.getElementById("wallet").innerText = data.wallet;
-  }
-}
-
-// LOGOUT
-function logout() {
-  localStorage.removeItem("token");
-  location.reload();
-}
-
-// UI
-function showGame() {
-  document.getElementById("auth").classList.add("hidden");
-  document.getElementById("game").classList.remove("hidden");
+  const data = await res.json();
+  alert(data.message);
 }
