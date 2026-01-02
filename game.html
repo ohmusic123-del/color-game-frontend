@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Color Game</title>
+  <title>Color Prediction</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
   <style>
     body {
       font-family: Arial;
@@ -11,7 +12,7 @@
       text-align: center;
     }
     .box {
-      max-width: 400px;
+      max-width: 420px;
       margin: auto;
       padding: 20px;
     }
@@ -28,7 +29,7 @@
     .VIOLET { background: purple; }
     input {
       width: 90%;
-      padding: 10px;
+      padding: 12px;
       margin: 10px 0;
     }
   </style>
@@ -36,25 +37,25 @@
 
 <body onload="loadGame()">
 
-<div class="box">
-  <h2>🎮 Color Prediction</h2>
+  <div class="box">
+    <h2>🎮 Color Prediction</h2>
 
-  <p>💰 Wallet: ₹ <span id="wallet">0</span></p>
-  <p>⏱️ Time Left: <span id="timer">30</span>s</p>
+    <p>💰 Wallet: ₹ <span id="wallet">0</span></p>
+    <p>⏱ Time Left: <span id="timer">30</span>s</p>
 
-  <input id="amount" type="number" placeholder="Enter Amount">
+    <input id="amount" type="number" placeholder="Enter Amount">
 
-  <div>
-    <button class="RED" onclick="placeBet('RED')">RED</button>
-    <button class="GREEN" onclick="placeBet('GREEN')">GREEN</button>
-    <button class="VIOLET" onclick="placeBet('VIOLET')">VIOLET</button>
+    <div>
+      <button class="RED" onclick="placeBet('RED')">RED</button>
+      <button class="GREEN" onclick="placeBet('GREEN')">GREEN</button>
+      <button class="VIOLET" onclick="placeBet('VIOLET')">VIOLET</button>
+    </div>
+
+    <p id="msg"></p>
+
+    <button onclick="logout()">Logout</button>
   </div>
 
-  <p id="msg"></p>
-
-  <button onclick="logout()">Logout</button>
-</div>
-
-<script src="app.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
