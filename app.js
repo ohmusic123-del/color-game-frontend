@@ -1,44 +1,112 @@
-const API = "https://color-game-backend1.onrender.com";
+// ===============================
+// CONFIG
+// ===============================
+const API_URL = "https://color-game-backend1.onrender.com";
 
-const app = document.getElementById("app");
+// ===============================
+// LOGIN
+// ===============================
+async function login() {
+  const mobile = document.getElementById("mobile").value;
+  const password = document.getElementById("password").value;
 
-async function loadWallet() {
-  const res = await fetch(API + "/wallet");
-  const data = await res.json();
-  document.getElementById("wallet").innerText = data.balance;
+  if (!mobile || !password) {
+    alert("Enter mobile and password");
+    return;
+  }
+
+  try {
+    const res = await fetch(`${API_URL}/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ mobile, password })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      alert(data.message || "Login failed");
+      return;
+    }
+
+    // SAVE TOKEN & WALLET
+    localStorage.setItem("token", data.token);
+    localStorage.setItem("wallet", data.wallet);
+
+    // REDIRECT TO GAME
+    window.location.href = "game.html";
+
+  } catch (err) {
+    alert("Server error");
+  }
 }
 
-app.innerHTML = `
-  <h1 class="text-2xl font-bold text-center mb-4">🎮 Color Prediction</h1>
+// ===============================
+// LOAD WALLET ON GAME PAGE
+// ===============================
+function loadWallet() {
+  const wallet = localStorage.getItem("wallet");
+  if (wallet) {
+    document.getElementById("wallet").innerText = wallet;
+  }
+}
 
-  <div class="bg-white p-4 rounded shadow">
-    <p class="text-center mb-2">Wallet: 💰 <span id="wallet">...</span></p>
+// ===============================
+// PLACE BET
+// ===============================
+async function placeBet(color) {
+  const amount = document.getElementById("amount").value;
+  const token = localStorage.getItem("token");
 
-    <div class="grid grid-cols-3 gap-3 mt-3">
-      <button onclick="bet('RED')" class="bg-red-500 text-white p-3 rounded">RED</button>
-      <button onclick="bet('VIOLET')" class="bg-purple-500 text-white p-3 rounded">VIOLET</button>
-      <button onclick="bet('GREEN')" class="bg-green-500 text-white p-3 rounded">GREEN</button>
-    </div>
+  if (!token) {
+    alert("Login again");
+    window.location.href = "index.html";
+    return;
+  }
 
-    <p id="msg" class="text-center mt-4 text-sm"></p>
-  </div>
-`;
+  if (!amount || amount <= 0) {
+    alert("Enter valid amount");
+    return;
+  }
 
-loadWallet();
+  try {
+    const res = await fetch(`${API_URL}/bet`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        color: color,
+        amount: Number(amount)
+      })
+    });
 
-async function bet(color) {
-  const res = await fetch(API + "/bet", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ color, amount: 100 })
-  });
+    const data = await res.json();
 
-  const data = await res.json();
+    if (!res.ok) {
+      alert(data.message || "Bet failed");
+      return;
+    }
 
-  document.getElementById("wallet").innerText = data.wallet;
+    // UPDATE WALLET
+    localStorage.setItem("wallet", data.wallet);
+    document.getElementById("wallet").innerText = data.wallet;
 
-  document.getElementById("msg").innerText =
-    data.win
-      ? `🎉 You WON! Result: ${data.result}`
-      : `❌ You LOST. Result: ${data.result}`;
+    alert(`Result: ${data.result}`);
+
+  } catch (err) {
+    alert("Server error");
+  }
+}
+
+// ===============================
+// LOGOUT
+// ===============================
+function logout() {
+  localStorage.removeItem("token");
+  localStorage.removeItem("wallet");
+  window.location.href = "index.html";
 }
