@@ -1,18 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Color Game</title>
+  <title>BIGWIN</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div id="auth">
-  <h2>Login / Register</h2>
+<h1>BIG<span>WIN</span></h1>
 
+<div id="auth">
   <input id="mobile" placeholder="Mobile">
   <input id="password" type="password" placeholder="Password">
-
-  <br><br>
   <button onclick="register()">Register</button>
   <button onclick="login()">Login</button>
 </div>
@@ -22,10 +20,15 @@
 
   <input id="amount" placeholder="Amount">
 
-  <br><br>
-  <button style="background:red" onclick="bet('RED')">RED</button>
-  <button style="background:green" onclick="bet('GREEN')">GREEN</button>
-  <button style="background:violet" onclick="bet('VIOLET')">VIOLET</button>
+  <div class="quick">
+    <button onclick="setAmt(10)">₹10</button>
+    <button onclick="setAmt(50)">₹50</button>
+    <button onclick="setAmt(100)">₹100</button>
+  </div>
+
+  <button class="red" onclick="bet('RED')">RED</button>
+  <button class="green" onclick="bet('GREEN')">GREEN</button>
+  <button class="violet" onclick="bet('VIOLET')">VIOLET</button>
 </div>
 
 <script src="app.js"></script>
