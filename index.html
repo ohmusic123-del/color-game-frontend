@@ -1,25 +1,42 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>BIGWIN - Login</title>
+  <meta charset="UTF-8">
+  <title>BIGWIN</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <div class="header">BIG<span style="color:#22c55e">WIN</span></div>
+<header class="topbar">
+  <div class="logo">
+    <span class="big">BIG</span><span class="win">WIN</span>
+  </div>
+</header>
 
-  <div class="card">
-    <h2>Login / Register</h2>
+<div class="card">
+  <h2>Wallet: ₹<span id="balance">0</span></h2>
 
-    <input type="text" id="mobile" placeholder="Mobile number">
-    <input type="password" id="password" placeholder="Password">
-
-    <div class="btn-row">
-      <button onclick="register()">Register</button>
-      <button onclick="login()">Login</button>
-    </div>
+  <div class="quick-bets">
+    <button onclick="setAmount(1)">₹1</button>
+    <button onclick="setAmount(10)">₹10</button>
+    <button onclick="setAmount(50)">₹50</button>
+    <button onclick="setAmount(100)">₹100</button>
   </div>
 
-  <script src="script.js"></script>
+  <input type="number" id="amount" placeholder="Enter amount (min ₹1)" min="1">
+
+  <div class="bet-buttons">
+    <button class="red" onclick="placeBet('red')">RED</button>
+    <button class="green" onclick="placeBet('green')">GREEN</button>
+  </div>
+</div>
+
+<nav class="bottom-nav">
+  <button class="active">🏠</button>
+  <button onclick="location.href='wallet.html'">💰</button>
+  <button onclick="location.href='profile.html'">👤</button>
+</nav>
+
+<script src="script.js"></script>
 </body>
 </html>
