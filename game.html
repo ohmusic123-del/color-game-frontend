@@ -1,58 +1,38 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Color Game</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style>
-    body {
-      background:#111;
-      color:white;
-      text-align:center;
-      font-family:Arial;
-    }
-    .box {
-      max-width:400px;
-      margin:auto;
-      padding:20px;
-    }
-    button {
-      width:30%;
-      padding:15px;
-      margin:5px;
-      font-size:16px;
-      border:none;
-      color:white;
-    }
-    .RED { background:red }
-    .GREEN { background:green }
-    .VIOLET { background:purple }
-    input {
-      width:90%;
-      padding:10px;
-      margin:10px 0;
-    }
-  </style>
+  <meta charset="UTF-8" />
+  <title>BIGWIN – Game</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
+<body>
 
-<body onload="loadGame()">
+<header class="topbar">
+  <div class="logo">
+    <span class="big">BIG</span><span class="win">WIN</span>
+  </div>
+</header>
 
-<div class="box">
-  <h2>🎮 Color Prediction</h2>
-  <p>💰 Wallet: ₹ <span id="wallet">0</span></p>
-  <p>⏱ Time Left: <span id="timer">30</span>s</p>
+<div class="container card">
+  <h2 id="wallet">Wallet: ₹0</h2>
 
-  <input id="amount" type="number" placeholder="Enter Amount">
-
-  <div>
-    <button class="RED" onclick="placeBet('RED')">RED</button>
-    <button class="GREEN" onclick="placeBet('GREEN')">GREEN</button>
-    <button class="VIOLET" onclick="placeBet('VIOLET')">VIOLET</button>
+  <div class="quick-bets">
+    <button onclick="setAmount(1)">₹1</button>
+    <button onclick="setAmount(10)">₹10</button>
+    <button onclick="setAmount(50)">₹50</button>
+    <button onclick="setAmount(100)">₹100</button>
   </div>
 
-  <p id="msg"></p>
-  <button onclick="logout()">Logout</button>
+  <input type="number" id="amount" placeholder="Enter amount (min ₹1)" />
+
+  <div class="bet-buttons">
+    <button class="red" onclick="placeBet('red')">RED</button>
+    <button class="green" onclick="placeBet('green')">GREEN</button>
+  </div>
+
+  <button class="logout" onclick="logout()">Logout</button>
 </div>
 
-<script src="app.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
