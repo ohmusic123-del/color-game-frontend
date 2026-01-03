@@ -1,5 +1,58 @@
-<div class="container">
-<h2 id="bal">₹0</h2>
-</div>
-<script src="js/api.js"></script>
-<script src="js/wallet.js"></script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>BIGWIN – Wallet</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+
+  <!-- 🔐 LOGIN PROTECTION -->
+  <script>
+    if (!localStorage.getItem("token")) {
+      window.location.href = "index.html";
+    }
+  </script>
+</head>
+
+<body>
+
+  <!-- TOP BAR -->
+  <header class="topbar">
+    <h2>My Wallet</h2>
+    <button onclick="logout()" class="logout-btn">Logout</button>
+  </header>
+
+  <!-- WALLET CARD -->
+  <div class="wallet-card">
+    <h3>Available Balance</h3>
+    <h1>₹<span id="walletBalance">0</span></h1>
+  </div>
+
+  <!-- ACTION BUTTONS -->
+  <div class="wallet-actions">
+    <button class="deposit-btn" onclick="deposit()">Deposit</button>
+    <button class="withdraw-btn" onclick="withdraw()">Withdraw</button>
+  </div>
+
+  <!-- INFO -->
+  <div class="wallet-info">
+    <p>• Minimum Deposit: ₹100</p>
+    <p>• Minimum Withdrawal: ₹100</p>
+    <p>• Bonus withdrawable after wager completion</p>
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <nav class="bottom-nav">
+    <a href="home.html">Home</a>
+    <a href="game.html">Game</a>
+    <a href="wallet.html" class="active">Wallet</a>
+    <a href="profile.html">Profile</a>
+  </nav>
+
+  <!-- JS -->
+  <script src="js/api.js"></script>
+  <script src="js/wallet.js"></script>
+
+</body>
+</html>
