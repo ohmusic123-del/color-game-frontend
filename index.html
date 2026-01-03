@@ -1,36 +1,130 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>BIGWIN</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8" />
+<title>BIGWIN</title>
+<style>
+body {
+  background:#0b1220;
+  color:white;
+  font-family:Arial;
+  text-align:center;
+}
+header {
+  padding:15px;
+  font-size:28px;
+  font-weight:bold;
+}
+.win { color:#22c55e; }
+.card {
+  background:#111827;
+  padding:20px;
+  margin:20px auto;
+  width:320px;
+  border-radius:12px;
+}
+button {
+  padding:12px;
+  margin:5px;
+  width:90px;
+  border:none;
+  border-radius:8px;
+  font-weight:bold;
+}
+.red { background:#ef4444; }
+.green { background:#22c55e; }
+.small { width:60px; }
+input {
+  padding:10px;
+  width:90%;
+  margin:5px;
+}
+</style>
 </head>
 <body>
 
-<h1>BIG<span>WIN</span></h1>
+<header>BIG<span class="win">WIN</span></header>
 
-<div id="auth">
+<div class="card" id="auth">
   <input id="mobile" placeholder="Mobile">
-  <input id="password" type="password" placeholder="Password">
+  <input id="password" placeholder="Password" type="password">
   <button onclick="register()">Register</button>
   <button onclick="login()">Login</button>
 </div>
 
-<div id="game" style="display:none;">
-  <h2>Wallet: ₹<span id="wallet">0</span></h2>
+<div class="card" id="game" style="display:none">
+  <h3>Wallet: ₹<span id="wallet">0</span></h3>
+
+  <div>
+    <button class="small" onclick="setAmt(1)">₹1</button>
+    <button class="small" onclick="setAmt(10)">₹10</button>
+    <button class="small" onclick="setAmt(50)">₹50</button>
+    <button class="small" onclick="setAmt(100)">₹100</button>
+  </div>
 
   <input id="amount" placeholder="Amount">
 
-  <div class="quick">
-    <button onclick="setAmt(10)">₹10</button>
-    <button onclick="setAmt(50)">₹50</button>
-    <button onclick="setAmt(100)">₹100</button>
+  <div>
+    <button class="red" onclick="bet('RED')">RED</button>
+    <button class="green" onclick="bet('GREEN')">GREEN</button>
   </div>
-
-  <button class="red" onclick="bet('RED')">RED</button>
-  <button class="green" onclick="bet('GREEN')">GREEN</button>
-  <button class="violet" onclick="bet('VIOLET')">VIOLET</button>
 </div>
 
-<script src="app.js"></script>
+<script>
+const API = "https://game-backend1.onrender.com";
+let token = "";
+
+function register(){
+  fetch(API+"/api/register",{
+    method:"POST",
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      mobile:mobile.value,
+      password:password.value
+    })
+  }).then(r=>r.json()).then(alertMsg);
+}
+
+function login(){
+  fetch(API+"/api/login",{
+    method:"POST",
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      mobile:mobile.value,
+      password:password.value
+    })
+  }).then(r=>r.json()).then(d=>{
+    if(d.token){
+      token=d.token;
+      wallet.innerText=d.wallet;
+      auth.style.display="none";
+      game.style.display="block";
+    } else alert(d.error);
+  });
+}
+
+function setAmt(v){ amount.value=v; }
+
+function bet(color){
+  fetch(API+"/api/game/bet",{
+    method:"POST",
+    headers:{
+      'Content-Type':'application/json',
+      'Authorization':'Bearer '+token
+    },
+    body:JSON.stringify({
+      amount:+amount.value,
+      color
+    })
+  }).then(r=>r.json()).then(d=>{
+    if(d.wallet!==undefined){
+      wallet.innerText=d.wallet;
+      alert("Bet placed");
+    } else alert(d.error);
+  });
+}
+
+function alertMsg(d){ alert(d.message||d.error); }
+</script>
 </body>
 </html>
