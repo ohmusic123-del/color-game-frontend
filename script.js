@@ -17,7 +17,10 @@ function setAmount(val) {
   document.getElementById("amount").value = val;
 }
 
-function placeBet(color) {
+function placeBet(color) if (!bettingOpen) {
+  alert("Betting closed. Wait for next round.");
+  return;
+}{
   const amount = Number(document.getElementById("amount").value);
 
   if (!amount || amount < 1) {
