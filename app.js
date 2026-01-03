@@ -1,29 +1,33 @@
-const BACKEND_URL = "https://color-game-backend1.onrender.com";
+const API = "https://game-backend1.onrender.com";
+let TOKEN = localStorage.getItem("token");
 
-let token = "";
-let wallet = 0;
+// FORCE UI STATE
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("gameBox").classList.add("hidden");
+  document.getElementById("loginBox").classList.remove("hidden");
 
-/* HELPERS */
-function setAmount(val) {
-  document.getElementById("amount").value = val;
-}
+  if (TOKEN) {
+    loadWallet();
+    showGame();
+  }
+});
 
+// UI HELPERS
 function showGame() {
   document.getElementById("loginBox").classList.add("hidden");
   document.getElementById("gameBox").classList.remove("hidden");
 }
 
-function updateWallet(val) {
-  wallet = Math.floor(val);
-  document.getElementById("wallet").innerText = wallet;
+function setAmount(val) {
+  document.getElementById("amount").value = val;
 }
 
-/* AUTH */
+// AUTH
 async function register() {
-  const mobile = mobile.value;
-  const password = password.value;
+  const mobile = mobileValue();
+  const password = passwordValue();
 
-  const res = await fetch(`${BACKEND_URL}/register`, {
+  const res = await fetch(API + "/register", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ mobile, password })
@@ -34,10 +38,10 @@ async function register() {
 }
 
 async function login() {
-  const mobile = document.getElementById("mobile").value;
-  const password = document.getElementById("password").value;
+  const mobile = mobileValue();
+  const password = passwordValue();
 
-  const res = await fetch(`${BACKEND_URL}/login`, {
+  const res = await fetch(API + "/login", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ mobile, password })
@@ -45,47 +49,50 @@ async function login() {
 
   const data = await res.json();
 
-  if (!data.token) {
+  if (data.token) {
+    TOKEN = data.token;
+    localStorage.setItem("token", TOKEN);
+    document.getElementById("wallet").innerText = data.wallet;
+    showGame();
+  } else {
     alert(data.message || "Login failed");
-    return;
   }
-
-  token = data.token;
-  updateWallet(data.wallet);
-  showGame();
 }
 
-/* BET */
-async function bet(color) {
-  const amount = Number(document.getElementById("amount").value);
+// GAME
+async function loadWallet() {
+  const res = await fetch(API + "/wallet", {
+    headers: { Authorization: "Bearer " + TOKEN }
+  });
+  const data = await res.json();
+  document.getElementById("wallet").innerText = data.wallet;
+}
 
-  if (!amount || amount < 1) {
+async function placeBet(color) {
+  const amount = Number(document.getElementById("amount").value);
+  if (amount < 1) {
     alert("Minimum bet is ₹1");
     return;
   }
 
-  const res = await fetch(`${BACKEND_URL}/bet`, {
+  const res = await fetch(API + "/bet", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "Authorization": `Bearer ${token}`
+      Authorization: "Bearer " + TOKEN
     },
     body: JSON.stringify({ color, amount })
   });
 
   const data = await res.json();
+  alert(data.message || "Bet placed");
+  loadWallet();
+}
 
-  if (data.message) {
-    alert(data.message);
-  }
-
-  // refresh wallet from backend
-  const me = await fetch(`${BACKEND_URL}/me`, {
-    headers: { "Authorization": `Bearer ${token}` }
-  });
-
-  const meData = await me.json();
-  if (meData.wallet !== undefined) {
-    updateWallet(meData.wallet);
-  }
+// HELPERS
+function mobileValue() {
+  return document.getElementById("mobile").value.trim();
+}
+function passwordValue() {
+  return document.getElementById("password").value.trim();
 }
