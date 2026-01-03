@@ -1,7 +1,13 @@
 const API = "https://color-game-backend1.onrender.com/api";
+
 async function login() {
-  const phone = phoneValue();
-  const password = passValue();
+  const phone = document.getElementById("phone").value.trim();
+  const password = document.getElementById("password").value.trim();
+
+  if (!phone || !password) {
+    alert("Enter phone and password");
+    return;
+  }
 
   const res = await fetch(`${API}/auth/login`, {
     method: "POST",
@@ -10,15 +16,19 @@ async function login() {
   });
 
   const data = await res.json();
-  if (!res.ok) return alert(data.message);
+
+  if (!res.ok) {
+    alert(data.message || "Login failed");
+    return;
+  }
 
   localStorage.setItem("token", data.token);
-  location.href = "home.html";
+  window.location.href = "home.html";
 }
 
 async function register() {
-  const phone = phoneValue();
-  const password = passValue();
+  const phone = document.getElementById("phone").value.trim();
+  const password = document.getElementById("password").value.trim();
 
   const res = await fetch(`${API}/auth/register`, {
     method: "POST",
@@ -29,11 +39,3 @@ async function register() {
   const data = await res.json();
   alert(data.message || "Registered");
 }
-
-function phoneValue() {
-  return document.getElementById("phone").value.trim();
-}
-
-function passValue() {
-  return document.getElementById("password").value.trim();
-    }
