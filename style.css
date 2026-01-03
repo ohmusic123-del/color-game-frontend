@@ -97,3 +97,24 @@ input {
 .bottom-nav .active {
   color: #d4af37;
 }
+.round-box {
+  margin-bottom: 15px;
+}
+
+#timer {
+  font-size: 26px;
+  font-weight: bold;
+  color: #d4af37;
+}
+
+#status {
+  font-size: 14px;
+  color: #aaa;
+  margin-top: 4px;
+}
+
+#result {
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: 8px;
+}
