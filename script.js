@@ -1,25 +1,18 @@
-const API = "https://game-backend1.onrender.com";
-let TOKEN = localStorage.getItem("token");
+const API = "https://color-game-backend1.onrender.com";
 
-// FORCE UI STATE
-document.addEventListener("DOMContentLoaded", () => {
-  document.getElementById("gameBox").classList.add("hidden");
-  document.getElementById("loginBox").classList.remove("hidden");
-
-  if (TOKEN) {
-    loadWallet();
-    showGame();
+// 🔒 Redirect protection
+if (location.pathname.includes("game.html")) {
+  if (!localStorage.getItem("token")) {
+    window.location.href = "index.html";
+  } else {
+    fetchWallet();
   }
-});
-
-// UI HELPERS
-function showGame() {
-  document.getElementById("loginBox").classList.add("hidden");
-  document.getElementById("gameBox").classList.remove("hidden");
 }
 
-function setAmount(val) {
-  document.getElementById("amount").value = val;
+if (location.pathname.includes("index.html")) {
+  if (localStorage.getItem("token")) {
+    window.location.href = "game.html";
+  }
 }
 
 // AUTH
@@ -50,26 +43,31 @@ async function login() {
   const data = await res.json();
 
   if (data.token) {
-    TOKEN = data.token;
-    localStorage.setItem("token", TOKEN);
-    document.getElementById("wallet").innerText = data.wallet;
-    showGame();
+    localStorage.setItem("token", data.token);
+    window.location.href = "game.html";
   } else {
-    alert(data.message || "Login failed");
+    alert("Login failed");
   }
 }
 
 // GAME
-async function loadWallet() {
+async function fetchWallet() {
   const res = await fetch(API + "/wallet", {
-    headers: { Authorization: "Bearer " + TOKEN }
+    headers: {
+      Authorization: "Bearer " + localStorage.getItem("token")
+    }
   });
   const data = await res.json();
-  document.getElementById("wallet").innerText = data.wallet;
+  document.getElementById("wallet").innerText = "Wallet: ₹" + data.wallet;
+}
+
+function setAmount(val) {
+  document.getElementById("amount").value = val;
 }
 
 async function placeBet(color) {
   const amount = Number(document.getElementById("amount").value);
+
   if (amount < 1) {
     alert("Minimum bet is ₹1");
     return;
@@ -79,17 +77,22 @@ async function placeBet(color) {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: "Bearer " + TOKEN
+      Authorization: "Bearer " + localStorage.getItem("token")
     },
     body: JSON.stringify({ color, amount })
   });
 
   const data = await res.json();
   alert(data.message || "Bet placed");
-  loadWallet();
+  fetchWallet();
 }
 
-// HELPERS
+function logout() {
+  localStorage.removeItem("token");
+  window.location.href = "index.html";
+}
+
+// helpers
 function mobileValue() {
   return document.getElementById("mobile").value.trim();
 }
