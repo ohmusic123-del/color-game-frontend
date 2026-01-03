@@ -29,16 +29,18 @@ async function register() {
   const data = await res.json();
   alert(data.message || "Registered");
 }
-
 async function login() {
-  const mobile = mobileValue();
-  const password = passwordValue();
+  const mobile = document.getElementById("mobile").value;
+  const password = document.getElementById("password").value;
 
-  const res = await fetch(API + "/login", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ mobile, password })
-  });
+  const res = await fetch(
+    "https://game-backend1.onrender.com/login",
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ mobile, password })
+    }
+  );
 
   const data = await res.json();
 
@@ -46,9 +48,10 @@ async function login() {
     localStorage.setItem("token", data.token);
     window.location.href = "game.html";
   } else {
-    alert("Login failed");
+    alert(data.message || "Login failed");
   }
 }
+
 
 // GAME
 async function fetchWallet() {
