@@ -1,47 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>BIGWIN</title>
-  <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-
-<header class="topbar">
-  <div class="logo">
-    <span class="big">BIG</span><span class="win">WIN</span>
-  </div>
-</header>
-
-<div class="card">
-  <div class="round-box">
-  <div id="timer">⏱️ 30</div>
-  <div id="status">Betting Open</div>
-  <div id="result"></div>
-  </div>
-  <h2>Wallet: ₹<span id="balance">0</span></h2>
-
-  <div class="quick-bets">
-    <button onclick="setAmount(1)">₹1</button>
-    <button onclick="setAmount(10)">₹10</button>
-    <button onclick="setAmount(50)">₹50</button>
-    <button onclick="setAmount(100)">₹100</button>
-  </div>
-
-  <input type="number" id="amount" placeholder="Enter amount (min ₹1)" min="1">
-
-  <div class="bet-buttons">
-    <button class="red" onclick="placeBet('red')">RED</button>
-    <button class="green" onclick="placeBet('green')">GREEN</button>
-  </div>
+<div class="container">
+<input id="mobile" placeholder="Mobile">
+<input id="password" type="password" placeholder="Password">
+<button class="gold-btn" onclick="login()">Login</button>
 </div>
-
-<nav class="bottom-nav">
-  <button class="active">🏠</button>
-  <button onclick="location.href='wallet.html'">💰</button>
-  <button onclick="location.href='profile.html'">👤</button>
-</nav>
-
-<script src="script.js"></script>
+<script src="js/api.js"></script>
+<script src="js/auth.js"></script>
 </body>
 </html>
