@@ -1,51 +1,45 @@
-const API = "https://game-backend1.onrender.com";
+let balance = localStorage.getItem("balance");
 
-// REGISTER
-async function register() {
-  const mobile = document.getElementById("mobile").value.trim();
-  const password = document.getElementById("password").value.trim();
-
-  if (!mobile || !password) {
-    alert("Enter mobile and password");
-    return;
-  }
-
-  const res = await fetch(API + "/register", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ mobile, password })
-  });
-
-  const data = await res.json();
-  alert(data.message || "Registered");
+if (!balance) {
+  balance = 100;
+  localStorage.setItem("balance", balance);
 }
 
-// LOGIN
-async function login() {
-  const mobile = document.getElementById("mobile").value.trim();
-  const password = document.getElementById("password").value.trim();
-
-  if (!mobile || !password) {
-    alert("Enter mobile and password");
-    return;
-  }
-
-  const res = await fetch(API + "/login", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ mobile, password })
+function updateUI() {
+  document.querySelectorAll("#balance").forEach(el => {
+    el.innerText = balance;
   });
+}
 
-  const data = await res.json();
+updateUI();
 
-  if (!data.token) {
-    alert("Login failed");
+function setAmount(val) {
+  document.getElementById("amount").value = val;
+}
+
+function placeBet(color) {
+  const amount = Number(document.getElementById("amount").value);
+
+  if (!amount || amount < 1) {
+    alert("Minimum bet is ₹1");
     return;
   }
 
-  // SAVE TOKEN
-  localStorage.setItem("token", data.token);
+  if (amount > balance) {
+    alert("Insufficient balance");
+    return;
+  }
 
-  // GO TO GAME
-  window.location.href = "game.html";
+  const win = Math.random() > 0.5;
+  balance = win ? balance + amount : balance - amount;
+
+  localStorage.setItem("balance", balance);
+  updateUI();
+
+  alert(win ? "You Win 🎉" : "You Lose ❌");
+}
+
+function resetGame() {
+  localStorage.removeItem("balance");
+  location.reload();
 }
