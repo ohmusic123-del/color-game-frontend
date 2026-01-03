@@ -1,108 +1,99 @@
 * {
   box-sizing: border-box;
-  font-family: Arial, sans-serif;
+  font-family: Poppins, Arial, sans-serif;
 }
 
 body {
   margin: 0;
-  background: linear-gradient(180deg, #0b1220, #020617);
+  background: radial-gradient(circle at top, #1b1f3b, #0b1220);
   color: #fff;
   min-height: 100vh;
 }
 
 .topbar {
-  padding: 15px;
+  padding: 16px;
   text-align: center;
-  background: #0b1220;
-  border-bottom: 1px solid #1f2937;
+  background: linear-gradient(90deg, #0b1220, #111827);
 }
 
 .logo {
-  font-size: 26px;
-  font-weight: bold;
+  font-size: 28px;
+  font-weight: 800;
 }
 
-.logo .big {
-  color: #ffffff;
-}
-
-.logo .win {
-  color: #22c55e;
-}
-
-.container {
-  max-width: 380px;
-  margin: 50px auto;
-  padding: 25px;
-}
+.big { color: #fff; }
+.win { color: #d4af37; }
 
 .card {
-  background: #0f172a;
-  border-radius: 16px;
-  box-shadow: 0 0 30px rgba(0,0,0,0.6);
+  max-width: 360px;
+  margin: 40px auto;
+  padding: 25px;
+  border-radius: 18px;
+  background: linear-gradient(145deg, #111827, #1f2937);
+  box-shadow: 0 0 35px rgba(212,175,55,0.25);
+  text-align: center;
 }
 
-h2 {
-  text-align: center;
-  margin-bottom: 20px;
+.quick-bets button,
+.gold-btn {
+  margin: 6px;
+  padding: 10px 16px;
+  border-radius: 10px;
+  border: none;
+  font-weight: bold;
+  background: linear-gradient(145deg, #f5d76e, #d4af37);
+  color: #000;
 }
 
 input {
   width: 100%;
   padding: 14px;
-  margin: 10px 0;
   border-radius: 10px;
   border: none;
-  background: #020617;
-  color: white;
-  font-size: 16px;
-}
-
-.btn-row {
-  display: flex;
-  gap: 10px;
-}
-
-button {
-  padding: 14px;
-  border: none;
-  border-radius: 10px;
-  font-size: 16px;
-  cursor: pointer;
-  width: 100%;
-}
-
-.btn-row button {
-  background: #1f2937;
-  color: white;
-}
-
-.quick-bets {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 12px;
-}
-
-.quick-bets button {
-  background: #1f2937;
-  color: white;
+  margin: 15px 0;
 }
 
 .bet-buttons {
   display: flex;
-  gap: 10px;
-  margin-top: 15px;
+  gap: 12px;
 }
 
-.bet-buttons .red {
+.red {
+  flex: 1;
   background: #dc2626;
+  color: #fff;
+  padding: 14px;
+  border-radius: 12px;
+  border: none;
 }
 
-.bet-buttons .green {
+.green {
+  flex: 1;
   background: #16a34a;
+  color: #fff;
+  padding: 14px;
+  border-radius: 12px;
+  border: none;
 }
 
-.logout {
-  margin-top: 20px;
-  background: #374151;
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  background: #0b1220;
+  border-top: 1px solid #222;
+}
+
+.bottom-nav button {
+  flex: 1;
+  padding: 14px;
+  font-size: 18px;
+  background: none;
+  border: none;
+  color: #aaa;
+}
+
+.bottom-nav .active {
+  color: #d4af37;
 }
