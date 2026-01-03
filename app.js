@@ -1,70 +1,49 @@
 const API = "https://color-game-backend1.onrender.com";
+let token = "";
 
-// REGISTER
-async function register() {
-  const mobile = document.getElementById("mobile").value;
-  const password = document.getElementById("password").value;
+function setAmt(a){ amount.value = a }
 
-  const res = await fetch(API + "/register", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ mobile, password })
-  });
-
-  const data = await res.json();
-  alert(data.message);
+async function register(){
+  alert((await fetch(API+"/register",{
+    method:"POST",
+    headers:{ "Content-Type":"application/json"},
+    body:JSON.stringify({
+      mobile:mobile.value,
+      password:password.value
+    })
+  })).status===200?"Registered":"User exists");
 }
 
-// LOGIN
-async function login() {
-  const mobile = document.getElementById("mobile").value;
-  const password = document.getElementById("password").value;
-
-  const res = await fetch("https://color-game-backend1.onrender.com/login", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ mobile, password })
+async function login(){
+  const res = await fetch(API+"/login",{
+    method:"POST",
+    headers:{ "Content-Type":"application/json"},
+    body:JSON.stringify({
+      mobile:mobile.value,
+      password:password.value
+    })
   });
-
   const data = await res.json();
-  console.log("LOGIN RESPONSE:", data);
-
-  if (data.token) {
-    localStorage.setItem("token", data.token);
-
-    document.getElementById("wallet").innerText = data.wallet;
-
-    document.getElementById("auth").style.display = "none";
-    document.getElementById("game").style.display = "block";
-
-    alert("Login successful");
-  } else {
-    alert(data.message || "Login failed");
-  }
+  token = data.token;
+  wallet.innerText = data.wallet;
+  auth.style.display="none";
+  game.style.display="block";
 }
 
-// BET
-async function placeBet(color) {
-  const amount = document.getElementById("amount").value;
-  const token = localStorage.getItem("token");
-
-  if (!token) {
-    alert("Please login again");
-    return;
-  }
-
-  const res = await fetch("https://color-game-backend1.onrender.com/bet", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": "Bearer " + token   // ✅ THIS LINE FIXES EVERYTHING
+async function bet(color){
+  const res = await fetch(API+"/bet",{
+    method:"POST",
+    headers:{
+      "Content-Type":"application/json",
+      "Authorization":token
     },
-    body: JSON.stringify({ color, amount })
+    body:JSON.stringify({
+      color,
+      amount:+amount.value
+    })
   });
-
   const data = await res.json();
-
-  if (data.message) {
-    alert(data.message);
-  }
+  if(data.wallet!==undefined)
+    wallet.innerText=data.wallet;
+  else alert(data.message);
 }
