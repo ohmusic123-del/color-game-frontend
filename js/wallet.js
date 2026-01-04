@@ -75,3 +75,39 @@ async function submitDeposit() {
   closeDeposit();
   loadWallet();
 }
+function openWithdraw() {
+  document.getElementById("withdrawModal").style.display = "flex";
+}
+
+function closeWithdraw() {
+  document.getElementById("withdrawModal").style.display = "none";
+}
+
+async function submitWithdraw() {
+  const amount = Number(document.getElementById("withdrawAmount").value);
+
+  if (amount < 100) {
+    alert("Minimum withdrawal is ₹100");
+    return;
+  }
+
+  const res = await fetch(`${API}/withdraw`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token
+    },
+    body: JSON.stringify({ amount })
+  });
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    alert(data.error || "Withdrawal failed");
+    return;
+  }
+
+  alert("Withdrawal request submitted");
+  closeWithdraw();
+  loadWallet();
+}
