@@ -1,105 +1,155 @@
-:root {
-  --bg: #0b0f1a;
-  --card: #121829;
-  --gold: #d4af37;
-  --text: #ffffff;
-  --muted: #9aa4bf;
-}
-
 * {
   box-sizing: border-box;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: "Segoe UI", system-ui, sans-serif;
 }
 
 body {
   margin: 0;
-  background: radial-gradient(circle at top, #1a1f35, var(--bg));
-  color: var(--text);
-  min-height: 100vh;
+  background: radial-gradient(circle at top, #1a1a1a, #050505);
+  color: #fff;
 }
 
-/* CENTER CONTAINER */
+/* ===== LAYOUT ===== */
+
 .center {
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
+  padding-bottom: 80px;
 }
 
-/* CARD */
 .card {
-  background: var(--card);
-  padding: 24px;
-  border-radius: 16px;
-  width: 90%;
+  width: 92%;
   max-width: 380px;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.6);
-  border: 1px solid rgba(212,175,55,0.2);
+  background: linear-gradient(180deg, #111, #0b0b0b);
+  border-radius: 18px;
+  padding: 20px;
+  box-shadow: 0 0 30px rgba(255, 215, 0, 0.08);
+  border: 1px solid rgba(255, 215, 0, 0.15);
 }
 
-/* LOGO */
+/* ===== BRAND ===== */
+
 .logo {
   text-align: center;
   font-size: 28px;
+  font-weight: 900;
+  color: gold;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+}
+
+/* ===== TIMER ===== */
+
+#timer {
+  font-size: 40px;
   font-weight: bold;
-  color: var(--gold);
-  margin-bottom: 20px;
+  color: gold;
 }
 
-/* INPUTS */
-input {
-  width: 100%;
-  padding: 12px;
-  margin-bottom: 12px;
-  border-radius: 10px;
-  border: none;
-  background: #0f1424;
-  color: var(--text);
-  outline: none;
+#roundId {
+  font-size: 11px;
+  opacity: 0.6;
 }
 
-/* BUTTONS */
+#status {
+  margin-top: 8px;
+  font-size: 14px;
+  color: gold;
+}
+
+/* ===== BUTTONS ===== */
+
 button {
-  width: 100%;
-  padding: 12px;
-  border-radius: 10px;
   border: none;
-  font-weight: bold;
+  border-radius: 14px;
+  padding: 14px;
+  font-size: 16px;
+  font-weight: 700;
   cursor: pointer;
 }
 
 .btn-gold {
-  background: linear-gradient(135deg, #f5d76e, #c9a227);
+  background: linear-gradient(180deg, #ffd700, #b8860b);
   color: #000;
+  box-shadow: 0 4px 14px rgba(255, 215, 0, 0.4);
 }
 
 .btn-outline {
-  margin-top: 10px;
   background: transparent;
-  border: 1px solid var(--gold);
-  color: var(--gold);
+  color: gold;
+  border: 1px solid rgba(255, 215, 0, 0.4);
 }
 
-/* BOTTOM NAV */
+.btn-outline:active,
+.btn-gold:active {
+  transform: scale(0.96);
+}
+
+/* ===== COLOR BET BUTTONS ===== */
+
+.bet-row {
+  display: flex;
+  gap: 12px;
+  margin: 18px 0;
+}
+
+.bet-red {
+  flex: 1;
+  background: linear-gradient(180deg, #ff4d4d, #b91c1c);
+  color: #fff;
+}
+
+.bet-green {
+  flex: 1;
+  background: linear-gradient(180deg, #22c55e, #15803d);
+  color: #fff;
+}
+
+/* ===== AMOUNT BUTTONS ===== */
+
+.amount-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+/* ===== WALLET ===== */
+
+#balance {
+  font-size: 36px;
+  font-weight: 900;
+}
+
+/* ===== BET HISTORY ===== */
+
+#betList li {
+  font-size: 13px;
+  opacity: 0.85;
+  padding: 4px 0;
+}
+
+/* ===== BOTTOM NAV ===== */
+
 .bottom-nav {
   position: fixed;
   bottom: 0;
-  left: 0;
-  right: 0;
-  background: #0d1224;
+  width: 100%;
+  background: #050505;
   display: flex;
   justify-content: space-around;
-  padding: 10px 0;
-  border-top: 1px solid rgba(255,255,255,0.1);
+  padding: 12px 0;
+  border-top: 1px solid rgba(255, 215, 0, 0.2);
 }
 
 .bottom-nav a {
-  color: var(--muted);
+  color: #888;
   text-decoration: none;
-  font-size: 12px;
+  font-size: 13px;
+  font-weight: 600;
 }
 
 .bottom-nav a.active {
-  color: var(--gold);
-  font-weight: bold;
+  color: gold;
 }
