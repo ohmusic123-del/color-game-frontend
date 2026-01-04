@@ -1,117 +1,46 @@
-const API = "https://color-game-backend1.onrender.com";
+<!DOCTYPE html>
+<html>
+<head>
+  <title>BIGWIN - Game</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-let selectedColor = null;
-let selectedAmount = 0;
-let roundId = null;
-let timerInterval = null;
+<!-- ===== HEADER ===== -->
+<div class="header">
+  <div class="header-logo">BIGWIN</div>
+</div>
 
-/* =========================
-   INIT
-========================= */
+<div class="center">
+  <div class="card">
 
-init();
+    <div id="roundId">Round ID</div>
+    <div id="timer">30</div>
+    <div id="status">Select bet</div>
 
-async function init() {
-  await loadRound();
-}
+    <div class="bet-row">
+      <button class="bet-red" onclick="selectColor('red')">RED</button>
+      <button class="bet-green" onclick="selectColor('green')">GREEN</button>
+    </div>
 
-/* =========================
-   ROUND
-========================= */
+    <div class="amount-row">
+      <button onclick="selectAmount(10)">₹10</button>
+      <button onclick="selectAmount(50)">₹50</button>
+      <button onclick="selectAmount(100)">₹100</button>
+    </div>
 
-async function loadRound() {
-  const res = await fetch(`${API}/round/current`);
-  const data = await res.json();
+    <button class="btn-gold" onclick="placeBet()">Place Bet</button>
 
-  roundId = data.id;
-  document.getElementById("roundId").innerText = `Round ID: ${roundId}`;
+  </div>
+</div>
 
-  startTimer(data.startTime);
-}
+<div class="bottom-nav">
+  <a href="home.html">Home</a>
+  <a href="game.html" class="active">Game</a>
+  <a href="wallet.html">Wallet</a>
+  <a href="profile.html">Profile</a>
+</div>
 
-function startTimer(startTime) {
-  clearInterval(timerInterval);
-
-  timerInterval = setInterval(() => {
-    const elapsed = Math.floor((Date.now() - startTime) / 1000);
-    const remaining = 30 - elapsed;
-
-    document.getElementById("timer").innerText =
-      remaining > 0 ? remaining : 0;
-
-    if (remaining <= 0) {
-      clearInterval(timerInterval);
-      lockBetting();
-      resolveRound();
-    }
-  }, 1000);
-}
-
-/* =========================
-   BET UI
-========================= */
-
-function selectColor(color) {
-  selectedColor = color;
-  document.getElementById("status").innerText = `Selected: ${color.toUpperCase()}`;
-}
-
-function selectAmount(amount) {
-  selectedAmount = amount;
-  document.getElementById("status").innerText =
-    `Bet ₹${amount} on ${selectedColor?.toUpperCase() || "?"}`;
-}
-
-/* =========================
-   PLACE BET
-========================= */
-
-async function placeBet() {
-  if (!selectedColor || !selectedAmount) {
-    alert("Select color & amount");
-    return;
-  }
-
-  const res = await fetch(`${API}/bet`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: localStorage.getItem("token")
-    },
-    body: JSON.stringify({
-      color: selectedColor,
-      amount: selectedAmount
-    })
-  });
-
-  const data = await res.json();
-
-  if (!res.ok) {
-    alert(data.error || "Bet failed");
-    return;
-  }
-
-  document.getElementById("status").innerText = "Bet placed ✅";
-}
-
-/* =========================
-   ROUND END
-========================= */
-
-function lockBetting() {
-  document.getElementById("status").innerText = "Betting closed ⛔";
-}
-
-async function resolveRound() {
-  const res = await fetch(`${API}/round/resolve`, {
-    method: "POST"
-  });
-
-  const data = await res.json();
-
-  document.getElementById("status").innerText =
-    `Winner: ${data.winner.toUpperCase()} 🎉`;
-
-  // Load next round after 5 sec
-  setTimeout(loadRound, 5000);
-}
+<script src="js/game.js"></script>
+</body>
+</html>
