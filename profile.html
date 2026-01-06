@@ -75,5 +75,52 @@
 </div>
 
 <script src="js/profile.js?v=1"></script>
+  <!-- WITHDRAW DETAILS MODAL -->
+<div id="withdrawModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;
+background:rgba(0,0,0,.75);z-index:3000;align-items:center;justify-content:center">
+
+  <div class="card">
+    <h3 id="withdrawTitle" style="text-align:center;margin-bottom:12px">
+      Withdraw Details
+    </h3>
+
+    <!-- UPI -->
+    <div id="upiForm" style="display:none">
+      <input id="upiId" placeholder="Enter UPI ID"
+        style="width:100%;padding:12px;margin-bottom:12px;border-radius:10px;border:none">
+    </div>
+
+    <!-- BANK -->
+    <div id="bankForm" style="display:none">
+      <input id="bankName" placeholder="Bank Name"
+        style="width:100%;padding:12px;margin-bottom:8px;border-radius:10px;border:none">
+
+      <input id="accountHolder" placeholder="Account Holder Name"
+        style="width:100%;padding:12px;margin-bottom:8px;border-radius:10px;border:none">
+
+      <input id="accountNumber" placeholder="Account Number"
+        style="width:100%;padding:12px;margin-bottom:8px;border-radius:10px;border:none">
+
+      <input id="ifsc" placeholder="IFSC Code"
+        style="width:100%;padding:12px;margin-bottom:12px;border-radius:10px;border:none">
+    </div>
+
+    <!-- USDT -->
+    <div id="usdtForm" style="display:none">
+      <input id="usdtAddress" placeholder="USDT Address (TRC20)"
+        style="width:100%;padding:12px;margin-bottom:12px;border-radius:10px;border:none">
+    </div>
+
+    <button class="btn-gold" style="width:100%;margin-bottom:10px"
+      onclick="saveWithdrawDetails()">
+      Save Details
+    </button>
+
+    <button class="btn-outline" style="width:100%"
+      onclick="closeWithdrawModal()">
+      Cancel
+    </button>
+  </div>
+</div>
 </body>
                                                  </html>
