@@ -6,6 +6,11 @@
 </head>
 <body>
 
+<!-- HEADER -->
+<div class="header">
+  <div class="header-logo">BIGWIN</div>
+</div>
+
 <script>
   if (!localStorage.getItem("token")) {
     location.href = "index.html";
@@ -14,8 +19,38 @@
 
 <div class="center">
   <div class="card">
-    <div class="logo">BIGWIN</div>
 
+    <h2 style="text-align:center;margin-bottom:6px">Profile</h2>
+
+    <p style="text-align:center;opacity:.7;margin-bottom:16px">
+      Manage your withdrawal details
+    </p>
+
+    <!-- WITHDRAW METHOD BUTTONS -->
+    <button class="btn-outline" style="width:100%;margin-bottom:10px"
+      onclick="openWithdrawDetails('upi')">
+      💳 Add / Edit UPI
+    </button>
+
+    <button class="btn-outline" style="width:100%;margin-bottom:10px"
+      onclick="openWithdrawDetails('bank')">
+      🏦 Add / Edit Bank
+    </button>
+
+    <button class="btn-outline" style="width:100%;margin-bottom:10px"
+      onclick="openWithdrawDetails('usdt')">
+      🔗 Add / Edit USDT
+    </button>
+
+    <hr style="margin:16px 0;opacity:.2">
+
+    <!-- ACTIVE METHOD -->
+    <p id="activeMethod"
+       style="text-align:center;font-size:13px;color:gold;margin-bottom:14px">
+       No withdrawal method saved
+    </p>
+
+    <!-- USER INFO -->
     <p><strong>Mobile:</strong> <span id="mobile">--</span></p>
     <p><strong>Wallet:</strong> ₹<span id="wallet">0</span></p>
     <p><strong>Total Wagered:</strong> ₹<span id="wagered">0</span></p>
@@ -27,9 +62,11 @@
     >
       Logout
     </button>
+
   </div>
 </div>
 
+<!-- BOTTOM NAV -->
 <div class="bottom-nav">
   <a href="home.html">Home</a>
   <a href="game.html">Game</a>
@@ -39,4 +76,4 @@
 
 <script src="js/profile.js?v=1"></script>
 </body>
-</html>
+                                                 </html>
