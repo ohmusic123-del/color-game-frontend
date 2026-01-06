@@ -17,6 +17,40 @@ async function loadProfile() {
 }
 
 loadProfile();
+loadWithdrawDetails();
+
+async function loadWithdrawDetails() {
+  const res = await fetch(`${API}/withdraw/details`, {
+    headers: { Authorization: token }
+  });
+
+  const data = await res.json();
+
+  if (!data.method) {
+    document.getElementById("activeMethod").innerText =
+      "No withdrawal method saved";
+    return;
+  }
+
+  document.getElementById("activeMethod").innerText =
+    `Active method: ${data.method.toUpperCase()}`;
+
+  // Prefill values
+  if (data.method === "upi" && data.details.upiId) {
+    document.getElementById("upiId").value = data.details.upiId;
+  }
+
+  if (data.method === "bank") {
+    document.getElementById("bankName").value = data.details.bankName || "";
+    document.getElementById("accountHolder").value = data.details.accountHolder || "";
+    document.getElementById("accountNumber").value = data.details.accountNumber || "";
+    document.getElementById("ifsc").value = data.details.ifsc || "";
+  }
+
+  if (data.method === "usdt" && data.details.usdtAddress) {
+    document.getElementById("usdtAddress").value = data.details.usdtAddress;
+  }
+}
 
 /* ===== WITHDRAW DETAILS ===== */
 
