@@ -1,110 +1,20 @@
 const API = "https://color-game-backend1.onrender.com";
 const token = localStorage.getItem("token");
 
-let CURRENT_ROUND = null;
+let selectedAmount = 0;
+let selectedColor = null;
 
 /* ======================
-   LOAD CURRENT ROUND
+   ROUND INFO
 ====================== */
 async function loadRound() {
   const res = await fetch(`${API}/round/current`);
-  CURRENT_ROUND = await res.json();
-
-  document.getElementById("roundId").innerText = CURRENT_ROUND.id;
-}
-
-/* ======================
-   TIMER
-====================== */
-setInterval(() => {
-  if (!CURRENT_ROUND) return;
-
-  const elapsed = Math.floor(
-    (Date.now() - CURRENT_ROUND.startTime) / 1000
-  );
-
-  const remaining = Math.max(0, 30 - elapsed);
-  document.getElementById("timer").innerText = remaining;
-
-  if (remaining === 0) {
-    disableBets();
-
-    // reload after result
-    setTimeout(() => {
-      loadRound();
-      loadHistory();
-      loadMyBets();
-      enableBets();
-    }, 1500);
-  }
-}, 1000);
-
-/* ======================
-   BET BUTTON CONTROL
-====================== */
-function disableBets() {
-  document.querySelectorAll(".bet-btn")
-    .forEach(b => b.disabled = true);
-}
-
-function enableBets() {
-  document.querySelectorAll(".bet-btn")
-    .forEach(b => b.disabled = false);
-}
-
-/* ======================
-   PLACE BET
-====================== */
-async function placeBet(color) {
-  const amount = Number(prompt("Enter bet amount"));
-
-  if (!amount || amount <= 0) return;
-
-  const res = await fetch(`${API}/bet`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: token
-    },
-    body: JSON.stringify({ color, amount })
-  });
-
   const data = await res.json();
-
-  if (!res.ok) {
-    alert(data.error || "Bet failed");
-    return;
-  }
-
-  loadMyBets();
+  document.getElementById("roundId").innerText = data.id;
 }
 
 /* ======================
-   LOAD USER CURRENT BETS
-====================== */
-async function loadMyBets() {
-  const res = await fetch(`${API}/bets/current`, {
-    headers: { Authorization: token }
-  });
-
-  const data = await res.json();
-  const div = document.getElementById("myBets");
-
-  if (!data.bets.length) {
-    div.innerText = "No bets";
-    return;
-  }
-
-  div.innerHTML = "";
-  data.bets.forEach(b => {
-    div.innerHTML += `
-      <div>${b.color.toUpperCase()} ₹${b.amount} (${b.status})</div>
-    `;
-  });
-}
-
-/* ======================
-   LOAD ROUND HISTORY
+   ROUND HISTORY
 ====================== */
 async function loadHistory() {
   const res = await fetch(`${API}/rounds/history`);
@@ -121,10 +31,61 @@ async function loadHistory() {
 }
 
 /* ======================
+   SELECT AMOUNT / COLOR
+====================== */
+function setAmount(amount) {
+  selectedAmount = amount;
+  document.getElementById("selectedAmount").innerText = amount;
+}
+
+function selectColor(color) {
+  selectedColor = color;
+  alert(`Selected ${color.toUpperCase()}`);
+}
+
+/* ======================
+   PLACE BET
+====================== */
+async function placeBet() {
+  if (!selectedColor || selectedAmount < 1) {
+    alert("Select color & amount");
+    return;
+  }
+
+  const res = await fetch(`${API}/bet`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token
+    },
+    body: JSON.stringify({
+      color: selectedColor,
+      amount: selectedAmount
+    })
+  });
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    alert(data.error || "Bet failed");
+    return;
+  }
+
+  alert("Bet placed successfully");
+
+  // reset
+  selectedAmount = 0;
+  selectedColor = null;
+  document.getElementById("selectedAmount").innerText = 0;
+}
+
+/* ======================
    INIT
 ====================== */
 loadRound();
 loadHistory();
-loadMyBets();
 
-setInterval(loadMyBets, 2000);
+setInterval(() => {
+  loadRound();
+  loadHistory();
+}, 5000);
