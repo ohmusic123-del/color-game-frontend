@@ -1,14 +1,21 @@
 const API = "https://color-game-backend1.onrender.com";
 const token = localStorage.getItem("token");
 
+/* ======================
+   LOAD WALLET
+====================== */
 async function loadWallet() {
   const res = await fetch(`${API}/wallet`, {
     headers: { Authorization: token }
   });
+
   const data = await res.json();
   document.getElementById("balance").innerText = `₹${data.wallet}`;
 }
 
+/* ======================
+   LOAD BET HISTORY
+====================== */
 async function loadBets() {
   const res = await fetch(`${API}/bets`, {
     headers: { Authorization: token }
@@ -31,14 +38,53 @@ async function loadBets() {
   });
 }
 
+/* ======================
+   LOAD WITHDRAW METHOD
+====================== */
+async function loadWithdrawMethod() {
+  const res = await fetch(`${API}/withdraw/details`, {
+    headers: { Authorization: token }
+  });
+
+  const data = await res.json();
+  const el = document.getElementById("withdrawMethodInfo");
+
+  if (!data.method) {
+    el.innerText = "⚠ No withdrawal method added";
+    el.style.color = "orange";
+    return;
+  }
+
+  if (data.method === "upi") {
+    el.innerText = `Withdrawal via UPI: ${data.details.upiId}`;
+  }
+
+  if (data.method === "bank") {
+    el.innerText = "Withdrawal via Bank Account";
+  }
+
+  if (data.method === "usdt") {
+    el.innerText = "Withdrawal via USDT (TRC20)";
+  }
+
+  el.style.color = "gold";
+}
+
+/* ======================
+   INIT
+====================== */
 loadWallet();
 loadBets();
+loadWithdrawMethod();
 
 setInterval(() => {
   loadWallet();
   loadBets();
 }, 5000);
 
+/* ======================
+   DEPOSIT
+====================== */
 function openDeposit() {
   document.getElementById("depositModal").style.display = "flex";
 }
@@ -75,6 +121,10 @@ async function submitDeposit() {
   closeDeposit();
   loadWallet();
 }
+
+/* ======================
+   WITHDRAW
+====================== */
 function openWithdraw() {
   document.getElementById("withdrawModal").style.display = "flex";
 }
@@ -82,6 +132,7 @@ function openWithdraw() {
 function closeWithdraw() {
   document.getElementById("withdrawModal").style.display = "none";
 }
+
 async function submitWithdraw() {
   const amount = Number(document.getElementById("withdrawAmount").value);
 
@@ -101,19 +152,10 @@ async function submitWithdraw() {
 
   const data = await res.json();
 
-  // ❌ NO WITHDRAW METHOD CASE
-  if (
-    data.error &&
-    data.error.includes("withdrawal details")
-  ) {
+  if (data.error && data.error.includes("withdrawal details")) {
     alert("Please add withdrawal details first");
     closeWithdraw();
-
-    // redirect to profile after short delay
-    setTimeout(() => {
-      location.href = "profile.html";
-    }, 500);
-
+    setTimeout(() => location.href = "profile.html", 500);
     return;
   }
 
@@ -125,4 +167,5 @@ async function submitWithdraw() {
   alert("Withdrawal request submitted successfully");
   closeWithdraw();
   loadWallet();
-}
+  loadWithdrawMethod();
+    }
