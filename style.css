@@ -312,3 +312,63 @@ input:focus {
     transform: translate(-50%, -80px);
   }
 }
+/* =========================
+   TIMER CONTAINER
+========================= */
+
+.timer-container {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  margin: 20px auto;
+}
+
+/* =========================
+   SVG RING
+========================= */
+
+.timer-ring {
+  transform: rotate(-90deg);
+}
+
+.timer-bg {
+  fill: none;
+  stroke: #2c2c2c;
+  stroke-width: 10;
+}
+
+.timer-progress {
+  fill: none;
+  stroke: #2ecc71;
+  stroke-width: 10;
+  stroke-linecap: round;
+  stroke-dasharray: 326;
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 1s linear, stroke 0.3s;
+}
+
+/* =========================
+   TIMER TEXT
+========================= */
+
+.timer-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 28px;
+  font-weight: bold;
+  color: #fff;
+}
+
+/* =========================
+   WARNING COLORS
+========================= */
+
+.timer-warning {
+  stroke: #f1c40f !important;
+}
+
+.timer-danger {
+  stroke: #e74c3c !important;
+}
