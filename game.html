@@ -1,46 +1,123 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>BIGWIN - Game</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <title>BIGWIN Game</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    body {
+      background: #0b0b0b;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      padding: 10px;
+    }
+
+    .top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .timer {
+      font-size: 28px;
+      font-weight: bold;
+      color: gold;
+    }
+
+    .round {
+      font-size: 14px;
+      opacity: 0.8;
+    }
+
+    .bets {
+      display: flex;
+      gap: 10px;
+      margin: 15px 0;
+    }
+
+    button {
+      flex: 1;
+      padding: 15px;
+      font-size: 18px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .red {
+      background: #e53935;
+      color: white;
+    }
+
+    .green {
+      background: #43a047;
+      color: white;
+    }
+
+    button:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .box {
+      background: #141414;
+      padding: 10px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+
+    h3 {
+      margin: 5px 0;
+      font-size: 16px;
+      color: gold;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    li {
+      padding: 5px 0;
+      border-bottom: 1px solid #222;
+      font-size: 14px;
+    }
+  </style>
 </head>
+
 <body>
 
-<!-- ===== HEADER ===== -->
-<div class="header">
-  <div class="header-logo">BIGWIN</div>
-</div>
-
-<div class="center">
-  <div class="card">
-
-    <div id="roundId">Round ID</div>
-    <div id="timer">30</div>
-    <div id="status">Select bet</div>
-
-    <div class="bet-row">
-      <button class="bet-red" onclick="selectColor('red')">RED</button>
-      <button class="bet-green" onclick="selectColor('green')">GREEN</button>
+  <!-- TOP BAR -->
+  <div class="top">
+    <div>
+      <div class="round">Round ID</div>
+      <div id="roundId">---</div>
     </div>
 
-    <div class="amount-row">
-      <button onclick="selectAmount(10)">₹10</button>
-      <button onclick="selectAmount(50)">₹50</button>
-      <button onclick="selectAmount(100)">₹100</button>
-    </div>
-
-    <button class="btn-gold" onclick="placeBet()">Place Bet</button>
-
+    <div class="timer" id="timer">30</div>
   </div>
-</div>
 
-<div class="bottom-nav">
-  <a href="home.html">Home</a>
-  <a href="game.html" class="active">Game</a>
-  <a href="wallet.html">Wallet</a>
-  <a href="profile.html">Profile</a>
-</div>
+  <!-- BET BUTTONS -->
+  <div class="bets">
+    <button class="red bet-btn" onclick="placeBet('red')">RED</button>
+    <button class="green bet-btn" onclick="placeBet('green')">GREEN</button>
+  </div>
 
-<script src="js/game.js"></script>
+  <!-- MY BETS -->
+  <div class="box">
+    <h3>My Bets (Current Round)</h3>
+    <div id="myBets">No bets</div>
+  </div>
+
+  <!-- HISTORY -->
+  <div class="box">
+    <h3>Last Results</h3>
+    <ul id="history"></ul>
+  </div>
+
+<script src="game.js"></script>
 </body>
-</html>
+      </html>
