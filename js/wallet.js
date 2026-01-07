@@ -82,7 +82,6 @@ function openWithdraw() {
 function closeWithdraw() {
   document.getElementById("withdrawModal").style.display = "none";
 }
-
 async function submitWithdraw() {
   const amount = Number(document.getElementById("withdrawAmount").value);
 
@@ -102,12 +101,28 @@ async function submitWithdraw() {
 
   const data = await res.json();
 
+  // ❌ NO WITHDRAW METHOD CASE
+  if (
+    data.error &&
+    data.error.includes("withdrawal details")
+  ) {
+    alert("Please add withdrawal details first");
+    closeWithdraw();
+
+    // redirect to profile after short delay
+    setTimeout(() => {
+      location.href = "profile.html";
+    }, 500);
+
+    return;
+  }
+
   if (!res.ok) {
     alert(data.error || "Withdrawal failed");
     return;
   }
 
-  alert("Withdrawal request submitted");
+  alert("Withdrawal request submitted successfully");
   closeWithdraw();
   loadWallet();
 }
