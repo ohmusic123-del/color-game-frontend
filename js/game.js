@@ -89,3 +89,31 @@ setInterval(() => {
   loadRound();
   loadHistory();
 }, 5000);
+function showResult(result) {
+  const card = document.querySelector(".card");
+
+  // Remove old states
+  card.classList.remove("win", "lose");
+
+  // Create floating text
+  const text = document.createElement("div");
+  text.classList.add("result-text");
+
+  if (result === "WIN") {
+    card.classList.add("win");
+    text.classList.add("result-win");
+    text.innerText = "WIN 🎉";
+  } else {
+    card.classList.add("lose");
+    text.classList.add("result-lose");
+    text.innerText = "LOSE ❌";
+  }
+
+  document.body.appendChild(text);
+
+  // Cleanup
+  setTimeout(() => {
+    card.classList.remove("win", "lose");
+    text.remove();
+  }, 1500);
+}
