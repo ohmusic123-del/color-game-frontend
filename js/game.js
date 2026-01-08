@@ -1,114 +1,128 @@
-const API = "http://localhost:3000";
+const API = "https://color-game-backend1.onrender.com";
 const token = localStorage.getItem("token");
 
-/* ===== ELEMENTS ===== */
-const walletEl = document.getElementById("wallet");
-const roundIdEl = document.getElementById("roundId");
+let selectedColor = null;
+let timeLeft = 30;
 
-const tabResults = document.getElementById("tabResults");
-const tabMyBets = document.getElementById("tabMyBets");
-const resultsBox = document.getElementById("resultsBox");
-const betsBox = document.getElementById("betsBox");
+/* INIT */
+loadWallet();
+loadRound();
+loadResults();
+startTimer();
 
-/* ===== TAB SWITCH ===== */
-tabResults.onclick = () => {
-  tabResults.classList.add("active");
-  tabMyBets.classList.remove("active");
-  resultsBox.classList.remove("hidden");
-  betsBox.classList.add("hidden");
-};
-
-tabMyBets.onclick = () => {
-  tabMyBets.classList.add("active");
-  tabResults.classList.remove("active");
-  betsBox.classList.remove("hidden");
-  resultsBox.classList.add("hidden");
-};
-
-/* ===== LOAD WALLET ===== */
+/* WALLET */
 async function loadWallet() {
-  const res = await fetch(`${API}/wallet`, {
-    headers: { Authorization: token }
+  const res = await fetch(API + "/wallet", {
+    headers: { authorization: token }
   });
   const data = await res.json();
-  walletEl.innerText = data.wallet;
+  document.getElementById("walletAmount").innerText = data.wallet;
 }
 
-/* ===== LOAD ROUND ===== */
-async function loadCurrentRound() {
-  const res = await fetch(`${API}/round/current`);
+/* ROUND */
+async function loadRound() {
+  const res = await fetch(API + "/round/current");
   const data = await res.json();
-  roundIdEl.innerText = data.id;
+  document.getElementById("roundId").innerText = data.id;
 }
 
-/* ===== PLACE BET ===== */
-async function placeBet(color, amount) {
-  const res = await fetch(`${API}/bet`, {
+/* TIMER */
+function startTimer() {
+  setInterval(() => {
+    timeLeft--;
+    if (timeLeft <= 0) {
+      timeLeft = 30;
+      loadRound();
+      loadResults();
+      loadMyBets();
+    }
+    document.getElementById("timer").innerText = timeLeft;
+  }, 1000);
+}
+
+/* SELECT */
+function selectColor(color) {
+  selectedColor = color;
+  document.querySelectorAll(".bet-card").forEach(c => c.classList.remove("active"));
+  document.querySelector("." + color).classList.add("active");
+}
+
+/* AMOUNT */
+function setAmount(val) {
+  document.getElementById("betAmount").value = val;
+}
+
+/* PLACE BET */
+async function placeBet() {
+  if (!selectedColor) return alert("Select color");
+
+  const amount = Number(document.getElementById("betAmount").value);
+
+  const res = await fetch(API + "/bet", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: token
+      authorization: token
     },
-    body: JSON.stringify({ color, amount })
+    body: JSON.stringify({ color: selectedColor, amount })
   });
 
   const data = await res.json();
-  if (data.error) {
-    alert(data.error);
-  } else {
-    loadWallet();
-    loadMyBets();
-  }
+  alert(data.message || data.error);
+  loadWallet();
+  loadMyBets();
 }
 
-/* ===== ROUND HISTORY ===== */
-async function loadRoundHistory() {
-  const res = await fetch(`${API}/rounds/history`);
+/* TABS */
+function showResults() {
+  document.getElementById("resultsBox").classList.remove("hidden");
+  document.getElementById("betsBox").classList.add("hidden");
+  tabResults.classList.add("active");
+  tabBets.classList.remove("active");
+}
+
+function showMyBets() {
+  document.getElementById("betsBox").classList.remove("hidden");
+  document.getElementById("resultsBox").classList.add("hidden");
+  tabBets.classList.add("active");
+  tabResults.classList.remove("active");
+  loadMyBets();
+}
+
+/* RESULTS */
+async function loadResults() {
+  const res = await fetch(API + "/rounds/history");
   const data = await res.json();
 
-  const list = document.getElementById("roundHistory");
-  list.innerHTML = "";
+  const box = document.getElementById("resultsBox");
+  box.innerHTML = "";
 
   data.forEach(r => {
-    const li = document.createElement("li");
-    li.innerHTML = `
-      <span>${r.roundId}</span>
-      <span class="${r.winner}">${r.winner.toUpperCase()}</span>
+    box.innerHTML += `
+      <div class="row">
+        <span>${r.roundId}</span>
+        <span class="dot ${r.winner}"></span>
+      </div>
     `;
-    list.appendChild(li);
   });
 }
 
-/* ===== USER BET HISTORY ===== */
+/* MY BETS */
 async function loadMyBets() {
-  const res = await fetch(`${API}/bets`, {
-    headers: { Authorization: token }
+  const res = await fetch(API + "/bets", {
+    headers: { authorization: token }
   });
   const data = await res.json();
 
-  const list = document.getElementById("myBets");
-  list.innerHTML = "";
+  const box = document.getElementById("betsBox");
+  box.innerHTML = "";
 
   data.forEach(b => {
-    const li = document.createElement("li");
-    li.innerHTML = `
-      <span>${b.color.toUpperCase()} ₹${b.amount}</span>
-      <span>${b.status || "-"}</span>
+    box.innerHTML += `
+      <div class="row">
+        <span>${b.color.toUpperCase()} ₹${b.amount}</span>
+        <span>${b.status || ""}</span>
+      </div>
     `;
-    list.appendChild(li);
   });
-}
-
-/* ===== AUTO REFRESH ===== */
-setInterval(() => {
-  loadCurrentRound();
-  loadWallet();
-  loadRoundHistory();
-  loadMyBets();
-}, 3000);
-
-/* ===== INIT ===== */
-loadCurrentRound();
-loadWallet();
-loadRoundHistory();
-loadMyBets();
+      }
