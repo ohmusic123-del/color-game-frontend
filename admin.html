@@ -1,23 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>BIGWIN Admin Panel</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel - BIGWIN</title>
   <link rel="stylesheet" href="admin.css">
 </head>
 <body>
 
-<header class="admin-header">
-  <h2>BIGWIN – Admin Panel</h2>
-</header>
+<div class="header">
+  <h2>BIGWIN Admin Panel</h2>
+  <button onclick="logout()">Logout</button>
+</div>
 
 <div class="container">
-
   <h3>Withdrawal Requests</h3>
-
-  <div id="withdrawList" class="list"></div>
-
+  <div id="withdrawList"></div>
 </div>
 
 <script src="admin.js"></script>
