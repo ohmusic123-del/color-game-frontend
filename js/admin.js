@@ -1,77 +1,74 @@
 const API = "https://color-game-backend1.onrender.com";
-const ADMIN_KEY = "bigwin_admin_123";
 
-/* ======================
-   LOAD WITHDRAWS
-====================== */
 async function loadWithdraws() {
+  const adminKey = document.getElementById("adminKey").value;
+  if (!adminKey) {
+    alert("Enter admin key");
+    return;
+  }
+
   const res = await fetch(`${API}/admin/withdraws`, {
     headers: {
-      "x-admin-key": ADMIN_KEY
+      "x-admin-key": adminKey
     }
   });
 
   const data = await res.json();
-  const div = document.getElementById("list");
-  div.innerHTML = "";
+
+  if (!res.ok) {
+    alert(data.error || "Access denied");
+    return;
+  }
+
+  const tbody = document.getElementById("withdrawTable");
+  tbody.innerHTML = "";
 
   if (!data.length) {
-    div.innerText = "No withdrawal requests";
+    tbody.innerHTML = "<tr><td colspan='6'>No withdraw requests</td></tr>";
     return;
   }
 
   data.forEach(w => {
-    const card = document.createElement("div");
-    card.className = "card";
+    const tr = document.createElement("tr");
 
-    card.innerHTML = `
-      <div class="row">📱 Mobile: ${w.mobile}</div>
-      <div class="row">💰 Amount: ₹${w.amount}</div>
-      <div class="row">🏦 Method: ${w.method}</div>
-      <div class="row">🕒 Date: ${new Date(w.createdAt).toLocaleString()}</div>
-
-      <div class="status ${w.status.toLowerCase()}">
-        Status: ${w.status}
-      </div>
-
-      ${
-        w.status === "PENDING"
-          ? `
-            <button class="approve" onclick="process('${w._id}','APPROVED')">
-              Approve
-            </button>
-            <button class="reject" onclick="process('${w._id}','REJECTED')">
-              Reject
-            </button>
-          `
-          : ""
-      }
+    tr.innerHTML = `
+      <td>${w.mobile}</td>
+      <td>₹${w.amount}</td>
+      <td>${w.method}</td>
+      <td class="status-${w.status.toLowerCase()}">${w.status}</td>
+      <td>${formatDetails(w)}</td>
+      <td>
+        ${w.status === "PENDING" ? `
+          <button class="action-btn approve" onclick="processWithdraw('${w._id}','APPROVED')">Approve</button>
+          <button class="action-btn reject" onclick="processWithdraw('${w._id}','REJECTED')">Reject</button>
+        ` : "-"}
+      </td>
     `;
 
-    div.appendChild(card);
+    tbody.appendChild(tr);
   });
 }
 
-/* ======================
-   PROCESS WITHDRAW
-====================== */
-async function process(id, status) {
-  let note = "";
+function formatDetails(w) {
+  if (w.method === "upi") return w.details.upiId || "-";
+  if (w.method === "bank")
+    return `${w.details.bankName}<br>${w.details.accountNumber}<br>${w.details.ifsc}`;
+  if (w.method === "usdt") return w.details.usdtAddress;
+  return "-";
+}
 
-  if (status === "REJECTED") {
-    note = prompt("Rejection reason (optional)");
-  }
+async function processWithdraw(id, status) {
+  const adminKey = document.getElementById("adminKey").value;
+
+  const note = prompt(`Admin note for ${status} (optional):`) || "";
 
   const res = await fetch(`${API}/admin/withdraw/${id}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "x-admin-key": ADMIN_KEY
+      "x-admin-key": adminKey
     },
-    body: JSON.stringify({
-      status,
-      adminNote: note
-    })
+    body: JSON.stringify({ status, adminNote: note })
   });
 
   const data = await res.json();
@@ -84,9 +81,3 @@ async function process(id, status) {
   alert(data.message);
   loadWithdraws();
 }
-
-/* ======================
-   INIT
-====================== */
-loadWithdraws();
-setInterval(loadWithdraws, 5000);
