@@ -96,3 +96,45 @@ async function processWithdraw(id, status) {
 /* INIT */
 loadStats();
 loadWithdraws();
+
+async function loadDeposits() {
+  const res = await fetch(API + "/admin/deposits", {
+    headers: { Authorization: adminToken }
+  });
+
+  const data = await res.json();
+  const box = document.getElementById("depositList");
+  box.innerHTML = "";
+
+  data.forEach(d => {
+    box.innerHTML += `
+      <div class="card">
+        <b>${d.mobile}</b><br>
+        Amount: ₹${d.amount}<br>
+        UTR: ${d.utr}<br>
+        Status: ${d.status}<br>
+        ${
+          d.status === "PENDING"
+            ? `
+            <button onclick="processDeposit('${d._id}','APPROVED')">Approve</button>
+            <button onclick="processDeposit('${d._id}','REJECTED')">Reject</button>
+            `
+            : ""
+        }
+      </div>
+    `;
+  });
+}
+
+async function processDeposit(id, status) {
+  await fetch(API + "/admin/deposit/" + id, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: adminToken
+    },
+    body: JSON.stringify({ status })
+  });
+
+  loadDeposits();
+}
