@@ -1,0 +1,93 @@
+* {
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  margin: 0;
+  background: #0f1115;
+  color: #fff;
+}
+
+.admin-header {
+  background: #151821;
+  padding: 16px;
+  text-align: center;
+  font-size: 20px;
+  color: gold;
+  font-weight: bold;
+}
+
+.admin-container {
+  padding: 16px;
+}
+
+.top-bar {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.top-bar input {
+  flex: 1;
+  padding: 10px;
+  border-radius: 6px;
+  border: none;
+}
+
+.top-bar button {
+  padding: 10px 16px;
+  border-radius: 6px;
+  border: none;
+  background: gold;
+  font-weight: bold;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #1c1f2a;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+th, td {
+  padding: 10px;
+  border-bottom: 1px solid #333;
+  font-size: 13px;
+  text-align: center;
+}
+
+th {
+  background: #222636;
+}
+
+.status-pending {
+  color: orange;
+}
+
+.status-approved {
+  color: lightgreen;
+}
+
+.status-rejected {
+  color: red;
+}
+
+.action-btn {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: none;
+  font-size: 12px;
+  margin: 2px;
+}
+
+.approve {
+  background: #2e7d32;
+  color: #fff;
+}
+
+.reject {
+  background: #d32f2f;
+  color: #fff;
+}
