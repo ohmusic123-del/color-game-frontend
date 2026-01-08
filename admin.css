@@ -5,80 +5,70 @@
 
 body {
   margin: 0;
-  background: #0d0d0d;
+  background: #0f172a;
   color: #fff;
 }
 
-.admin-app {
-  padding: 15px;
-}
-
 .admin-header {
-  background: #111;
+  background: #020617;
   padding: 15px;
-  border-radius: 8px;
-  margin-bottom: 15px;
+  text-align: center;
 }
 
-.admin-header h2 {
-  margin: 0;
-  color: gold;
+.container {
+  padding: 15px;
+  max-width: 900px;
+  margin: auto;
 }
 
-.withdraw-list {
-  background: #111;
-  border-radius: 8px;
-  padding: 10px;
-  overflow-x: auto;
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
+.card {
+  background: #020617;
+  padding: 12px;
+  border-radius: 10px;
+}
+
+.card-row {
+  display: flex;
+  justify-content: space-between;
   font-size: 14px;
+  margin-bottom: 6px;
 }
 
-th, td {
+.actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.actions button {
+  flex: 1;
   padding: 8px;
-  border-bottom: 1px solid #222;
-  text-align: left;
-}
-
-th {
-  color: #aaa;
-}
-
-.status {
-  font-weight: bold;
-}
-
-.pending {
-  color: orange;
-}
-
-.approved {
-  color: #4caf50;
-}
-
-.rejected {
-  color: #e53935;
-}
-
-button {
-  padding: 6px 10px;
-  margin: 2px;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
+  font-weight: bold;
   cursor: pointer;
-  font-size: 12px;
 }
 
 .approve {
-  background: #4caf50;
-  color: white;
+  background: #16a34a;
+  color: #fff;
 }
 
 .reject {
-  background: #e53935;
-  color: white;
+  background: #dc2626;
+  color: #fff;
+}
+
+.note {
+  width: 100%;
+  margin-top: 8px;
+  padding: 6px;
+  border-radius: 6px;
+  border: none;
 }
