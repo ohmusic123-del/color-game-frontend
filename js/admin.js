@@ -1,14 +1,20 @@
 const API = "https://color-game-backend1.onrender.com";
-const ADMIN_KEY = "bigwin_admin_123"; // must match backend
+const token = localStorage.getItem("adminToken");
 
-loadWithdraws();
+if (!token) {
+  window.location.href = "admin-login.html";
+}
 
 async function loadWithdraws() {
   const res = await fetch(API + "/admin/withdraws", {
     headers: {
-      "x-admin-key": ADMIN_KEY
+      Authorization: token
     }
   });
+
+  const data = await res.json();
+  ...
+}
 
   const data = await res.json();
   const list = document.getElementById("withdrawList");
