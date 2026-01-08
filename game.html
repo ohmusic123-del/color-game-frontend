@@ -1,304 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BIGWIN – Game</title>
-
-  <style>
-    body {
-      margin: 0;
-      background: #0f0f0f;
-      color: #fff;
-      font-family: Arial, sans-serif;
-    }
-
-    .container {
-      padding: 12px;
-      max-width: 420px;
-      margin: auto;
-    }
-
-    .round-box {
-      background: #1c1c1c;
-      padding: 10px;
-      border-radius: 8px;
-      text-align: center;
-      margin-bottom: 10px;
-    }
-
-    .round-id {
-      font-size: 14px;
-      color: #aaa;
-    }
-
-    .timer {
-      font-size: 22px;
-      font-weight: bold;
-      margin-top: 5px;
-    }
-
-    .progress {
-      height: 6px;
-      background: #333;
-      border-radius: 4px;
-      overflow: hidden;
-      margin-top: 8px;
-    }
-
-    .progress-bar {
-      height: 100%;
-      width: 100%;
-      background: linear-gradient(90deg, #00ff88, #00aa55);
-      transition: width 1s linear;
-    }
-
-    .results {
-      display: flex;
-      gap: 6px;
-      overflow-x: auto;
-      margin: 12px 0;
-    }
-
-    .result {
-      width: 26px;
-      height: 26px;
-      border-radius: 50%;
-      flex-shrink: 0;
-    }
-
-    .red { background: #ff3b3b; }
-    .green { background: #00c853; }
-
-    .cards {
-      display: flex;
-      gap: 10px;
-      margin-top: 10px;
-    }
-
-    .card {
-      flex: 1;
-      padding: 16px;
-      border-radius: 10px;
-      text-align: center;
-      font-size: 20px;
-      font-weight: bold;
-      cursor: pointer;
-      opacity: 0.85;
-    }
-
-    .card.active {
-      outline: 3px solid #fff;
-      opacity: 1;
-    }
-
-    .quick {
-      display: flex;
-      gap: 10px;
-      margin-top: 12px;
-    }
-
-    .quick button {
-      flex: 1;
-      padding: 10px;
-      font-size: 16px;
-      border: none;
-      border-radius: 6px;
-      background: #222;
-      color: #fff;
-      cursor: pointer;
-    }
-
-    .quick button.active {
-      background: gold;
-      color: #000;
-    }
-
-    .bet-btn {
-      width: 100%;
-      margin-top: 14px;
-      padding: 14px;
-      font-size: 18px;
-      border: none;
-      border-radius: 8px;
-      background: gold;
-      color: #000;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .bet-btn:disabled {
-      background: #555;
-      color: #aaa;
-    }
-
-    .my-bets {
-      margin-top: 16px;
-      background: #1a1a1a;
-      padding: 10px;
-      border-radius: 8px;
-    }
-
-    .my-bets h3 {
-      margin: 0 0 8px;
-      font-size: 14px;
-      color: #aaa;
-    }
-
-    .bet-item {
-      font-size: 13px;
-      padding: 4px 0;
-      border-bottom: 1px solid #222;
-    }
-  </style>
+  <meta charset="UTF-8">
+  <title>BIGWIN - Game</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="container">
-
-  <!-- ROUND INFO -->
-  <div class="round-box">
-    <div class="round-id" id="roundId">Round: --</div>
-    <div class="timer" id="timer">30</div>
-    <div class="progress">
-      <div class="progress-bar" id="progressBar"></div>
-    </div>
-  </div>
-
-  <!-- LAST RESULTS -->
-  <div class="results" id="results"></div>
-
-  <!-- BET CARDS -->
-  <div class="cards">
-    <div class="card red" onclick="selectColor('red')" id="redCard">RED</div>
-    <div class="card green" onclick="selectColor('green')" id="greenCard">GREEN</div>
-  </div>
-
-  <!-- QUICK AMOUNTS -->
-  <div class="quick">
-    <button onclick="selectAmount(1)">₹1</button>
-    <button onclick="selectAmount(5)">₹5</button>
-  </div>
-
-  <!-- BET BUTTON -->
-  <button class="bet-btn" id="betBtn" onclick="placeBet()">PLACE BET</button>
-
-  <!-- USER CURRENT BETS -->
-  <div class="my-bets">
-    <h3>My Bets (This Round)</h3>
-    <div id="myBets"></div>
-  </div>
-
+<!-- HEADER -->
+<div class="header">
+  <div class="header-logo">BIGWIN</div>
 </div>
 
 <script>
-const API = "https://color-game-backend1.onrender.com";
-const token = localStorage.getItem("token");
-
-let selectedColor = null;
-let selectedAmount = null;
-let roundStart = Date.now();
-
-/* SELECT */
-function selectColor(color) {
-  selectedColor = color;
-  document.getElementById("redCard").classList.remove("active");
-  document.getElementById("greenCard").classList.remove("active");
-  document.getElementById(color + "Card").classList.add("active");
-}
-
-function selectAmount(amount) {
-  selectedAmount = amount;
-  document.querySelectorAll(".quick button").forEach(b => b.classList.remove("active"));
-  event.target.classList.add("active");
-}
-
-/* LOAD ROUND */
-async function loadRound() {
-  const res = await fetch(`${API}/round/current`);
-  const data = await res.json();
-  document.getElementById("roundId").innerText = "Round: " + data.id;
-  roundStart = data.startTime;
-}
-
-/* TIMER */
-function updateTimer() {
-  const elapsed = Math.floor((Date.now() - roundStart) / 1000);
-  const left = Math.max(0, 30 - elapsed);
-
-  document.getElementById("timer").innerText = left;
-  document.getElementById("progressBar").style.width = (left / 30 * 100) + "%";
-  document.getElementById("betBtn").disabled = left <= 0;
-}
-
-/* BET */
-async function placeBet() {
-  if (!selectedColor || !selectedAmount) {
-    alert("Select color & amount");
-    return;
+  if (!localStorage.getItem("token")) {
+    location.href = "index.html";
   }
-
-  const res = await fetch(`${API}/bet`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: token
-    },
-    body: JSON.stringify({
-      color: selectedColor,
-      amount: selectedAmount
-    })
-  });
-
-  const data = await res.json();
-  if (!res.ok) {
-    alert(data.error);
-    return;
-  }
-
-  loadMyBets();
-}
-
-/* USER BETS */
-async function loadMyBets() {
-  const res = await fetch(`${API}/bets/current`, {
-    headers: { Authorization: token }
-  });
-  const data = await res.json();
-
-  const box = document.getElementById("myBets");
-  box.innerHTML = "";
-
-  data.bets.forEach(b => {
-    const div = document.createElement("div");
-    div.className = "bet-item";
-    div.innerText = `${b.color.toUpperCase()} – ₹${b.amount}`;
-    box.appendChild(div);
-  });
-}
-
-/* LAST RESULTS */
-async function loadResults() {
-  const res = await fetch(`${API}/rounds/history`);
-  const rounds = await res.json();
-
-  const box = document.getElementById("results");
-  box.innerHTML = "";
-
-  rounds.forEach(r => {
-    const d = document.createElement("div");
-    d.className = "result " + r.winner;
-    box.appendChild(d);
-  });
-}
-
-/* INIT */
-loadRound();
-loadResults();
-loadMyBets();
-setInterval(updateTimer, 1000);
-setInterval(loadRound, 5000);
 </script>
 
+<!-- GAME CONTAINER -->
+<div class="center">
+  <div class="card">
+
+    <!-- ROUND INFO -->
+    <div class="round-info">
+      <div>Round ID: <span id="roundId">--</span></div>
+      <div id="timer" class="timer">⏱ 30s</div>
+    </div>
+
+    <!-- QUICK AMOUNTS -->
+    <div class="amount-box">
+      <button class="amt-btn" onclick="selectAmount(1)">₹1</button>
+      <button class="amt-btn" onclick="selectAmount(5)">₹5</button>
+    </div>
+
+    <!-- BET BUTTONS -->
+    <div class="bet-box">
+      <button class="bet-btn red" onclick="placeBet('red')">RED</button>
+      <button class="bet-btn green" onclick="placeBet('green')">GREEN</button>
+    </div>
+
+    <!-- STATUS -->
+    <p id="statusMsg" class="status"></p>
+
+    <hr>
+
+    <!-- CURRENT ROUND BETS -->
+    <h3>Your Bets (This Round)</h3>
+    <ul id="currentBets" class="list"></ul>
+
+    <hr>
+
+    <!-- LAST RESULTS -->
+    <h3>Last Results</h3>
+    <div id="history" class="history"></div>
+
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="bottom-nav">
+  <a href="home.html">Home</a>
+  <a href="game.html" class="active">Game</a>
+  <a href="wallet.html">Wallet</a>
+  <a href="profile.html">Profile</a>
+</div>
+
+<script src="js/game.js"></script>
 </body>
-  </html>
+</html>
