@@ -1,72 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>BIGWIN - Game</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <title>BIGWIN Game</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-<!-- HEADER -->
-<div class="header">
-  <div class="header-logo">BIGWIN</div>
-</div>
+<div class="app">
 
-<script>
-  if (!localStorage.getItem("token")) {
-    location.href = "index.html";
-  }
-</script>
+  <!-- HEADER -->
+  <header class="top">
+    <div>Round: <span id="roundId">---</span></div>
+    <div>Wallet: ₹<span id="wallet">0</span></div>
+  </header>
 
-<!-- GAME CONTAINER -->
-<div class="center">
-  <div class="card">
+  <!-- BETTING -->
+  <section class="bet-section">
+    <button class="bet red" onclick="placeBet('red', 1)">RED ₹1</button>
+    <button class="bet green" onclick="placeBet('green', 1)">GREEN ₹1</button>
 
-    <!-- ROUND INFO -->
-    <div class="round-info">
-      <div>Round ID: <span id="roundId">--</span></div>
-      <div id="timer" class="timer">⏱ 30s</div>
+    <button class="bet red" onclick="placeBet('red', 5)">RED ₹5</button>
+    <button class="bet green" onclick="placeBet('green', 5)">GREEN ₹5</button>
+  </section>
+
+  <!-- HISTORY + BETS -->
+  <section class="history-section">
+
+    <div class="tabs">
+      <button id="tabResults" class="active">Last Results</button>
+      <button id="tabMyBets">Your Bets</button>
     </div>
 
-    <!-- QUICK AMOUNTS -->
-    <div class="amount-box">
-      <button class="amt-btn" onclick="selectAmount(1)">₹1</button>
-      <button class="amt-btn" onclick="selectAmount(5)">₹5</button>
+    <div id="resultsBox" class="tab-content">
+      <ul id="roundHistory"></ul>
     </div>
 
-    <!-- BET BUTTONS -->
-    <div class="bet-box">
-      <button class="bet-btn red" onclick="placeBet('red')">RED</button>
-      <button class="bet-btn green" onclick="placeBet('green')">GREEN</button>
+    <div id="betsBox" class="tab-content hidden">
+      <ul id="myBets"></ul>
     </div>
 
-    <!-- STATUS -->
-    <p id="statusMsg" class="status"></p>
+  </section>
 
-    <hr>
-
-    <!-- CURRENT ROUND BETS -->
-    <h3>Your Bets (This Round)</h3>
-    <ul id="currentBets" class="list"></ul>
-
-    <hr>
-
-    <!-- LAST RESULTS -->
-    <h3>Last Results</h3>
-    <div id="history" class="history"></div>
-
-  </div>
 </div>
 
-<!-- BOTTOM NAV -->
-<div class="bottom-nav">
-  <a href="home.html">Home</a>
-  <a href="game.html" class="active">Game</a>
-  <a href="wallet.html">Wallet</a>
-  <a href="profile.html">Profile</a>
-</div>
-
-<script src="js/game.js"></script>
+<script src="game.js"></script>
 </body>
 </html>
