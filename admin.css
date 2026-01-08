@@ -5,89 +5,80 @@
 
 body {
   margin: 0;
-  background: #0f1115;
+  background: #0d0d0d;
   color: #fff;
 }
 
+.admin-app {
+  padding: 15px;
+}
+
 .admin-header {
-  background: #151821;
-  padding: 16px;
-  text-align: center;
-  font-size: 20px;
+  background: #111;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+.admin-header h2 {
+  margin: 0;
   color: gold;
-  font-weight: bold;
 }
 
-.admin-container {
-  padding: 16px;
-}
-
-.top-bar {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 16px;
-}
-
-.top-bar input {
-  flex: 1;
+.withdraw-list {
+  background: #111;
+  border-radius: 8px;
   padding: 10px;
-  border-radius: 6px;
-  border: none;
-}
-
-.top-bar button {
-  padding: 10px 16px;
-  border-radius: 6px;
-  border: none;
-  background: gold;
-  font-weight: bold;
+  overflow-x: auto;
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
-  background: #1c1f2a;
-  border-radius: 10px;
-  overflow: hidden;
+  font-size: 14px;
 }
 
 th, td {
-  padding: 10px;
-  border-bottom: 1px solid #333;
-  font-size: 13px;
-  text-align: center;
+  padding: 8px;
+  border-bottom: 1px solid #222;
+  text-align: left;
 }
 
 th {
-  background: #222636;
+  color: #aaa;
 }
 
-.status-pending {
+.status {
+  font-weight: bold;
+}
+
+.pending {
   color: orange;
 }
 
-.status-approved {
-  color: lightgreen;
+.approved {
+  color: #4caf50;
 }
 
-.status-rejected {
-  color: red;
+.rejected {
+  color: #e53935;
 }
 
-.action-btn {
+button {
   padding: 6px 10px;
-  border-radius: 6px;
-  border: none;
-  font-size: 12px;
   margin: 2px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
 }
 
 .approve {
-  background: #2e7d32;
-  color: #fff;
+  background: #4caf50;
+  color: white;
 }
 
 .reject {
-  background: #d32f2f;
-  color: #fff;
+  background: #e53935;
+  color: white;
 }
