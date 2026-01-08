@@ -1,66 +1,65 @@
-const API = "http://localhost:3000";
-const ADMIN_KEY = "bigwin_admin_123";
+const API = "https://color-game-backend1.onrender.com";
+const ADMIN_KEY = "bigwin_admin_123"; // must match backend
+
+loadWithdraws();
 
 async function loadWithdraws() {
-  const res = await fetch(`${API}/admin/withdraws`, {
+  const res = await fetch(API + "/admin/withdraws", {
     headers: {
       "x-admin-key": ADMIN_KEY
     }
   });
 
   const data = await res.json();
-  const table = document.getElementById("withdrawTable");
-  table.innerHTML = "";
+  const list = document.getElementById("withdrawList");
+  list.innerHTML = "";
+
+  if (!data.length) {
+    list.innerHTML = "<p>No withdrawal requests</p>";
+    return;
+  }
 
   data.forEach(w => {
-    const tr = document.createElement("tr");
+    list.innerHTML += `
+      <div class="card">
+        <div class="card-row"><b>Mobile:</b> ${w.mobile}</div>
+        <div class="card-row"><b>Amount:</b> ₹${w.amount}</div>
+        <div class="card-row"><b>Method:</b> ${w.method}</div>
+        <div class="card-row"><b>Status:</b> ${w.status}</div>
 
-    tr.innerHTML = `
-      <td>${w.mobile}</td>
-      <td>₹${w.amount}</td>
-      <td>${w.method.toUpperCase()}</td>
-      <td>${formatDetails(w.details)}</td>
-      <td class="status ${w.status.toLowerCase()}">${w.status}</td>
-      <td>
-        ${w.status === "PENDING" ? `
-          <button class="approve" onclick="updateWithdraw('${w._id}','APPROVED')">Approve</button>
-          <button class="reject" onclick="updateWithdraw('${w._id}','REJECTED')">Reject</button>
-        ` : "-"}
-      </td>
+        <textarea class="note" id="note-${w._id}" placeholder="Admin note"></textarea>
+
+        ${
+          w.status === "PENDING"
+            ? `
+          <div class="actions">
+            <button class="approve" onclick="processWithdraw('${w._id}','APPROVED')">Approve</button>
+            <button class="reject" onclick="processWithdraw('${w._id}','REJECTED')">Reject</button>
+          </div>
+        `
+            : ""
+        }
+      </div>
     `;
-
-    table.appendChild(tr);
   });
 }
 
-function formatDetails(d) {
-  if (!d) return "-";
-  if (d.upiId) return `UPI: ${d.upiId}`;
-  if (d.accountNumber) return `Bank: ${d.accountNumber}`;
-  if (d.usdtAddress) return `USDT: ${d.usdtAddress}`;
-  return "-";
-}
+async function processWithdraw(id, status) {
+  const note = document.getElementById("note-" + id).value;
 
-async function updateWithdraw(id, status) {
-  const note = prompt("Admin note (optional):") || "";
-
-  const res = await fetch(`${API}/admin/withdraw/${id}`, {
+  const res = await fetch(API + "/admin/withdraw/" + id, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       "x-admin-key": ADMIN_KEY
     },
-    body: JSON.stringify({ status, adminNote: note })
+    body: JSON.stringify({
+      status,
+      adminNote: note
+    })
   });
 
   const data = await res.json();
-  alert(data.message || "Updated");
-
+  alert(data.message || data.error);
   loadWithdraws();
 }
-
-/* AUTO REFRESH */
-setInterval(loadWithdraws, 5000);
-
-/* INIT */
-loadWithdraws();
