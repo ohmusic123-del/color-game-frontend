@@ -1,51 +1,47 @@
-const FULL_TIME = 30;
-let timeLeft = FULL_TIME;
+// frontend/js/timer.js
+// api.js must be loaded before this file
 
-const circle = document.querySelector(".timer-progress");
-const text = document.getElementById("timerText");
+let ROUND_DURATION = 30; // seconds
+let remaining = ROUND_DURATION;
 
-const RADIUS = 52;
-const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
-
-circle.style.strokeDasharray = CIRCUMFERENCE;
-
-function setProgress(time) {
-  const offset = CIRCUMFERENCE - (time / FULL_TIME) * CIRCUMFERENCE;
-  circle.style.strokeDashoffset = offset;
-}
-
+/* =========================
+   START ROUND TIMER
+========================= */
 function startTimer() {
-  timeLeft = FULL_TIME;
-  text.innerText = timeLeft;
+  const timerEl = document.getElementById("timer");
 
-  circle.classList.remove("timer-warning", "timer-danger");
-  setProgress(timeLeft);
+  if (!timerEl) return;
 
-  const interval = setInterval(() => {
-    timeLeft--;
-    text.innerText = timeLeft;
-    setProgress(timeLeft);
+  setInterval(async () => {
+    try {
+      const res = await fetch(API + "/round/current");
+      const data = await res.json();
 
-    // Color changes
-    if (timeLeft <= 10) {
-      circle.classList.add("timer-warning");
-    }
-    if (timeLeft <= 5) {
-      circle.classList.remove("timer-warning");
-      circle.classList.add("timer-danger");
-    }
+      const elapsed = Math.floor(
+        (Date.now() - data.startTime) / 1000
+      );
 
-    if (timeLeft <= 0) {
-      clearInterval(interval);
-      text.innerText = "GO";
+      remaining = ROUND_DURATION - elapsed;
+
+      if (remaining <= 0) {
+        timerEl.innerText = "00";
+        timerEl.classList.add("danger");
+      } else {
+        timerEl.innerText = remaining.toString().padStart(2, "0");
+
+        if (remaining <= 5) {
+          timerEl.classList.add("danger");
+        } else {
+          timerEl.classList.remove("danger");
+        }
+      }
+    } catch (err) {
+      console.error("Timer error");
     }
   }, 1000);
 }
 
-/* START ON PAGE LOAD */
-startTimer();
-
-/* CALL THIS WHEN NEW ROUND STARTS */
-function resetTimer() {
-  startTimer();
-}
+/* =========================
+   INIT
+========================= */
+document.addEventListener("DOMContentLoaded", startTimer);
