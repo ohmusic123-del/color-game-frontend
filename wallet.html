@@ -1,118 +1,75 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>BIGWIN - Wallet</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <title>BIGWIN | Wallet</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
 
-<!-- HEADER -->
-<div class="header">
-  <div class="header-logo">BIGWIN</div>
-</div>
+  <!-- HEADER -->
+  <div class="header">
+    <h2>Wallet</h2>
+    <button class="back-btn" onclick="goBack()">← Back</button>
+  </div>
 
-<script>
-  if (!localStorage.getItem("token")) {
-    location.href = "index.html";
-  }
-</script>
+  <!-- WALLET CARD -->
+  <div class="container">
 
-<div class="center">
-  <div class="card">
+    <div class="wallet-card">
+      <p>Available Balance</p>
+      <h1>₹<span id="walletBalance">0</span></h1>
+    </div>
 
-    <h2 style="text-align:center">Wallet Balance</h2>
-<h1 id="balance" style="text-align:center;color:gold">₹0</h1>
+    <!-- ACTIONS -->
+    <div class="wallet-actions">
+      <button class="action-btn deposit" onclick="goDeposit()">Deposit</button>
+      <button class="action-btn withdraw" onclick="withdraw()">Withdraw</button>
+    </div>
 
-
-    <hr style="margin:16px 0;opacity:.2">
-
-    <!-- DEPOSIT / WITHDRAW -->
-    <button class="btn-gold" style="width:100%;margin-bottom:10px"
-      onclick="openDeposit()">
-      ➕ Deposit
-    </button>
-
-    <button class="btn-outline" style="width:100%;margin-bottom:16px"
-      onclick="openWithdraw()">
-      ➖ Withdraw
-    </button>
-
-    <hr style="margin:16px 0;opacity:.2">
-<p id="withdrawMethodInfo"
-   style="text-align:center;font-size:13px;color:gold;margin-bottom:10px">
-  Checking withdrawal method...
-</p>
-    <!-- BET HISTORY -->
-    <h3>Recent Bets</h3>
-    <ul id="betList" style="list-style:none;padding:0"></ul>
+    <!-- INFO -->
+    <div class="wallet-info">
+      <p>✔ Minimum deposit: ₹100</p>
+      <p>✔ Minimum withdraw: ₹100</p>
+      <p>✔ Withdraw only after wagering</p>
+    </div>
 
   </div>
-</div>
 
-<div class="bottom-nav">
-  <a href="home.html">Home</a>
-  <a href="game.html">Game</a>
-  <a href="wallet.html" class="active">Wallet</a>
-  <a href="profile.html">Profile</a>
-</div>
+  <!-- JS -->
+  <script src="js/api.js"></script>
+  <script src="js/wallet.js"></script>
 
-<script src="js/wallet.js?v=1"></script>
+  <script>
+    function goBack() {
+      window.location.href = "home.html";
+    }
 
-<script>
-  
-</script>
-<!-- DEPOSIT MODAL -->
-<div id="depositModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;
-background:rgba(0,0,0,.7);z-index:2000;align-items:center;justify-content:center">
+    function goDeposit() {
+      window.location.href = "deposit.html";
+    }
 
-  <div class="card">
-    <h3 style="text-align:center;margin-bottom:10px">Deposit Amount</h3>
+    function withdraw() {
+      const amount = prompt("Enter withdraw amount (min ₹100):");
+      if (!amount) return;
 
-    <input id="depositAmount"
-      type="number"
-      placeholder="Enter amount (min ₹100)"
-      style="width:100%;padding:12px;border-radius:10px;border:none;margin-bottom:14px">
+      fetch(API + "/withdraw", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": localStorage.getItem("token")
+        },
+        body: JSON.stringify({ amount: Number(amount) })
+      })
+      .then(res => res.json())
+      .then(data => {
+        alert(data.message || data.error);
+        loadWallet();
+      });
+    }
+  </script>
 
-    <button class="btn-gold" style="width:100%;margin-bottom:10px"
-      onclick="submitDeposit()">
-      Confirm Deposit
-    </button>
-
-    <button class="btn-outline" style="width:100%"
-      onclick="closeDeposit()">
-      Cancel
-    </button>
-  </div>
-</div>
-<!-- WITHDRAW MODAL -->
-<div id="withdrawModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;
-background:rgba(0,0,0,.7);z-index:2000;align-items:center;justify-content:center">
-
-  <div class="card">
-    <h3 style="text-align:center;margin-bottom:10px">Withdraw Amount</h3>
-
-    <p style="font-size:12px;opacity:.7;text-align:center;margin-bottom:12px">
-      • Minimum withdrawal ₹100<br>
-      • Deposit required before withdrawal<br>
-      • Bonus / deposit wagering must be completed
-    </p>
-
-    <input id="withdrawAmount"
-      type="number"
-      placeholder="Enter amount (min ₹100)"
-      style="width:100%;padding:12px;border-radius:10px;border:none;margin-bottom:14px">
-
-    <button class="btn-gold" style="width:100%;margin-bottom:10px"
-      onclick="submitWithdraw()">
-      Request Withdrawal
-    </button>
-
-    <button class="btn-outline" style="width:100%"
-      onclick="closeWithdraw()">
-      Cancel
-    </button>
-  </div>
-</div>
-  
 </body>
 </html>
