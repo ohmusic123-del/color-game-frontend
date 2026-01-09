@@ -2,62 +2,68 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>BIGWIN Game</title>
+  <title>BIGWIN | Game</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="style.css" />
+
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
 
-<div class="app">
-
   <!-- HEADER -->
-  <header class="top-bar">
-    <div class="wallet">Wallet: ₹<span id="walletAmount">0</span></div>
-    <div class="round">
-      Round: <span id="roundId">---</span>
-    </div>
-    <div class="timer">
-      ⏱ <span id="timer">30</span>s
-    </div>
-  </header>
-
-  <!-- BETTING AREA -->
-  <div class="bet-area">
-    <div class="bet-card red" onclick="selectColor('red')">
-      <h2>RED</h2>
-    </div>
-
-    <div class="bet-card green" onclick="selectColor('green')">
-      <h2>GREEN</h2>
+  <div class="header">
+    <h2>BIGWIN</h2>
+    <div class="wallet">
+      ₹<span id="balance">0</span>
     </div>
   </div>
 
-  <!-- AMOUNT -->
-  <div class="amount-box">
-    <input type="number" id="betAmount" value="1" min="1" />
-    <div class="quick-buttons">
+  <!-- GAME CONTAINER -->
+  <div class="container">
+
+    <!-- ROUND INFO -->
+    <div class="round-box">
+      <div>Round ID: <b id="roundId">---</b></div>
+      <div>Time Left: <b><span id="timer">30</span>s</b></div>
+    </div>
+
+    <!-- BET BUTTONS -->
+    <div class="bet-buttons">
+      <button class="bet-btn red" onclick="selectColor('red')">RED</button>
+      <button class="bet-btn green" onclick="selectColor('green')">GREEN</button>
+    </div>
+
+    <!-- AMOUNT -->
+    <div class="amount-box">
       <button onclick="setAmount(1)">₹1</button>
       <button onclick="setAmount(5)">₹5</button>
       <button onclick="setAmount(10)">₹10</button>
       <button onclick="setAmount(50)">₹50</button>
     </div>
+
+    <div class="place-bet">
+      <p>Selected: <b id="selectedColor">---</b></p>
+      <p>Amount: ₹<b id="selectedAmount">0</b></p>
+      <button onclick="placeBet()">Place Bet</button>
+    </div>
+
+    <!-- TOGGLE -->
+    <div class="toggle">
+      <button onclick="showResults()">Results</button>
+      <button onclick="showMyBets()">My Bets</button>
+    </div>
+
+    <!-- RESULTS -->
+    <div id="resultsBox" class="list-box"></div>
+
+    <!-- MY BETS -->
+    <div id="betsBox" class="list-box hidden"></div>
+
   </div>
 
-  <!-- BET BUTTON -->
-  <button class="bet-btn" onclick="placeBet()">PLACE BET</button>
+  <!-- JS -->
+  <script src="js/api.js"></script>
+  <script src="js/timer.js"></script>
+  <script src="js/game.js"></script>
 
-  <!-- TABS -->
-  <div class="tabs">
-    <button id="tabResults" class="active" onclick="showResults()">Last Results</button>
-    <button id="tabBets" onclick="showMyBets()">Your Bets</button>
-  </div>
-
-  <!-- TAB CONTENT -->
-  <div id="resultsBox" class="tab-content"></div>
-  <div id="betsBox" class="tab-content hidden"></div>
-
-</div>
-
-<script src="game.js"></script>
 </body>
-    </html>
+</html>
