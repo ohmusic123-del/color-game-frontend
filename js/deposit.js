@@ -1,34 +1,80 @@
-const API = "https://color-game-backend1.onrender.com";
+// frontend/js/deposit.js
+// api.js must be loaded before this file
+
 const token = localStorage.getItem("token");
 
-if (!token) location.href = "login.html";
-
-async function submitDeposit() {
-  const amount = document.getElementById("amount").value;
-  const utr = document.getElementById("utr").value;
-
-  const res = await fetch(API + "/deposit/request", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: token
-    },
-    body: JSON.stringify({ amount, utr })
-  });
-
-  const data = await res.json();
-  alert(data.message || data.error);
+if (!token) {
+  window.location.href = "index.html";
 }
-async function loadDepositInfo() {
-  const res = await fetch(API + "/deposit/info");
-  const data = await res.json();
 
-  document.getElementById("upiInfo").innerText =
-    "UPI ID: " + (data.upiId || "Not available");
+/* =========================
+   LOAD WALLET BALANCE
+========================= */
+async function loadWallet() {
+  try {
+    const res = await fetch(API + "/wallet", {
+      headers: {
+        Authorization: token
+      }
+    });
 
-  if (data.qrImage) {
-    document.getElementById("qrImage").src = data.qrImage;
+    const data = await res.json();
+    if (data.error) return;
+
+    document.getElementById("walletBalance").innerText =
+      "₹" + data.wallet.toFixed(2);
+  } catch (err) {
+    console.error("Wallet error");
   }
 }
 
-loadDepositInfo();
+/* =========================
+   DEPOSIT MONEY
+========================= */
+async function deposit() {
+  const amount = Number(document.getElementById("depositAmount").value);
+
+  if (!amount || amount < 100) {
+    alert("Minimum deposit is ₹100");
+    return;
+  }
+
+  try {
+    const res = await fetch(API + "/deposit", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token
+      },
+      body: JSON.stringify({ amount })
+    });
+
+    const data = await res.json();
+
+    if (data.error) {
+      alert(data.error);
+      return;
+    }
+
+    alert("Deposit successful!");
+    document.getElementById("depositAmount").value = "";
+    loadWallet();
+  } catch (err) {
+    console.error("Deposit error");
+  }
+}
+
+/* =========================
+   LOGOUT
+========================= */
+function logout() {
+  localStorage.removeItem("token");
+  window.location.href = "index.html";
+}
+
+/* =========================
+   INIT
+========================= */
+document.addEventListener("DOMContentLoaded", () => {
+  loadWallet();
+});
