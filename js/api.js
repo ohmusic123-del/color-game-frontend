@@ -1,43 +1,57 @@
-const API_URL = "https://bigwin-game-backend1.onrender.com";
+/* =========================
+   API CONFIG
+========================= */
 
-// ---- AUTH ----
-async function apiLogin(phone, password) {
-  const res = await fetch(`${API_URL}/api/auth/login`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ phone, password })
-  });
-  return res.json();
+/* 🔗 BACKEND URL */
+const API = "https://color-game-backend1.onrender.com";
+
+/* =========================
+   TOKENS
+========================= */
+const token = localStorage.getItem("token");
+const adminToken = localStorage.getItem("adminToken");
+
+/* =========================
+   HEADERS
+========================= */
+function authHeaders() {
+  return {
+    "Content-Type": "application/json",
+    Authorization: token
+  };
 }
 
-async function apiRegister(phone, password) {
-  const res = await fetch(`${API_URL}/api/auth/register`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ phone, password })
-  });
-  return res.json();
+function adminHeaders() {
+  return {
+    "Content-Type": "application/json",
+    Authorization: adminToken
+  };
 }
 
-// ---- WALLET ----
-async function apiWallet() {
-  const token = localStorage.getItem("token");
-  const res = await fetch(`${API_URL}/api/wallet`, {
-    headers: { Authorization: `Bearer ${token}` }
-  });
-  return res.json();
+/* =========================
+   AUTH HELPERS
+========================= */
+function requireLogin() {
+  if (!token) {
+    window.location.href = "index.html";
+  }
 }
 
-// ---- GAME ----
-async function apiPlaceBet(amount, color) {
-  const token = localStorage.getItem("token");
-  const res = await fetch(`${API_URL}/api/game/bet`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`
-    },
-    body: JSON.stringify({ amount, color })
-  });
-  return res.json();
+function requireAdmin() {
+  if (!adminToken) {
+    window.location.href = "admin-login.html";
+  }
+}
+
+/* =========================
+   LOGOUT
+========================= */
+function logout() {
+  localStorage.removeItem("token");
+  window.location.href = "index.html";
+}
+
+function adminLogout() {
+  localStorage.removeItem("adminToken");
+  window.location.href = "admin-login.html";
 }
