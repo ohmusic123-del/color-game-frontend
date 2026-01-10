@@ -1,69 +1,37 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <title>BIGWIN | Game</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <link rel="stylesheet" href="css/style.css" />
+  <title>BIGWIN – Game</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+<div class="app">
 
-  <!-- HEADER -->
   <div class="header">
-    <h2>BIGWIN</h2>
-    <div class="wallet">
-      ₹<span id="balance">0</span>
-    </div>
+    <div class="logo">BIGWIN</div>
+    <div class="balance">₹0</div>
   </div>
 
-  <!-- GAME CONTAINER -->
-  <div class="container">
-
-    <!-- ROUND INFO -->
-    <div class="round-box">
-      <div>Round ID: <b id="roundId">---</b></div>
-      <div>Time Left: <b><span id="timer">30</span>s</b></div>
-    </div>
-
-    <!-- BET BUTTONS -->
-    <div class="bet-buttons">
-      <button class="bet-btn red" onclick="selectColor('red')">RED</button>
-      <button class="bet-btn green" onclick="selectColor('green')">GREEN</button>
-    </div>
-
-    <!-- AMOUNT -->
-    <div class="amount-box">
-      <button onclick="setAmount(1)">₹1</button>
-      <button onclick="setAmount(5)">₹5</button>
-      <button onclick="setAmount(10)">₹10</button>
-      <button onclick="setAmount(50)">₹50</button>
-    </div>
-
-    <div class="place-bet">
-      <p>Selected: <b id="selectedColor">---</b></p>
-      <p>Amount: ₹<b id="selectedAmount">0</b></p>
-      <button onclick="placeBet()">Place Bet</button>
-    </div>
-
-    <!-- TOGGLE -->
-    <div class="toggle">
-      <button onclick="showResults()">Results</button>
-      <button onclick="showMyBets()">My Bets</button>
-    </div>
-
-    <!-- RESULTS -->
-    <div id="resultsBox" class="list-box"></div>
-
-    <!-- MY BETS -->
-    <div id="betsBox" class="list-box hidden"></div>
-
+  <div class="card">
+    <p>Round ID: ---</p>
+    <p>Time Left: 30s</p>
   </div>
 
-  <!-- JS -->
-  <script src="js/api.js"></script>
-  <script src="js/timer.js"></script>
-  <script src="js/game.js"></script>
+  <div class="choice btn-red">RED</div>
+  <div class="choice btn-green">GREEN</div>
 
+  <div class="amount-grid">
+    <button class="btn btn-dark">₹1</button>
+    <button class="btn btn-dark">₹5</button>
+    <button class="btn btn-dark">₹10</button>
+    <button class="btn btn-dark">₹50</button>
+  </div>
+
+  <button class="btn btn-primary">Place Bet</button>
+  <button class="btn btn-dark">Results</button>
+  <button class="btn btn-dark">My Bets</button>
+
+</div>
 </body>
 </html>
