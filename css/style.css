@@ -1,98 +1,149 @@
+/* ===== RESET ===== */
 * {
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont;
+  font-family: "Poppins", system-ui, sans-serif;
 }
 
 body {
-  margin: 0;
-  background: #0b1220;
+  background: linear-gradient(180deg, #050b1a, #020617);
   color: #fff;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
 }
 
+/* ===== APP CONTAINER (MOBILE ONLY) ===== */
 .app {
   width: 100%;
-  max-width: 390px;
+  max-width: 420px;
   min-height: 100vh;
-  margin: 0 auto;
-  background: linear-gradient(180deg, #0e1628, #0b1220);
+  padding: 16px;
 }
 
-/* HEADER */
+/* ===== HEADER ===== */
 .header {
-  padding: 14px 16px;
-  background: #0a0f1c;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-weight: 700;
-  font-size: 18px;
+  margin-bottom: 20px;
 }
 
-/* PAGE */
-.page {
-  padding: 20px 16px;
+.logo {
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: 1px;
 }
 
-/* TEXT */
-h2 {
-  margin: 10px 0;
-}
-
-.small {
-  font-size: 13px;
-  opacity: 0.7;
-}
-
-/* INPUTS */
-input {
-  width: 100%;
-  padding: 14px;
-  margin-top: 14px;
-  border-radius: 10px;
-  border: none;
-  outline: none;
-  font-size: 15px;
-  background: #151e33;
-  color: #fff;
-}
-
-/* BUTTONS */
-button {
-  width: 100%;
-  margin-top: 16px;
-  padding: 14px;
-  border-radius: 10px;
-  border: none;
-  background: #2563eb;
-  color: #fff;
-  font-size: 16px;
+.balance {
+  background: #0b1229;
+  padding: 6px 14px;
+  border-radius: 20px;
   font-weight: 600;
 }
 
-button.secondary {
-  background: #1e293b;
+/* ===== TITLES ===== */
+h1 {
+  font-size: 22px;
+  margin-bottom: 6px;
 }
 
-/* MENU LIST */
-.menu {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+h2 {
+  font-size: 18px;
+  margin-bottom: 10px;
 }
 
-.menu a {
+.subtext {
+  font-size: 13px;
+  color: #9ca3af;
+  margin-bottom: 20px;
+}
+
+/* ===== INPUTS ===== */
+.input {
+  width: 100%;
   padding: 14px;
-  border-radius: 12px;
-  background: #111827;
+  margin-bottom: 14px;
+  background: #0b1229;
+  border: none;
+  border-radius: 14px;
   color: #fff;
-  text-decoration: none;
   font-size: 15px;
 }
 
-/* BADGE */
-.badge {
-  background: #1e293b;
-  padding: 6px 10px;
-  border-radius: 999px;
+/* ===== BUTTONS ===== */
+.btn {
+  width: 100%;
+  padding: 14px;
+  border-radius: 16px;
+  border: none;
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.btn-primary {
+  background: linear-gradient(90deg, #2563eb, #1d4ed8);
+  color: #fff;
+}
+
+.btn-dark {
+  background: #0b1229;
+  color: #fff;
+}
+
+.btn-red {
+  background: #dc2626;
+}
+
+.btn-green {
+  background: #16a34a;
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+/* ===== CARD ===== */
+.card {
+  background: #0b1229;
+  padding: 16px;
+  border-radius: 18px;
+  margin-bottom: 16px;
+}
+
+/* ===== MENU LIST ===== */
+.menu a {
+  display: block;
+  padding: 14px;
+  background: #0b1229;
+  border-radius: 14px;
+  margin-bottom: 12px;
+  text-decoration: none;
+  color: #fff;
+  font-weight: 600;
+}
+
+/* ===== GAME ===== */
+.choice {
+  padding: 16px;
+  border-radius: 18px;
+  font-size: 20px;
+  font-weight: 800;
+  text-align: center;
+  margin-bottom: 14px;
+}
+
+.amount-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+/* ===== FOOTER TEXT ===== */
+.note {
   font-size: 13px;
-    }
+  color: #9ca3af;
+  margin-top: 10px;
+}
