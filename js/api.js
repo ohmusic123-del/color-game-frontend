@@ -1,57 +1,42 @@
 /* =========================
-   API CONFIG
+   BIGWIN API CONFIG
 ========================= */
 
-/* 🔗 BACKEND URL */
+/**
+ * ⚠️ CHANGE ONLY IF BACKEND URL CHANGES
+ */
 const API = "https://color-game-backend1.onrender.com";
 
-/* =========================
-   TOKENS
-========================= */
-const token = localStorage.getItem("token");
-const adminToken = localStorage.getItem("adminToken");
+/**
+ * USER TOKEN
+ */
+function getToken() {
+  return localStorage.getItem("token");
+}
 
-/* =========================
-   HEADERS
-========================= */
+/**
+ * ADMIN TOKEN
+ */
+function getAdminToken() {
+  return localStorage.getItem("adminToken");
+}
+
+/**
+ * COMMON HEADERS (USER)
+ */
 function authHeaders() {
   return {
     "Content-Type": "application/json",
-    Authorization: token
+    Authorization: getToken()
   };
 }
 
+/**
+ * COMMON HEADERS (ADMIN)
+ */
 function adminHeaders() {
   return {
     "Content-Type": "application/json",
-    Authorization: adminToken
+    Authorization: getAdminToken()
   };
-}
-
-/* =========================
-   AUTH HELPERS
-========================= */
-function requireLogin() {
-  if (!token) {
-    window.location.href = "index.html";
-  }
-}
-
-function requireAdmin() {
-  if (!adminToken) {
-    window.location.href = "admin-login.html";
-  }
-}
-
-/* =========================
-   LOGOUT
-========================= */
-function logout() {
-  localStorage.removeItem("token");
-  window.location.href = "index.html";
-}
-
-function adminLogout() {
-  localStorage.removeItem("adminToken");
-  window.location.href = "admin-login.html";
 }
