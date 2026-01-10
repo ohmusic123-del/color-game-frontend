@@ -1,143 +1,235 @@
+/* =========================
+   BIGWIN – MOBILE UI BASE
+========================= */
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Poppins", system-ui, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
 body {
-  background: linear-gradient(180deg, #050b1a, #020617);
-  color: #fff;
-  display: flex;
-  justify-content: center;
-}
-
-.app {
-  width: 100%;
-  max-width: 420px;
+  background: #0f172a;
+  color: #e5e7eb;
   min-height: 100vh;
-  padding: 16px 14px 90px;
+  padding-bottom: 80px;
 }
 
-/* ===== HEADER ===== */
-.header {
-  position: sticky;
-  top: 0;
-  background: rgba(5, 11, 26, 0.9);
-  backdrop-filter: blur(10px);
-  z-index: 10;
-  padding: 12px 4px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
+/* =========================
+   COMMON
+========================= */
 
-.logo {
-  font-size: 24px;
-  font-weight: 800;
-}
-
-.balance {
-  background: #0b1229;
-  padding: 6px 14px;
-  border-radius: 20px;
-  font-weight: 700;
-}
-
-/* ===== CARDS ===== */
-.card {
-  background: #0b1229;
+.container {
   padding: 16px;
-  border-radius: 18px;
-  margin-bottom: 16px;
 }
 
-/* ===== TEXT ===== */
-h1 {
-  font-size: 20px;
-  margin-bottom: 8px;
+.hidden {
+  display: none;
 }
 
-h2 {
-  font-size: 16px;
-  margin-bottom: 6px;
+a {
+  text-decoration: none;
+  color: inherit;
 }
 
-.subtext {
-  font-size: 13px;
-  color: #9ca3af;
-  margin-bottom: 16px;
-}
+/* =========================
+   HEADER
+========================= */
 
-/* ===== INPUT ===== */
-.input {
-  width: 100%;
-  padding: 14px;
+.header {
   background: #020617;
-  border: 1px solid #1e293b;
-  border-radius: 14px;
-  color: #fff;
-  margin-bottom: 12px;
-  font-size: 15px;
+  padding: 14px 16px;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 600;
+  border-bottom: 1px solid #1e293b;
 }
 
-/* ===== BUTTONS ===== */
-.btn {
-  width: 100%;
-  padding: 14px;
-  border-radius: 16px;
+/* =========================
+   BUTTONS
+========================= */
+
+button {
   border: none;
-  font-size: 15px;
-  font-weight: 700;
-  margin-bottom: 12px;
-  transition: transform 0.1s ease, opacity 0.1s ease;
-}
-
-.btn:active {
-  transform: scale(0.97);
-  opacity: 0.9;
+  border-radius: 10px;
+  padding: 14px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
 }
 
 .btn-primary {
-  background: linear-gradient(90deg, #2563eb, #1d4ed8);
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  color: #022c22;
+}
+
+.btn-secondary {
+  background: #1e293b;
+  color: #e5e7eb;
+}
+
+.btn-danger {
+  background: linear-gradient(135deg, #ef4444, #b91c1c);
   color: #fff;
 }
 
-.btn-dark {
-  background: #0b1229;
+.btn-full {
+  width: 100%;
+}
+
+/* =========================
+   INPUTS
+========================= */
+
+input, select {
+  width: 100%;
+  padding: 14px;
+  border-radius: 10px;
+  border: 1px solid #334155;
+  background: #020617;
+  color: #e5e7eb;
+  font-size: 16px;
+  margin-bottom: 12px;
+}
+
+input::placeholder {
+  color: #94a3b8;
+}
+
+/* =========================
+   CARD
+========================= */
+
+.card {
+  background: #020617;
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 16px;
+  border: 1px solid #1e293b;
+}
+
+.card-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+/* =========================
+   WALLET BAR
+========================= */
+
+.wallet-bar {
+  background: linear-gradient(135deg, #1d4ed8, #2563eb);
+  border-radius: 16px;
+  padding: 16px;
   color: #fff;
+  margin-bottom: 20px;
 }
 
-.btn-red {
-  background: #dc2626;
+.wallet-amount {
+  font-size: 26px;
+  font-weight: 700;
 }
 
-.btn-green {
-  background: #16a34a;
-}
+/* =========================
+   GAME COLORS
+========================= */
 
-/* ===== GAME ===== */
-.choice {
-  padding: 18px;
-  border-radius: 20px;
-  font-size: 20px;
-  font-weight: 800;
-  text-align: center;
-  margin-bottom: 14px;
-}
-
-.amount-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
+.color-row {
+  display: flex;
   gap: 12px;
+  margin-top: 16px;
 }
 
-/* ===== BOTTOM NAV ===== */
+.color-btn {
+  flex: 1;
+  padding: 18px 0;
+  border-radius: 14px;
+  font-size: 18px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.red {
+  background: linear-gradient(135deg, #ef4444, #b91c1c);
+  color: #fff;
+}
+
+.green {
+  background: linear-gradient(135deg, #22c55e, #15803d);
+  color: #022c22;
+}
+
+/* =========================
+   BET AMOUNT
+========================= */
+
+.amount-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.amount-btn {
+  flex: 1;
+  background: #1e293b;
+  color: #e5e7eb;
+  padding: 12px 0;
+  border-radius: 10px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.amount-btn.active {
+  background: #2563eb;
+  color: #fff;
+}
+
+/* =========================
+   TABS
+========================= */
+
+.tabs {
+  display: flex;
+  margin-top: 20px;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.tab {
+  flex: 1;
+  text-align: center;
+  padding: 12px;
+  background: #020617;
+  border: 1px solid #1e293b;
+  font-weight: 600;
+}
+
+.tab.active {
+  background: #2563eb;
+  color: #fff;
+}
+
+/* =========================
+   LIST ITEM
+========================= */
+
+.list-item {
+  padding: 12px;
+  border-bottom: 1px solid #1e293b;
+  font-size: 14px;
+}
+
+/* =========================
+   BOTTOM NAV
+========================= */
+
 .bottom-nav {
   position: fixed;
   bottom: 0;
-  width: 100%;
-  max-width: 420px;
+  left: 0;
+  right: 0;
   background: #020617;
   border-top: 1px solid #1e293b;
   display: flex;
@@ -146,13 +238,22 @@ h2 {
 }
 
 .bottom-nav a {
-  text-decoration: none;
-  color: #9ca3af;
   font-size: 12px;
-  text-align: center;
-  font-weight: 600;
+  color: #94a3b8;
 }
 
 .bottom-nav a.active {
-  color: #3b82f6;
+  color: #22c55e;
+  font-weight: 600;
+}
+
+/* =========================
+   ADMIN SAFE
+========================= */
+
+@media (min-width: 768px) {
+  body {
+    max-width: 420px;
+    margin: auto;
+  }
 }
