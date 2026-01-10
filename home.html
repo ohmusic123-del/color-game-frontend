@@ -1,46 +1,51 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+  />
   <title>BIGWIN – Home</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="css/style.css">
+
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-<div class="app">
 
+  <!-- HEADER -->
   <div class="header">
-    <div class="logo">BIGWIN</div>
-    <div class="balance">₹0</div>
+    <h2>BIGWIN</h2>
   </div>
 
+  <!-- WALLET CARD -->
+  <div class="card wallet-card">
+    <p class="label">Wallet Balance</p>
+    <h1 id="walletAmount">₹0</h1>
+  </div>
+
+  <!-- QUICK ACTIONS -->
   <div class="card">
-    <h2>Welcome 👋</h2>
-    <p class="subtext">Choose an option to continue</p>
+    <div class="actions-grid">
+      <a href="game.html" class="action-btn red">Play Game</a>
+      <a href="deposit.html" class="action-btn green">Deposit</a>
+      <a href="withdraw.html" class="action-btn orange">Withdraw</a>
+      <a href="wallet.html" class="action-btn blue">Wallet</a>
+    </div>
   </div>
 
+  <!-- PROFILE -->
   <div class="card">
-    <button class="btn btn-primary" onclick="location.href='game.html'">
-      🎮 Play Red / Green
-    </button>
-
-    <button class="btn btn-dark" onclick="location.href='wallet.html'">
-      💰 Wallet
-    </button>
-
-    <button class="btn btn-dark" onclick="location.href='profile.html'">
-      👤 Profile
-    </button>
+    <a href="profile.html" class="full-btn">My Profile</a>
   </div>
 
-</div>
+  <!-- LOGOUT -->
+  <div class="card">
+    <button class="btn danger" onclick="logout()">Logout</button>
+  </div>
 
-<!-- BOTTOM NAV -->
-<div class="bottom-nav">
-  <a href="home.html" class="active">Home</a>
-  <a href="game.html">Game</a>
-  <a href="wallet.html">Wallet</a>
-  <a href="profile.html">Profile</a>
-</div>
+  <!-- JS -->
+  <script src="js/api.js"></script>
+  <script src="js/wallet.js"></script>
 
 </body>
 </html>
