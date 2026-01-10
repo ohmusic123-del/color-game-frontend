@@ -1,75 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <title>BIGWIN | Wallet</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <link rel="stylesheet" href="css/style.css" />
+  <title>BIGWIN – Wallet</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+<div class="app">
 
-  <!-- HEADER -->
-  <div class="header">
-    <h2>Wallet</h2>
-    <button class="back-btn" onclick="goBack()">← Back</button>
+  <h1>Wallet</h1>
+
+  <div class="card">
+    <h2>Available Balance</h2>
+    <h1>₹0</h1>
   </div>
 
-  <!-- WALLET CARD -->
-  <div class="container">
+  <button class="btn btn-primary" onclick="location.href='deposit.html'">Deposit</button>
+  <button class="btn btn-dark">Withdraw</button>
 
-    <div class="wallet-card">
-      <p>Available Balance</p>
-      <h1>₹<span id="walletBalance">0</span></h1>
-    </div>
+  <p class="note">✔ Minimum deposit ₹100<br>✔ Withdraw after wagering</p>
 
-    <!-- ACTIONS -->
-    <div class="wallet-actions">
-      <button class="action-btn deposit" onclick="goDeposit()">Deposit</button>
-      <button class="action-btn withdraw" onclick="withdraw()">Withdraw</button>
-    </div>
-
-    <!-- INFO -->
-    <div class="wallet-info">
-      <p>✔ Minimum deposit: ₹100</p>
-      <p>✔ Minimum withdraw: ₹100</p>
-      <p>✔ Withdraw only after wagering</p>
-    </div>
-
-  </div>
-
-  <!-- JS -->
-  <script src="js/api.js"></script>
-  <script src="js/wallet.js"></script>
-
-  <script>
-    function goBack() {
-      window.location.href = "home.html";
-    }
-
-    function goDeposit() {
-      window.location.href = "deposit.html";
-    }
-
-    function withdraw() {
-      const amount = prompt("Enter withdraw amount (min ₹100):");
-      if (!amount) return;
-
-      fetch(API + "/withdraw", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": localStorage.getItem("token")
-        },
-        body: JSON.stringify({ amount: Number(amount) })
-      })
-      .then(res => res.json())
-      .then(data => {
-        alert(data.message || data.error);
-        loadWallet();
-      });
-    }
-  </script>
-
+</div>
 </body>
 </html>
