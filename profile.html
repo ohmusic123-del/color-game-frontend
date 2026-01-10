@@ -1,27 +1,52 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>BIGWIN – Profile</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+  />
+  <title>Profile – BIGWIN</title>
+
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-<div class="app">
 
-  <h1>Profile</h1>
-
-  <div class="card">
-    <p>Mobile: --</p>
-    <p>Wallet: ₹0</p>
-    <p>Total Wagered: ₹0</p>
+  <!-- HEADER -->
+  <div class="header">
+    <button class="back-btn" onclick="history.back()">←</button>
+    <h2>Profile</h2>
   </div>
 
-  <button class="btn btn-dark">Add / Edit UPI</button>
-  <button class="btn btn-dark">Add / Edit Bank</button>
-  <button class="btn btn-dark">Add / Edit USDT</button>
+  <!-- PROFILE CARD -->
+  <div class="card profile-card">
+    <div class="avatar">👤</div>
 
-  <button class="btn btn-primary" onclick="logout()">Logout</button>
+    <p class="profile-item">
+      <span>Mobile</span>
+      <b id="mobile">---</b>
+    </p>
 
-</div>
+    <p class="profile-item">
+      <span>Wallet</span>
+      <b>₹<span id="wallet">0</span></b>
+    </p>
+
+    <p class="profile-item">
+      <span>Total Wagered</span>
+      <b>₹<span id="wagered">0</span></b>
+    </p>
+  </div>
+
+  <!-- ACTIONS -->
+  <div class="card">
+    <button class="full-btn" onclick="goWithdraw()">Withdraw</button>
+    <button class="full-btn dark" onclick="logout()">Logout</button>
+  </div>
+
+  <!-- JS -->
+  <script src="js/api.js"></script>
+  <script src="js/profile.js"></script>
+
 </body>
 </html>
