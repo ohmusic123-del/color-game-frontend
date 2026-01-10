@@ -1,25 +1,45 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>BIGWIN – Wallet</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+  />
+  <title>Wallet – BIGWIN</title>
+
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-<div class="app">
 
-  <h1>Wallet</h1>
-
-  <div class="card">
-    <h2>Available Balance</h2>
-    <h1>₹0</h1>
+  <!-- HEADER -->
+  <div class="header">
+    <button class="back-btn" onclick="history.back()">←</button>
+    <h2>My Wallet</h2>
   </div>
 
-  <button class="btn btn-primary" onclick="location.href='deposit.html'">Deposit</button>
-  <button class="btn btn-dark">Withdraw</button>
+  <!-- WALLET BALANCE -->
+  <div class="card wallet-card">
+    <p class="label">Available Balance</p>
+    <h1 id="walletAmount">₹0</h1>
+  </div>
 
-  <p class="note">✔ Minimum deposit ₹100<br>✔ Withdraw after wagering</p>
+  <!-- ACTION BUTTONS -->
+  <div class="card">
+    <a href="deposit.html" class="full-btn green">Deposit Money</a>
+    <a href="withdraw.html" class="full-btn orange">Withdraw Money</a>
+  </div>
 
-</div>
+  <!-- INFO -->
+  <div class="card info">
+    <p>• Minimum deposit ₹100</p>
+    <p>• Withdrawal after wager completion</p>
+    <p>• Secure & instant balance update</p>
+  </div>
+
+  <!-- JS -->
+  <script src="js/api.js"></script>
+  <script src="js/wallet.js"></script>
+
 </body>
 </html>
