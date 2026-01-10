@@ -1,47 +1,39 @@
-// frontend/js/timer.js
-// api.js must be loaded before this file
+let timerInterval = null;
 
-let ROUND_DURATION = 30; // seconds
-let remaining = ROUND_DURATION;
+/* ======================
+   ROUND TIMER
+====================== */
+async function startTimer() {
+  const res = await fetch(API + "/round/current");
+  const data = await res.json();
 
-/* =========================
-   START ROUND TIMER
-========================= */
-function startTimer() {
+  const startTime = data.startTime;
   const timerEl = document.getElementById("timer");
 
-  if (!timerEl) return;
+  clearInterval(timerInterval);
 
-  setInterval(async () => {
-    try {
-      const res = await fetch(API + "/round/current");
-      const data = await res.json();
+  timerInterval = setInterval(() => {
+    const now = Date.now();
+    const elapsed = Math.floor((now - startTime) / 1000);
+    const remaining = 30 - elapsed;
 
-      const elapsed = Math.floor(
-        (Date.now() - data.startTime) / 1000
-      );
+    if (remaining <= 0) {
+      timerEl.innerText = "00";
+      clearInterval(timerInterval);
 
-      remaining = ROUND_DURATION - elapsed;
+      // Reload data after round ends
+      setTimeout(() => {
+        loadCurrentRound();
+        loadRounds();
+        loadUserBets();
+        startTimer();
+      }, 2000);
 
-      if (remaining <= 0) {
-        timerEl.innerText = "00";
-        timerEl.classList.add("danger");
-      } else {
-        timerEl.innerText = remaining.toString().padStart(2, "0");
-
-        if (remaining <= 5) {
-          timerEl.classList.add("danger");
-        } else {
-          timerEl.classList.remove("danger");
-        }
-      }
-    } catch (err) {
-      console.error("Timer error");
+      return;
     }
+
+    timerEl.innerText = remaining < 10 ? "0" + remaining : remaining;
   }, 1000);
 }
 
-/* =========================
-   INIT
-========================= */
-document.addEventListener("DOMContentLoaded", startTimer);
+startTimer();
