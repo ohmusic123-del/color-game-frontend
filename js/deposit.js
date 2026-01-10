@@ -1,5 +1,4 @@
-// frontend/js/deposit.js
-// api.js must be loaded before this file
+// deposit.js
 
 const token = localStorage.getItem("token");
 
@@ -7,34 +6,16 @@ if (!token) {
   window.location.href = "index.html";
 }
 
-/* =========================
-   LOAD WALLET BALANCE
-========================= */
-async function loadWallet() {
-  try {
-    const res = await fetch(API + "/wallet", {
-      headers: {
-        Authorization: token
-      }
-    });
-
-    const data = await res.json();
-    if (data.error) return;
-
-    document.getElementById("walletBalance").innerText =
-      "₹" + data.wallet.toFixed(2);
-  } catch (err) {
-    console.error("Wallet error");
-  }
+function setAmount(amount) {
+  document.getElementById("depositAmount").value = amount;
 }
 
-/* =========================
-   DEPOSIT MONEY
-========================= */
-async function deposit() {
-  const amount = Number(document.getElementById("depositAmount").value);
+async function submitDeposit() {
+  const amount = Number(
+    document.getElementById("depositAmount").value
+  );
 
-  if (!amount || amount < 100) {
+  if (amount < 100) {
     alert("Minimum deposit is ₹100");
     return;
   }
@@ -51,30 +32,14 @@ async function deposit() {
 
     const data = await res.json();
 
-    if (data.error) {
-      alert(data.error);
+    if (!res.ok) {
+      alert(data.error || "Deposit failed");
       return;
     }
 
-    alert("Deposit successful!");
-    document.getElementById("depositAmount").value = "";
-    loadWallet();
+    alert("Deposit successful");
+    window.location.href = "wallet.html";
   } catch (err) {
-    console.error("Deposit error");
+    alert("Server error");
   }
 }
-
-/* =========================
-   LOGOUT
-========================= */
-function logout() {
-  localStorage.removeItem("token");
-  window.location.href = "index.html";
-}
-
-/* =========================
-   INIT
-========================= */
-document.addEventListener("DOMContentLoaded", () => {
-  loadWallet();
-});
