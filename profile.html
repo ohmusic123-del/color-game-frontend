@@ -1,99 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <title>BIGWIN | Profile</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <link rel="stylesheet" href="css/style.css" />
+  <title>BIGWIN – Profile</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+<div class="app">
 
-<!-- AUTH CHECK -->
-<script>
-  if (!localStorage.getItem("token")) {
-    window.location.href = "index.html";
-  }
-</script>
+  <h1>Profile</h1>
 
-<!-- HEADER -->
-<div class="header">
-  <h2>Profile</h2>
-  <button class="back-btn" onclick="goBack()">← Back</button>
-</div>
-
-<!-- CONTENT -->
-<div class="container">
-
-  <!-- PROFILE CARD -->
-  <div class="profile-card">
-    <div class="logo">BIGWIN</div>
-
-    <p><strong>Mobile:</strong> <span id="mobile">--</span></p>
-    <p><strong>Wallet:</strong> ₹<span id="wallet">0</span></p>
-    <p><strong>Total Wagered:</strong> ₹<span id="wagered">0</span></p>
+  <div class="card">
+    <p>Mobile: --</p>
+    <p>Wallet: ₹0</p>
+    <p>Total Wagered: ₹0</p>
   </div>
 
-  <!-- WITHDRAW DETAILS -->
-  <div class="withdraw-section">
-    <h3>Withdrawal Details</h3>
+  <button class="btn btn-dark">Add / Edit UPI</button>
+  <button class="btn btn-dark">Add / Edit Bank</button>
+  <button class="btn btn-dark">Add / Edit USDT</button>
 
-    <button onclick="openForm('upi')">💳 Add / Edit UPI</button>
-    <button onclick="openForm('bank')">🏦 Add / Edit Bank</button>
-    <button onclick="openForm('usdt')">🔗 Add / Edit USDT</button>
-
-    <p id="activeMethod" class="active-method">No withdrawal method saved</p>
-  </div>
-
-  <!-- LOGOUT -->
-  <button class="logout-btn" onclick="logout()">Logout</button>
+  <button class="btn btn-primary" onclick="logout()">Logout</button>
 
 </div>
-
-<!-- MODAL -->
-<div id="modal" class="modal">
-  <div class="modal-box">
-
-    <h3 id="modalTitle">Withdraw Details</h3>
-
-    <!-- UPI -->
-    <div id="upiForm" class="form">
-      <input type="text" id="upiId" placeholder="UPI ID">
-    </div>
-
-    <!-- BANK -->
-    <div id="bankForm" class="form">
-      <input type="text" id="bankName" placeholder="Bank Name">
-      <input type="text" id="accountHolder" placeholder="Account Holder Name">
-      <input type="text" id="accountNumber" placeholder="Account Number">
-      <input type="text" id="ifsc" placeholder="IFSC Code">
-    </div>
-
-    <!-- USDT -->
-    <div id="usdtForm" class="form">
-      <input type="text" id="usdtAddress" placeholder="USDT Address (TRC20)">
-    </div>
-
-    <button onclick="saveWithdrawDetails()">Save</button>
-    <button class="close-btn" onclick="closeModal()">Cancel</button>
-
-  </div>
-</div>
-
-<!-- JS -->
-<script src="js/api.js"></script>
-<script src="js/profile.js"></script>
-
-<script>
-  function goBack() {
-    window.location.href = "home.html";
-  }
-
-  function logout() {
-    localStorage.clear();
-    window.location.href = "index.html";
-  }
-</script>
-
 </body>
-  </html>
+</html>
