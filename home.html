@@ -2,50 +2,89 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-  />
-  <title>BIGWIN – Home</title>
-
+  <title>BIGWIN • Home</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
 
-  <!-- HEADER -->
-  <div class="header">
-    <h2>BIGWIN</h2>
-  </div>
+<!-- HEADER -->
+<div class="header">
+  <h2>BIGWIN</h2>
+  <button onclick="logout()">Logout</button>
+</div>
+
+<!-- PAGE -->
+<div class="container page-padding">
 
   <!-- WALLET CARD -->
-  <div class="card wallet-card">
-    <p class="label">Wallet Balance</p>
-    <h1 id="walletAmount">₹0</h1>
+  <div class="card">
+    <div class="card-title">Wallet Balance</div>
+    <h2 style="margin-top:8px">₹ <span id="wallet">0</span></h2>
   </div>
 
   <!-- QUICK ACTIONS -->
   <div class="card">
-    <div class="actions-grid">
-      <a href="game.html" class="action-btn red">Play Game</a>
-      <a href="deposit.html" class="action-btn green">Deposit</a>
-      <a href="withdraw.html" class="action-btn orange">Withdraw</a>
-      <a href="wallet.html" class="action-btn blue">Wallet</a>
+    <div class="card-title">Quick Actions</div>
+
+    <a href="game.html">
+      <div class="btn btn-green">🎮 Play Game</div>
+    </a>
+
+    <a href="deposit.html">
+      <div class="btn btn-primary">➕ Deposit</div>
+    </a>
+
+    <a href="withdraw.html">
+      <div class="btn btn-red">⬇ Withdraw</div>
+    </a>
+  </div>
+
+  <!-- INFO -->
+  <div class="card">
+    <div class="list-item">
+      <span>Total Wagered</span>
+      <span>₹ <span id="wagered">0</span></span>
+    </div>
+    <div class="list-item">
+      <span>Account</span>
+      <span id="mobile">--</span>
     </div>
   </div>
 
-  <!-- PROFILE -->
-  <div class="card">
-    <a href="profile.html" class="full-btn">My Profile</a>
-  </div>
+</div>
 
-  <!-- LOGOUT -->
-  <div class="card">
-    <button class="btn danger" onclick="logout()">Logout</button>
-  </div>
+<!-- FOOTER NAV -->
+<div class="footer">
+  <a href="home.html" class="active">Home</a>
+  <a href="game.html">Game</a>
+  <a href="wallet.html">Wallet</a>
+  <a href="profile.html">Profile</a>
+</div>
 
-  <!-- JS -->
-  <script src="js/api.js"></script>
-  <script src="js/wallet.js"></script>
+<!-- SCRIPTS -->
+<script src="js/api.js"></script>
+<script src="js/auth.js"></script>
+<script>
+  async function loadHome() {
+    const res = await fetch(API + "/profile", {
+      headers: { Authorization: localStorage.getItem("token") }
+    });
+
+    const data = await res.json();
+
+    if (data.error) {
+      logout();
+      return;
+    }
+
+    document.getElementById("wallet").innerText = data.wallet;
+    document.getElementById("wagered").innerText = data.totalWagered;
+    document.getElementById("mobile").innerText = data.mobile;
+  }
+
+  loadHome();
+</script>
 
 </body>
 </html>
