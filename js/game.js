@@ -1,146 +1,195 @@
-const token = localStorage.getItem("token");
-if (!token) {
-  location.href = "index.html";
-}
-
+/* =========================
+   GAME STATE
+========================= */
 let selectedColor = null;
-let betAmount = 0;
+let selectedAmount = 0;
 
-/* ======================
-   ROUND INFO
-====================== */
-async function loadCurrentRound() {
-  const res = await fetch(API + "/round/current");
-  const data = await res.json();
+/* =========================
+   ELEMENTS
+========================= */
+const redBtn = document.getElementById("redBtn");
+const greenBtn = document.getElementById("greenBtn");
+const betSection = document.getElementById("betSection");
 
-  document.getElementById("roundId").innerText = data.id;
-}
-loadCurrentRound();
+const amountBtns = document.querySelectorAll(".amt-btn");
+const betAmountEl = document.getElementById("betAmount");
+const plusBtn = document.getElementById("plusBtn");
+const placeBetBtn = document.getElementById("placeBetBtn");
 
-/* ======================
-   COLOR SELECT
-====================== */
+const resultsList = document.getElementById("resultsList");
+const myBetsList = document.getElementById("myBetsList");
+
+/* =========================
+   COLOR SELECTION
+========================= */
+redBtn.addEventListener("click", () => selectColor("RED"));
+greenBtn.addEventListener("click", () => selectColor("GREEN"));
+
 function selectColor(color) {
   selectedColor = color;
-  betAmount = 0;
-  document.getElementById("betAmount").innerText = betAmount;
 
-  document.getElementById("amountBox").classList.remove("hidden");
+  redBtn.classList.remove("active");
+  greenBtn.classList.remove("active");
 
-  document.querySelectorAll(".color-btn").forEach(btn =>
-    btn.classList.remove("selected")
-  );
+  if (color === "RED") redBtn.classList.add("active");
+  if (color === "GREEN") greenBtn.classList.add("active");
 
-  document.querySelector("." + color).classList.add("selected");
+  // Show bet section only after color selected
+  betSection.classList.remove("hidden");
+
+  resetBet();
 }
 
-/* ======================
-   AMOUNT
-====================== */
-function selectAmount(amount) {
-  betAmount = amount;
-  document.getElementById("betAmount").innerText = betAmount;
+/* =========================
+   AMOUNT SELECTION
+========================= */
+amountBtns.forEach(btn => {
+  btn.addEventListener("click", () => {
+    selectedAmount = parseInt(btn.dataset.amt);
+    updateAmount();
+  });
+});
+
+/* =========================
+   PLUS BUTTON (DOUBLE LOGIC)
+========================= */
+plusBtn.addEventListener("click", () => {
+  if (selectedAmount > 0) {
+    selectedAmount = selectedAmount * 2;
+    updateAmount();
+  }
+});
+
+/* =========================
+   UPDATE AMOUNT UI
+========================= */
+function updateAmount() {
+  betAmountEl.textContent = selectedAmount;
+  placeBetBtn.disabled = selectedAmount <= 0;
 }
 
-function doubleAmount() {
-  if (betAmount === 0) return;
-  betAmount = betAmount * 2;
-  document.getElementById("betAmount").innerText = betAmount;
+/* =========================
+   RESET BET
+========================= */
+function resetBet() {
+  selectedAmount = 0;
+  betAmountEl.textContent = "0";
+  placeBetBtn.disabled = true;
 }
 
-/* ======================
+/* =========================
    PLACE BET
-====================== */
-async function placeBet() {
-  if (!selectedColor || betAmount <= 0) {
-    alert("Select color & amount");
+========================= */
+placeBetBtn.addEventListener("click", async () => {
+  if (!selectedColor || selectedAmount <= 0) {
+    alert("Select color and amount");
     return;
   }
 
-  const res = await fetch(API + "/bet", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: token
-    },
-    body: JSON.stringify({
-      color: selectedColor,
-      amount: betAmount
-    })
-  });
+  try {
+    const res = await fetch(`${API}/bet/place`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("token")
+      },
+      body: JSON.stringify({
+        color: selectedColor,
+        amount: selectedAmount
+      })
+    });
 
-  const data = await res.json();
+    const data = await res.json();
 
-  if (data.error) {
-    alert(data.error);
-  } else {
+    if (!res.ok) {
+      alert(data.message || "Bet failed");
+      return;
+    }
+
     alert("Bet placed successfully");
-    betAmount = 0;
-    document.getElementById("betAmount").innerText = 0;
-    loadUserBets();
+    resetBet();
+    loadMyBets();
+  } catch (err) {
+    alert("Network error");
   }
-}
+});
 
-/* ======================
-   TABS
-====================== */
-function showTab(tab) {
-  document.querySelectorAll(".tab").forEach(t =>
-    t.classList.remove("active")
-  );
-  document.querySelectorAll(".tab-content").forEach(c =>
-    c.classList.add("hidden")
-  );
+/* =========================
+   RESULTS
+========================= */
+async function loadResults() {
+  try {
+    const res = await fetch(`${API}/round/results`);
+    const data = await res.json();
 
-  if (tab === "rounds") {
-    document.querySelectorAll(".tab")[0].classList.add("active");
-    document.getElementById("rounds").classList.remove("hidden");
-  } else {
-    document.querySelectorAll(".tab")[1].classList.add("active");
-    document.getElementById("bets").classList.remove("hidden");
-  }
-}
+    resultsList.innerHTML = "";
 
-/* ======================
-   ROUND HISTORY
-====================== */
-async function loadRounds() {
-  const res = await fetch(API + "/rounds/history");
-  const data = await res.json();
-
-  const list = document.getElementById("roundHistory");
-  list.innerHTML = "";
-
-  data.forEach(r => {
-    list.innerHTML += `
-      <li>
+    data.forEach(r => {
+      const li = document.createElement("li");
+      li.innerHTML = `
         <span>#${r.roundId}</span>
-        <b class="${r.winner}">${r.winner.toUpperCase()}</b>
-      </li>
-    `;
-  });
+        <span class="${r.result === 'RED' ? 'red' : 'green'}">
+          ${r.result}
+        </span>
+      `;
+      resultsList.appendChild(li);
+    });
+  } catch (e) {
+    console.log("Results error");
+  }
 }
-loadRounds();
 
-/* ======================
-   USER BET HISTORY
-====================== */
-async function loadUserBets() {
-  const res = await fetch(API + "/bets", {
-    headers: { Authorization: token }
-  });
+/* =========================
+   MY BETS
+========================= */
+async function loadMyBets() {
+  try {
+    const res = await fetch(`${API}/bet/my`, {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token")
+      }
+    });
+    const data = await res.json();
 
-  const data = await res.json();
-  const list = document.getElementById("betHistory");
-  list.innerHTML = "";
+    myBetsList.innerHTML = "";
 
-  data.forEach(b => {
-    list.innerHTML += `
-      <li>
-        <span>${b.color.toUpperCase()} ₹${b.amount}</span>
-        <b class="${b.status.toLowerCase()}">${b.status}</b>
-      </li>
-    `;
-  });
+    data.forEach(b => {
+      const li = document.createElement("li");
+      li.innerHTML = `
+        <span>₹${b.amount}</span>
+        <span class="${b.color === 'RED' ? 'red' : 'green'}">
+          ${b.color}
+        </span>
+        <span>${b.status}</span>
+      `;
+      myBetsList.appendChild(li);
+    });
+  } catch (e) {
+    console.log("My bets error");
+  }
 }
-loadUserBets();
+
+/* =========================
+   TABS
+========================= */
+document.querySelectorAll(".tab-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+
+    document.getElementById("resultsTab").classList.add("hidden");
+    document.getElementById("myBetsTab").classList.add("hidden");
+
+    if (btn.dataset.tab === "results") {
+      document.getElementById("resultsTab").classList.remove("hidden");
+    } else {
+      document.getElementById("myBetsTab").classList.remove("hidden");
+    }
+  });
+});
+
+/* =========================
+   INIT
+========================= */
+loadResults();
+loadMyBets();
