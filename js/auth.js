@@ -1,67 +1,78 @@
-const API = window.API || "https://color-game-backend1.onrender.com";
+const API = "https://color-game-backend1.onrender.com";
 
-function getInput(id) {
-  return document.getElementById(id).value.trim();
-}
-
-/* ======================
+/* =====================
    REGISTER
-====================== */
+===================== */
 async function register() {
-  const mobile = getInput("mobile");
-  const password = getInput("password");
+  const mobile = document.getElementById("mobile").value.trim();
+  const password = document.getElementById("password").value.trim();
 
   if (!mobile || !password) {
     alert("Enter mobile and password");
     return;
   }
 
-  const res = await fetch(API + "/register", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ mobile, password })
-  });
+  try {
+    const res = await fetch(API + "/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        mobile: mobile,
+        password: password
+      })
+    });
 
-  const data = await res.json();
+    const data = await res.json();
 
-  if (res.ok) {
-    alert("Registered successfully. Please login.");
-  } else {
-    alert(data.error || "Registration failed");
+    if (!res.ok) {
+      alert(data.error || "Registration failed");
+      return;
+    }
+
+    alert("Registration successful. Please login.");
+  } catch (err) {
+    alert("Server error");
+    console.error(err);
   }
 }
 
-/* ======================
+/* =====================
    LOGIN
-====================== */
+===================== */
 async function login() {
-  const mobile = getInput("mobile");
-  const password = getInput("password");
+  const mobile = document.getElementById("mobile").value.trim();
+  const password = document.getElementById("password").value.trim();
 
   if (!mobile || !password) {
     alert("Enter mobile and password");
     return;
   }
 
-  const res = await fetch(API + "/login", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ mobile, password })
-  });
+  try {
+    const res = await fetch(API + "/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        mobile: mobile,
+        password: password
+      })
+    });
 
-  const data = await res.json();
+    const data = await res.json();
 
-  if (!res.ok) {
-    alert(data.error || "Login failed");
-    return;
+    if (!res.ok) {
+      alert(data.error || "Login failed");
+      return;
+    }
+
+    localStorage.setItem("token", data.token);
+    window.location.href = "home.html";
+  } catch (err) {
+    alert("Server error");
+    console.error(err);
   }
-
-  localStorage.setItem("token", data.token);
-  localStorage.setItem("wallet", data.wallet);
-
-  window.location.href = "home.html";
 }
