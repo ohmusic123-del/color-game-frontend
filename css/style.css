@@ -1,5 +1,5 @@
 /* =========================
-   GLOBAL RESET
+   RESET & BASE
 ========================= */
 * {
   margin: 0;
@@ -8,125 +8,189 @@
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
-html, body {
-  width: 100%;
-  height: 100%;
-  background: #0e0e11;
-  color: #ffffff;
-}
-
-/* Disable desktop scaling */
 body {
-  max-width: 480px;
-  margin: 0 auto;
+  background: #0f172a;
+  color: #ffffff;
+  min-height: 100vh;
 }
 
-/* =========================
-   COMMON ELEMENTS
-========================= */
 a {
   text-decoration: none;
   color: inherit;
-}
-
-button {
-  border: none;
-  outline: none;
-  cursor: pointer;
-}
-
-input, select {
-  width: 100%;
-  padding: 14px;
-  border-radius: 10px;
-  border: 1px solid #2a2a2f;
-  background: #14141a;
-  color: #fff;
-  font-size: 15px;
-}
-
-/* =========================
-   HEADER
-========================= */
-.header {
-  height: 56px;
-  background: #14141a;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 14px;
-  border-bottom: 1px solid #222;
-}
-
-.header h2 {
-  font-size: 16px;
-  font-weight: 600;
-}
-
-.header button {
-  background: #ff3b3b;
-  color: #fff;
-  padding: 8px 14px;
-  border-radius: 8px;
-  font-size: 13px;
 }
 
 /* =========================
    CONTAINER
 ========================= */
 .container {
-  padding: 14px;
+  width: 100%;
+  max-width: 420px;
+  margin: auto;
+  padding: 16px;
 }
 
 /* =========================
-   CARDS
+   HEADER
 ========================= */
-.card {
-  background: #14141a;
-  border-radius: 14px;
+.header {
   padding: 14px;
-  margin-bottom: 14px;
-  border: 1px solid #1f1f26;
+  text-align: center;
+  background: #020617;
+  font-size: 18px;
+  font-weight: bold;
+  border-bottom: 1px solid #1e293b;
 }
 
-.card-title {
-  font-size: 14px;
-  font-weight: 600;
-  margin-bottom: 8px;
+/* =========================
+   CARD
+========================= */
+.card {
+  background: #020617;
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 16px;
+  border: 1px solid #1e293b;
 }
 
 /* =========================
    BUTTONS
 ========================= */
-.btn {
+button {
   width: 100%;
   padding: 14px;
   border-radius: 12px;
-  font-size: 15px;
+  border: none;
+  font-size: 16px;
   font-weight: 600;
+  cursor: pointer;
+}
+
+button.primary {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  color: #fff;
+}
+
+button.secondary {
+  background: #1e293b;
+  color: #fff;
+}
+
+button.red {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: #fff;
+}
+
+button.green {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  color: #fff;
+}
+
+button.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* =========================
+   INPUTS
+========================= */
+input, select {
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px solid #1e293b;
+  background: #020617;
+  color: #fff;
+  margin-bottom: 12px;
+  font-size: 15px;
+}
+
+input::placeholder {
+  color: #94a3b8;
+}
+
+/* =========================
+   AUTH PAGE
+========================= */
+.auth-title {
   text-align: center;
-  margin-top: 10px;
+  font-size: 22px;
+  margin: 24px 0;
 }
 
-.btn-primary {
-  background: linear-gradient(135deg, #4caf50, #2e7d32);
-  color: #fff;
+.auth-switch {
+  text-align: center;
+  margin-top: 12px;
+  font-size: 14px;
+  color: #94a3b8;
 }
 
-.btn-red {
-  background: linear-gradient(135deg, #ff4d4d, #c62828);
-  color: #fff;
+/* =========================
+   WALLET
+========================= */
+.balance-box {
+  text-align: center;
+  padding: 20px;
 }
 
-.btn-green {
-  background: linear-gradient(135deg, #4caf50, #2e7d32);
-  color: #fff;
+.balance-box h2 {
+  font-size: 32px;
+  margin-top: 8px;
 }
 
-.btn-dark {
-  background: #1f1f26;
-  color: #fff;
-  border: 1px solid #2a2a2f;
+/* =========================
+   GAME
+========================= */
+.game-colors {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.game-colors button {
+  flex: 1;
+}
+
+.timer {
+  text-align: center;
+  font-size: 22px;
+  margin: 10px 0;
+}
+
+.bet-amounts {
+  display: none;
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.bet-amounts button {
+  flex: 1;
+  background: #1e293b;
+}
+
+.bet-amounts.show {
+  display: flex;
+}
+
+.plus-btn {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: #334155;
+  font-size: 22px;
+}
+
+/* =========================
+   HISTORY LIST
+========================= */
+.list {
+  margin-top: 12px;
+}
+
+.list-item {
+  padding: 10px;
+  border-bottom: 1px solid #1e293b;
+  font-size: 14px;
 }
 
 /* =========================
@@ -134,162 +198,50 @@ input, select {
 ========================= */
 .tabs {
   display: flex;
-  background: #14141a;
-  border-radius: 12px;
-  overflow: hidden;
-  margin-bottom: 12px;
-}
-
-.tab {
-  flex: 1;
-  padding: 12px;
-  text-align: center;
-  font-size: 14px;
-  background: #14141a;
-  color: #aaa;
-}
-
-.tab.active {
-  background: #1f1f26;
-  color: #fff;
-  font-weight: 600;
-}
-
-/* =========================
-   GAME COLORS
-========================= */
-.color-buttons {
-  display: flex;
-  gap: 12px;
-  margin: 12px 0;
-}
-
-.color-btn {
-  flex: 1;
-  padding: 18px;
-  border-radius: 14px;
-  font-size: 16px;
-  font-weight: 700;
-  text-align: center;
-}
-
-.color-btn.red {
-  background: linear-gradient(135deg, #ff4d4d, #c62828);
-}
-
-.color-btn.green {
-  background: linear-gradient(135deg, #4caf50, #2e7d32);
-}
-
-/* =========================
-   BET AMOUNT
-========================= */
-.amount-box {
-  display: none;
-  margin-top: 10px;
-}
-
-.amount-buttons {
-  display: flex;
   gap: 10px;
-}
-
-.amount-btn {
-  flex: 1;
-  padding: 12px;
-  border-radius: 10px;
-  background: #1f1f26;
-  color: #fff;
-  font-weight: 600;
-  text-align: center;
-}
-
-.amount-btn.active {
-  background: #2979ff;
-}
-
-/* =========================
-   PLUS BUTTON
-========================= */
-.plus-btn {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  background: #2979ff;
-  color: #fff;
-  font-size: 22px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* =========================
-   TIMER
-========================= */
-.timer {
-  display: flex;
-  justify-content: space-between;
-  font-size: 14px;
-  background: #14141a;
-  padding: 10px 14px;
-  border-radius: 12px;
   margin-bottom: 12px;
 }
 
+.tabs button {
+  flex: 1;
+  background: #1e293b;
+}
+
+.tabs button.active {
+  background: #2563eb;
+}
+
 /* =========================
-   LIST ITEMS
+   PROFILE
 ========================= */
-.list-item {
+.profile-row {
   display: flex;
   justify-content: space-between;
-  font-size: 13px;
-  padding: 8px 0;
-  border-bottom: 1px solid #222;
-}
-
-.list-item:last-child {
-  border-bottom: none;
+  padding: 10px 0;
+  border-bottom: 1px solid #1e293b;
 }
 
 /* =========================
-   BET LOCK
+   FOOTER NAV
 ========================= */
-.bet-locked .color-btn,
-.bet-locked .amount-btn,
-.bet-locked .plus-btn {
-  opacity: 0.5;
-  pointer-events: none;
-}
-
-/* =========================
-   FOOTER NAV (MOBILE)
-========================= */
-.footer {
+.bottom-nav {
   position: fixed;
   bottom: 0;
-  width: 100%;
-  max-width: 480px;
+  left: 0;
+  right: 0;
+  background: #020617;
   display: flex;
-  background: #14141a;
-  border-top: 1px solid #222;
+  border-top: 1px solid #1e293b;
 }
 
-.footer a {
+.bottom-nav a {
   flex: 1;
+  padding: 12px;
   text-align: center;
-  padding: 10px 0;
   font-size: 12px;
-  color: #aaa;
+  color: #94a3b8;
 }
 
-.footer a.active {
-  color: #4caf50;
-  font-weight: 600;
-}
-
-/* =========================
-   SPACING FIX
-========================= */
-.page-padding {
-  padding-bottom: 70px;
-}
+.bottom-nav a.active {
+  color: #22c55e;
+   }
