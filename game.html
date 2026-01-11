@@ -2,73 +2,87 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-  />
-  <title>Game – BIGWIN</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>BIGWIN – Red / Green</title>
 
+  <!-- Main Mobile CSS -->
   <link rel="stylesheet" href="css/style.css" />
 </head>
-<body>
+<body class="app-bg">
 
   <!-- HEADER -->
-  <div class="header">
+  <header class="top-header">
     <button class="back-btn" onclick="history.back()">←</button>
-    <h2>Red / Green</h2>
-  </div>
+    <h1>Red / Green</h1>
+    <div class="balance">₹<span id="walletBalance">0</span></div>
+  </header>
 
   <!-- ROUND INFO -->
-  <div class="round-info">
-    <p>Round ID: <b id="roundId">---</b></p>
-    <p>Time Left: <b id="timer">30</b>s</p>
-  </div>
+  <section class="card round-card">
+    <div class="round-row">
+      <span>Round ID</span>
+      <strong id="roundId">----</strong>
+    </div>
+    <div class="round-row">
+      <span>Time Left</span>
+      <strong><span id="timeLeft">30</span>s</strong>
+    </div>
+    <div class="timer-bar">
+      <div id="timerProgress"></div>
+    </div>
+  </section>
 
   <!-- COLOR SELECTION -->
-  <div class="color-box">
-    <button class="color-btn red" onclick="selectColor('red')">RED</button>
-    <button class="color-btn green" onclick="selectColor('green')">GREEN</button>
-  </div>
+  <section class="card">
+    <h3>Select Color</h3>
+    <div class="color-row">
+      <button id="redBtn" class="color-btn red">RED</button>
+      <button id="greenBtn" class="color-btn green">GREEN</button>
+    </div>
+  </section>
 
-  <!-- AMOUNT SELECTION (HIDDEN INITIALLY) -->
-  <div class="amount-box hidden" id="amountBox">
-    <p class="center">Select Amount</p>
+  <!-- BET AMOUNT (HIDDEN INITIALLY) -->
+  <section id="betSection" class="card hidden">
+    <h3>How much do you want to bet?</h3>
 
     <div class="amount-row">
-      <button onclick="selectAmount(1)">1</button>
-      <button onclick="selectAmount(5)">5</button>
-      <button onclick="selectAmount(10)">10</button>
-      <button onclick="selectAmount(50)">50</button>
+      <button class="amt-btn" data-amt="1">1</button>
+      <button class="amt-btn" data-amt="5">5</button>
+      <button class="amt-btn" data-amt="10">10</button>
+      <button class="amt-btn" data-amt="50">50</button>
     </div>
 
-    <div class="amount-row">
-      <button class="plus-btn" onclick="doubleAmount()">＋</button>
-      <span class="amount-display">₹<b id="betAmount">0</b></span>
+    <div class="bet-total">
+      <button id="plusBtn" class="plus-btn">+</button>
+      <span>₹<span id="betAmount">0</span></span>
     </div>
 
-    <button class="full-btn" onclick="placeBet()">Place Bet</button>
-  </div>
+    <button id="placeBetBtn" class="primary-btn" disabled>
+      Place Bet
+    </button>
+  </section>
 
   <!-- TABS -->
-  <div class="tabs">
-    <button class="tab active" onclick="showTab('rounds')">Results</button>
-    <button class="tab" onclick="showTab('bets')">My Bets</button>
-  </div>
+  <section class="card">
+    <div class="tab-header">
+      <button class="tab-btn active" data-tab="results">Results</button>
+      <button class="tab-btn" data-tab="mybets">My Bets</button>
+    </div>
 
-  <!-- ROUND HISTORY -->
-  <div id="rounds" class="tab-content">
-    <ul id="roundHistory"></ul>
-  </div>
+    <!-- RESULTS -->
+    <div id="resultsTab" class="tab-content">
+      <ul id="resultsList" class="list"></ul>
+    </div>
 
-  <!-- USER BET HISTORY -->
-  <div id="bets" class="tab-content hidden">
-    <ul id="betHistory"></ul>
-  </div>
+    <!-- MY BETS -->
+    <div id="myBetsTab" class="tab-content hidden">
+      <ul id="myBetsList" class="list"></ul>
+    </div>
+  </section>
 
   <!-- JS -->
   <script src="js/api.js"></script>
-  <script src="js/game.js"></script>
   <script src="js/timer.js"></script>
-
+  <script src="js/game.js"></script>
 </body>
 </html>
