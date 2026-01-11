@@ -1,35 +1,21 @@
-// wallet.js
-
-const token = localStorage.getItem("token");
-
-if (!token) {
-  window.location.href = "index.html";
-}
-
 async function loadWallet() {
-  try {
-    const res = await fetch(API + "/wallet", {
-      headers: {
-        Authorization: token
-      }
-    });
-
-    const data = await res.json();
-
-    if (data.wallet !== undefined) {
-      document.getElementById("walletAmount").innerText =
-        "₹" + data.wallet;
-    } else {
-      alert("Failed to load wallet");
+  const res = await fetch(API + "/profile", {
+    headers: {
+      Authorization: localStorage.getItem("token")
     }
-  } catch (err) {
-    alert("Server error");
-  }
-}
+  });
 
-function logout() {
-  localStorage.clear();
-  window.location.href = "index.html";
+  const data = await res.json();
+
+  if (data.error) {
+    logout();
+    return;
+  }
+
+  document.getElementById("wallet").innerText = data.wallet;
+  document.getElementById("wagered").innerText = data.totalWagered;
+  document.getElementById("bonus").innerText = data.bonus || 0;
+  document.getElementById("deposited").innerText = data.deposited ? "Yes" : "No";
 }
 
 loadWallet();
