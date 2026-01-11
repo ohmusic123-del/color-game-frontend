@@ -3,60 +3,60 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Profile</title>
+  <title>Profile | BIGWIN</title>
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
 
-<div class="profile-page">
-
   <!-- Header -->
-  <div class="profile-header">
+  <div class="page-header">
     <h1>Profile</h1>
-    <button class="profile-logout" onclick="logout()">Logout</button>
+    <button class="logout-btn" onclick="logout()">Logout</button>
   </div>
 
-  <!-- Account Info -->
-  <div class="profile-card">
-    <h3>Account Info</h3>
+  <div class="profile-page">
 
-    <div class="profile-row">
-      <span>Mobile</span>
-      <span id="mobile">1111111111</span>
+    <!-- Account Info -->
+    <div class="card">
+      <h3 class="card-title">Account Info</h3>
+
+      <div class="info-row">
+        <span>Mobile</span>
+        <strong id="userMobile">1111111111</strong>
+      </div>
+
+      <div class="info-row">
+        <span>Wallet Balance</span>
+        <strong id="walletBalance">₹0</strong>
+      </div>
+
+      <div class="info-row">
+        <span>Total Wagered</span>
+        <strong id="totalWagered">₹0</strong>
+      </div>
     </div>
 
-    <div class="profile-row">
-      <span>Wallet Balance</span>
-      <span id="wallet">₹0</span>
+    <!-- Account Actions -->
+    <div class="card">
+      <h3 class="card-title">Account</h3>
+
+      <div class="profile-actions">
+        <a href="wallet.html" class="action-btn wallet">Wallet</a>
+        <a href="deposit.html" class="action-btn deposit">Deposit</a>
+        <a href="withdraw.html" class="action-btn withdraw">Withdraw</a>
+      </div>
     </div>
 
-    <div class="profile-row">
-      <span>Total Wagered</span>
-      <span id="wagered">₹0</span>
-    </div>
   </div>
 
-  <!-- Account Actions -->
-  <div class="profile-card">
-    <h3>Account</h3>
-
-    <div class="profile-actions">
-      <a href="wallet.html" class="wallet">Wallet</a>
-      <a href="deposit.html" class="deposit">Deposit</a>
-      <a href="withdraw.html" class="withdraw">Withdraw</a>
-    </div>
+  <!-- Bottom Navigation -->
+  <div class="bottom-nav">
+    <a href="home.html">Home</a>
+    <a href="game.html">Game</a>
+    <a href="wallet.html">Wallet</a>
+    <a href="profile.html" class="active">Profile</a>
   </div>
 
-</div>
-
-<!-- Bottom Navigation -->
-<div class="nav">
-  <a href="home.html">Home</a>
-  <a href="game.html">Game</a>
-  <a href="wallet.html">Wallet</a>
-  <a href="profile.html" class="active">Profile</a>
-</div>
-
-<script src="js/profile.js"></script>
+  <script src="js/profile.js"></script>
 </body>
 </html>
