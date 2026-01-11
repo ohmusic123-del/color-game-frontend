@@ -348,3 +348,125 @@ body {
   background: #ef4444;
   color: #fff;
 }
+/* =========================
+   WALLET PAGE (LOCKED UI)
+   ========================= */
+
+body {
+  background: radial-gradient(circle at top, #0d1b2a, #020814);
+  color: #fff;
+}
+
+/* Header */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+}
+
+.header h2 {
+  font-size: 24px;
+  font-weight: 800;
+}
+
+.header button {
+  background: rgba(255,255,255,0.12);
+  color: #fff;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 14px;
+  font-size: 14px;
+}
+
+/* Container spacing */
+.container.page-padding {
+  padding: 14px;
+}
+
+/* Card design */
+.card {
+  background: linear-gradient(180deg, #0b1423, #050a14);
+  border-radius: 18px;
+  padding: 16px;
+  margin-bottom: 14px;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05),
+              0 8px 25px rgba(0,0,0,0.6);
+}
+
+/* Card titles */
+.card-title {
+  font-size: 14px;
+  color: #b0c4de;
+  margin-bottom: 6px;
+}
+
+/* Balance amount */
+.card h1 {
+  font-size: 34px;
+  font-weight: 900;
+  margin: 0;
+}
+
+/* Deposit & Withdraw buttons */
+.card a {
+  text-decoration: none;
+}
+
+.btn {
+  width: 100%;
+  text-align: center;
+  padding: 14px;
+  border-radius: 16px;
+  font-size: 18px;
+  font-weight: 800;
+  margin-top: 12px;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: #fff;
+}
+
+.btn-red {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: #fff;
+}
+
+/* Info rows */
+.list-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  font-size: 15px;
+}
+
+.list-item:last-child {
+  border-bottom: none;
+}
+
+/* Footer navigation (same as Home/Profile/Game) */
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  background: linear-gradient(180deg, #050a14, #020814);
+  padding: 10px 0;
+  box-shadow: 0 -6px 20px rgba(0,0,0,0.6);
+}
+
+.footer a {
+  color: #9ca3af;
+  font-size: 14px;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.footer a.active {
+  color: #22c55e;
+  font-weight: 800;
+}
