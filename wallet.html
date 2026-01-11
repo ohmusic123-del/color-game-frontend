@@ -2,44 +2,66 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-  />
-  <title>Wallet – BIGWIN</title>
-
+  <title>Wallet • BIGWIN</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
 
-  <!-- HEADER -->
-  <div class="header">
-    <button class="back-btn" onclick="history.back()">←</button>
-    <h2>My Wallet</h2>
-  </div>
+<!-- HEADER -->
+<div class="header">
+  <h2>Wallet</h2>
+  <button onclick="history.back()">← Back</button>
+</div>
 
-  <!-- WALLET BALANCE -->
-  <div class="card wallet-card">
-    <p class="label">Available Balance</p>
-    <h1 id="walletAmount">₹0</h1>
-  </div>
+<!-- CONTENT -->
+<div class="container page-padding">
 
-  <!-- ACTION BUTTONS -->
+  <!-- BALANCE CARD -->
   <div class="card">
-    <a href="deposit.html" class="full-btn green">Deposit Money</a>
-    <a href="withdraw.html" class="full-btn orange">Withdraw Money</a>
+    <div class="card-title">Available Balance</div>
+    <h1 style="margin-top:8px">₹ <span id="wallet">0</span></h1>
+  </div>
+
+  <!-- ACTIONS -->
+  <div class="card">
+    <a href="deposit.html">
+      <div class="btn btn-primary">➕ Deposit</div>
+    </a>
+
+    <a href="withdraw.html">
+      <div class="btn btn-red">⬇ Withdraw</div>
+    </a>
   </div>
 
   <!-- INFO -->
-  <div class="card info">
-    <p>• Minimum deposit ₹100</p>
-    <p>• Withdrawal after wager completion</p>
-    <p>• Secure & instant balance update</p>
+  <div class="card">
+    <div class="list-item">
+      <span>Total Wagered</span>
+      <span>₹ <span id="wagered">0</span></span>
+    </div>
+    <div class="list-item">
+      <span>Bonus</span>
+      <span>₹ <span id="bonus">0</span></span>
+    </div>
+    <div class="list-item">
+      <span>Deposited</span>
+      <span id="deposited">No</span>
+    </div>
   </div>
 
-  <!-- JS -->
-  <script src="js/api.js"></script>
-  <script src="js/wallet.js"></script>
+</div>
 
+<!-- FOOTER -->
+<div class="footer">
+  <a href="home.html">Home</a>
+  <a href="game.html">Game</a>
+  <a href="wallet.html" class="active">Wallet</a>
+  <a href="profile.html">Profile</a>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/wallet.js"></script>
 </body>
-</html>
+  </html>
