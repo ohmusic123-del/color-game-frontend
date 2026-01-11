@@ -2,30 +2,26 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>BIGWIN – Red / Green</title>
+  <title>BIGWIN – Game</title>
 
-  <!-- Main Mobile CSS -->
+  <!-- Mobile only -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+
   <link rel="stylesheet" href="css/style.css" />
 </head>
-<body class="app-bg">
+<body class="mobile">
 
   <!-- HEADER -->
-  <header class="top-header">
-    <button class="back-btn" onclick="history.back()">←</button>
-    <h1>Red / Green</h1>
-    <div class="balance">₹<span id="walletBalance">0</span></div>
+  <header class="app-header">
+    <h2>BIGWIN</h2>
+    <span id="roundId">Round: --</span>
   </header>
 
-  <!-- ROUND INFO -->
-  <section class="card round-card">
-    <div class="round-row">
-      <span>Round ID</span>
-      <strong id="roundId">----</strong>
-    </div>
-    <div class="round-row">
+  <!-- TIMER -->
+  <section class="timer-card">
+    <div class="timer-info">
       <span>Time Left</span>
-      <strong><span id="timeLeft">30</span>s</strong>
+      <strong id="timeLeft">30</strong>s
     </div>
     <div class="timer-bar">
       <div id="timerProgress"></div>
@@ -35,26 +31,26 @@
   <!-- COLOR SELECTION -->
   <section class="card">
     <h3>Select Color</h3>
-    <div class="color-row">
+    <div class="color-buttons">
       <button id="redBtn" class="color-btn red">RED</button>
       <button id="greenBtn" class="color-btn green">GREEN</button>
     </div>
   </section>
 
-  <!-- BET AMOUNT (HIDDEN INITIALLY) -->
+  <!-- BET SECTION (HIDDEN INITIALLY) -->
   <section id="betSection" class="card hidden">
-    <h3>How much do you want to bet?</h3>
+    <h3>Choose Amount</h3>
 
-    <div class="amount-row">
+    <div class="amount-buttons">
       <button class="amt-btn" data-amt="1">1</button>
       <button class="amt-btn" data-amt="5">5</button>
       <button class="amt-btn" data-amt="10">10</button>
       <button class="amt-btn" data-amt="50">50</button>
     </div>
 
-    <div class="bet-total">
+    <div class="bet-summary">
+      <span>Bet: ₹<span id="betAmount">0</span></span>
       <button id="plusBtn" class="plus-btn">+</button>
-      <span>₹<span id="betAmount">0</span></span>
     </div>
 
     <button id="placeBetBtn" class="primary-btn" disabled>
@@ -64,25 +60,34 @@
 
   <!-- TABS -->
   <section class="card">
-    <div class="tab-header">
+    <div class="tabs">
       <button class="tab-btn active" data-tab="results">Results</button>
       <button class="tab-btn" data-tab="mybets">My Bets</button>
     </div>
 
-    <!-- RESULTS -->
+    <!-- LAST 10 RESULTS -->
     <div id="resultsTab" class="tab-content">
       <ul id="resultsList" class="list"></ul>
     </div>
 
-    <!-- MY BETS -->
+    <!-- USER BET HISTORY -->
     <div id="myBetsTab" class="tab-content hidden">
       <ul id="myBetsList" class="list"></ul>
     </div>
   </section>
 
-  <!-- JS -->
+  <!-- BOTTOM NAV -->
+  <nav class="bottom-nav">
+    <a href="home.html">Home</a>
+    <a href="wallet.html">Wallet</a>
+    <a href="game.html" class="active">Game</a>
+    <a href="profile.html">Profile</a>
+  </nav>
+
+  <!-- SCRIPTS -->
   <script src="js/api.js"></script>
-  <script src="js/timer.js"></script>
   <script src="js/game.js"></script>
+  <script src="js/timer.js"></script>
+
 </body>
-</html>
+                                               </html>
