@@ -256,130 +256,95 @@ body {
 .action-btn.red {
   background: linear-gradient(135deg, #ef4444, #b91c1c);
 }
-/* ============================= */
-/* PROFILE PAGE – FINAL FIX */
-/* ============================= */
+/* ================= PROFILE PAGE ONLY ================= */
 
 .profile-page {
-  padding-bottom: 80px;
-
-
+  padding: 16px;
+  padding-bottom: 90px; /* space for bottom nav */
 }
 
 /* Header */
-.profile-header {
+.page-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px;
+  padding: 14px 16px;
 }
 
-.profile-header h1 {
-  font-size: 26px;
+.page-header h1 {
+  font-size: 22px;
   font-weight: 700;
-  margin: 0;
 }
 
-.profile-logout {
-  background: #2a2f45;
+.logout-btn {
+  background: #1f2937;
   color: #fff;
   border: none;
   padding: 6px 14px;
-  border-radius: 8px;
+  border-radius: 14px;
   font-size: 14px;
 }
 
-/* Cards */
-.profile-card {
+/* Card */
+.card {
   background: linear-gradient(180deg, #0b1020, #070b16);
   border-radius: 16px;
   padding: 16px;
   margin-bottom: 16px;
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.06);
 }
 
-.profile-card h3 {
-  margin: 0 0 12px;
-  font-size: 16px;
-  color: #9aa4ff;
+.card-title {
+  font-size: 14px;
+  color: #9ca3af;
+  margin-bottom: 12px;
 }
 
-/* Rows */
-.profile-row {
+/* Info rows */
+.info-row {
   display: flex;
   justify-content: space-between;
-  align-items: center;
   padding: 10px 0;
-  border-bottom: 1px solid rgba(255,255,255,0.06);
-  font-size: 15px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
 }
 
-.profile-row:last-child {
+.info-row:last-child {
   border-bottom: none;
 }
 
-.profile-row span:last-child {
-  font-weight: 600;
+.info-row span {
+  color: #cbd5f5;
 }
 
-/* Actions */
+.info-row strong {
+  color: #ffffff;
+}
+
+/* Action buttons */
 .profile-actions {
   display: flex;
-  gap: 10px;
+  gap: 12px;
 }
 
-.profile-actions a {
+.action-btn {
   flex: 1;
   text-align: center;
-  padding: 10px 0;
-  border-radius: 12px;
+  padding: 12px 0;
+  border-radius: 14px;
   font-weight: 600;
   text-decoration: none;
-  font-size: 14px;
-}
-
-/* Buttons */
-.profile-actions .wallet {
-  background: #1e293b;
-  color: #fff;
-}
-
-.profile-actions .deposit {
-  background: #22c55e;
   color: #000;
 }
 
-.profile-actions .withdraw {
+.action-btn.wallet {
+  background: #ffffff;
+}
+
+.action-btn.deposit {
+  background: #22c55e;
+}
+
+.action-btn.withdraw {
   background: #ef4444;
   color: #fff;
-    }
-/* ============================= */
-/* BOTTOM NAV – SHARED (HOME + PROFILE) */
-/* ============================= */
-
-.bottom-nav {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 56px;
-  background: linear-gradient(180deg, #0b1020, #070b16);
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  border-top: 1px solid rgba(255,255,255,0.08);
-  z-index: 999;
-}
-
-.bottom-nav a {
-  flex: 1;
-  text-align: center;
-  color: #9ca3af;
-  text-decoration: none;
-  font-size: 14px;
-  font-weight: 600;
-}
-
-.bottom-nav a.active {
-  color: #22c55e;
 }
