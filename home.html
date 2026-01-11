@@ -9,44 +9,45 @@
 <body>
 
 <!-- HEADER -->
-<div class="header">
-  <h2>BIGWIN</h2>
-  <button onclick="logout()">Logout</button>
+<div class="top-bar">
+  <h1>BIGWIN</h1>
+  <button class="logout-btn" onclick="logout()">Logout</button>
 </div>
 
 <!-- PAGE -->
-<div class="container page-padding">
+<div class="page">
 
   <!-- WALLET CARD -->
   <div class="card">
     <div class="card-title">Wallet Balance</div>
-    <h2 style="margin-top:8px">₹ <span id="wallet">0</span></h2>
+    <div class="amount">₹ <span id="wallet">0</span></div>
   </div>
 
   <!-- QUICK ACTIONS -->
   <div class="card">
     <div class="card-title">Quick Actions</div>
 
-    <a href="game.html">
-      <div class="btn btn-green">🎮 Play Game</div>
+    <a href="game.html" class="action-btn green">
+      🎮 Play Game
     </a>
 
-    <a href="deposit.html">
-      <div class="btn btn-primary">➕ Deposit</div>
+    <a href="deposit.html" class="action-btn blue">
+      ➕ Deposit
     </a>
 
-    <a href="withdraw.html">
-      <div class="btn btn-red">⬇ Withdraw</div>
+    <a href="withdraw.html" class="action-btn red">
+      ⬇ Withdraw
     </a>
   </div>
 
-  <!-- INFO -->
+  <!-- ACCOUNT INFO -->
   <div class="card">
-    <div class="list-item">
+    <div class="row">
       <span>Total Wagered</span>
       <span>₹ <span id="wagered">0</span></span>
     </div>
-    <div class="list-item">
+
+    <div class="row">
       <span>Account</span>
       <span id="mobile">--</span>
     </div>
@@ -54,8 +55,8 @@
 
 </div>
 
-<!-- FOOTER NAV -->
-<div class="footer">
+<!-- BOTTOM NAV -->
+<div class="bottom-nav">
   <a href="home.html" class="active">Home</a>
   <a href="game.html">Game</a>
   <a href="wallet.html">Wallet</a>
