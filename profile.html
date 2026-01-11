@@ -2,51 +2,62 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-  />
-  <title>Profile – BIGWIN</title>
-
+  <title>Profile • BIGWIN</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
 
-  <!-- HEADER -->
-  <div class="header">
-    <button class="back-btn" onclick="history.back()">←</button>
-    <h2>Profile</h2>
-  </div>
+<!-- HEADER -->
+<div class="header">
+  <h2>Profile</h2>
+  <button onclick="logout()">Logout</button>
+</div>
 
-  <!-- PROFILE CARD -->
-  <div class="card profile-card">
-    <div class="avatar">👤</div>
+<!-- CONTENT -->
+<div class="container page-padding">
 
-    <p class="profile-item">
+  <!-- USER INFO -->
+  <div class="card">
+    <div class="card-title">Account Info</div>
+
+    <div class="row">
       <span>Mobile</span>
-      <b id="mobile">---</b>
-    </p>
+      <strong id="mobile">--</strong>
+    </div>
 
-    <p class="profile-item">
-      <span>Wallet</span>
-      <b>₹<span id="wallet">0</span></b>
-    </p>
+    <div class="row">
+      <span>Wallet Balance</span>
+      <strong>₹<span id="wallet">0</span></strong>
+    </div>
 
-    <p class="profile-item">
+    <div class="row">
       <span>Total Wagered</span>
-      <b>₹<span id="wagered">0</span></b>
-    </p>
+      <strong>₹<span id="wagered">0</span></strong>
+    </div>
   </div>
 
   <!-- ACTIONS -->
   <div class="card">
-    <button class="full-btn" onclick="goWithdraw()">Withdraw</button>
-    <button class="full-btn dark" onclick="logout()">Logout</button>
+    <div class="card-title">Account</div>
+
+    <button class="btn" onclick="location.href='wallet.html'">Wallet</button>
+    <button class="btn" onclick="location.href='deposit.html'">Deposit</button>
+    <button class="btn btn-danger" onclick="location.href='withdraw.html'">Withdraw</button>
   </div>
 
-  <!-- JS -->
-  <script src="js/api.js"></script>
-  <script src="js/profile.js"></script>
+</div>
 
+<!-- FOOTER -->
+<div class="footer">
+  <a href="home.html">Home</a>
+  <a href="game.html">Game</a>
+  <a href="wallet.html">Wallet</a>
+  <a href="profile.html" class="active">Profile</a>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/profile.js"></script>
 </body>
-</html>
+    </html>
