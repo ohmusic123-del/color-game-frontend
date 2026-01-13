@@ -247,3 +247,15 @@ myBetsTab.onclick = () => {
 loadGame();
 setInterval(updateTimer, 1000);
 updateTimer();
+
+// Debug - Show that JS loaded
+console.log("✅ Game.js loaded successfully");
+console.log("API URL:", API);
+console.log("Token exists:", !!token);
+
+// Show on page
+setTimeout(() => {
+  if (walletBalance.textContent === "₹0") {
+    alert("Game not loading! Check internet connection.");
+  }
+}, 5000);
