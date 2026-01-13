@@ -1,8 +1,11 @@
+const API = "https://color-game-backend1.onrender.com";
+
 let selectedColor = null;
 let betAmount = 0;
 
 const walletBalance = document.getElementById("walletBalance");
 const roundIdEl = document.getElementById("roundId");
+const timeLeftEl = document.getElementById("timeLeft");
 
 const redBtn = document.getElementById("redBtn");
 const greenBtn = document.getElementById("greenBtn");
@@ -21,7 +24,10 @@ const myBetsList = document.getElementById("myBetsList");
 
 const token = localStorage.getItem("token");
 
-if (!token) location.href = "index.html";
+if (!token) {
+  alert("Please login first");
+  location.href = "index.html";
+}
 
 /* ======================
    COLOR SELECTION
@@ -62,91 +68,160 @@ plusBtn.onclick = () => {
    PLACE BET
 ====================== */
 placeBetBtn.onclick = async () => {
-  if (!selectedColor || betAmount <= 0) return;
+  if (!selectedColor || betAmount <= 0) {
+    alert("Select color and amount first");
+    return;
+  }
 
-  const res = await fetch(API + "/bet", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: token
-    },
-    body: JSON.stringify({
-      color: selectedColor,
-      amount: betAmount
-    })
-  });
+  try {
+    const res = await fetch(API + "/bet", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token
+      },
+      body: JSON.stringify({
+        color: selectedColor,
+        amount: betAmount
+      })
+    });
 
-  const data = await res.json();
-  alert(data.message || data.error);
+    const data = await res.json();
 
-  betSection.classList.add("hidden");
+    if (res.ok) {
+      alert(data.message);
+      loadGame();
+      betSection.classList.add("hidden");
+      selectedColor = null;
+      betAmount = 0;
+    } else {
+      alert(data.error || "Bet failed");
+    }
+  } catch (err) {
+    console.error("Bet error:", err);
+    alert("Network error. Please try again.");
+  }
 };
 
 /* ======================
-   LOAD ROUND + WALLET
+   TIMER
+====================== */
+async function updateTimer() {
+  try {
+    const res = await fetch(API + "/round/current");
+    const data = await res.json();
+
+    if (data.id) {
+      roundIdEl.textContent = data.id.substring(0, 8);
+      
+      const elapsed = Math.floor((Date.now() - data.startTime) / 1000);
+      const remaining = Math.max(0, 30 - elapsed);
+      
+      timeLeftEl.textContent = remaining;
+
+      // Reload results when round ends
+      if (remaining === 0) {
+        setTimeout(() => {
+          loadResults();
+          loadMyBets();
+          loadGame();
+        }, 2000);
+      }
+    }
+  } catch (err) {
+    console.error("Timer error:", err);
+  }
+}
+
+/* ======================
+   LOAD WALLET
+====================== */
+async function loadWallet() {
+  try {
+    const res = await fetch(API + "/wallet", {
+      headers: { Authorization: token }
+    });
+    
+    const data = await res.json();
+    
+    if (data.wallet !== undefined) {
+      walletBalance.textContent = "₹" + data.wallet;
+    }
+  } catch (err) {
+    console.error("Wallet error:", err);
+  }
+}
+
+/* ======================
+   LOAD RESULTS
+====================== */
+async function loadResults() {
+  try {
+    const res = await fetch(API + "/rounds/history");
+    const data = await res.json();
+    
+    if (data && data.length > 0) {
+      resultsList.innerHTML = data
+        .slice(0, 10)
+        .map(r => {
+          const colorClass = r.winner === 'red' ? 'style="color: #ff4444;"' : 'style="color: #44ff44;"';
+          return `<div class="list-item">
+            Round ${r.roundId.substring(0, 8)} → 
+            <span ${colorClass}>${r.winner.toUpperCase()}</span>
+          </div>`;
+        })
+        .join("");
+    } else {
+      resultsList.innerHTML = "<div class='list-item'>No results yet</div>";
+    }
+  } catch (err) {
+    console.error("Results error:", err);
+    resultsList.innerHTML = "<div class='list-item'>Failed to load results</div>";
+  }
+}
+
+/* ======================
+   LOAD MY BETS
+====================== */
+async function loadMyBets() {
+  try {
+    const res = await fetch(API + "/bets", {
+      headers: { Authorization: token }
+    });
+    
+    const data = await res.json();
+    
+    if (data && data.length > 0) {
+      myBetsList.innerHTML = data
+        .slice(0, 10)
+        .map(b => {
+          const statusColor = 
+            b.status === 'WON' ? 'style="color: #44ff44;"' :
+            b.status === 'LOST' ? 'style="color: #ff4444;"' :
+            'style="color: #ffaa00;"';
+          
+          return `<div class="list-item">
+            ${b.color.toUpperCase()} | ₹${b.amount} | 
+            <span ${statusColor}>${b.status}</span>
+          </div>`;
+        })
+        .join("");
+    } else {
+      myBetsList.innerHTML = "<div class='list-item'>No bets yet</div>";
+    }
+  } catch (err) {
+    console.error("Bets error:", err);
+    myBetsList.innerHTML = "<div class='list-item'>Failed to load bets</div>";
+  }
+}
+
+/* ======================
+   LOAD GAME
 ====================== */
 async function loadGame() {
-  const r = await fetch(API + "/round/current");
-  const rd = await r.json();
-  roundIdEl.textContent = rd.id;
-
-  const w = await fetch(API + "/wallet", {
-    headers: { Authorization: token }
-  });
-  const wd = await w.json();
-  walletBalance.textContent = "₹" + wd.wallet;
-// ✅ Add auto-refresh wallet after bet
-placeBetBtn.onclick = async () => {
-  if (!selectedColor || betAmount <= 0) return;
-
-  const res = await fetch(API + "/bet", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: token
-    },
-    body: JSON.stringify({
-      color: selectedColor,
-      amount: betAmount
-    })
-  });
-
-  const data = await res.json();
-  
-  if (res.ok) {
-    alert(data.message);
-    // ✅ Reload wallet immediately
-    loadGame();
-  } else {
-    alert(data.error);
-  }
-
-  betSection.classList.add("hidden");
-  selectedColor = null;
-  betAmount = 0;
-};
+  loadWallet();
   loadResults();
   loadMyBets();
-}
-
-async function loadResults() {
-  const res = await fetch(API + "/rounds/history");
-  const data = await res.json();
-  resultsList.innerHTML = data
-    .slice(0, 10)
-    .map(r => `<div class="list-item">${r.roundId} → ${r.winner}</div>`)
-    .join("");
-}
-
-async function loadMyBets() {
-  const res = await fetch(API + "/bets", {
-    headers: { Authorization: token }
-  });
-  const data = await res.json();
-  myBetsList.innerHTML = data
-    .slice(0, 10)
-    .map(b => `<div class="list-item">${b.roundId} | ${b.color} | ₹${b.amount} | ${b.status}</div>`)
-    .join("");
 }
 
 /* ======================
@@ -166,4 +241,9 @@ myBetsTab.onclick = () => {
   resultsList.classList.add("hidden");
 };
 
+/* ======================
+   INIT
+====================== */
 loadGame();
+setInterval(updateTimer, 1000);
+updateTimer();
