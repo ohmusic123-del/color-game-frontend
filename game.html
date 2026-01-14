@@ -64,7 +64,22 @@
   <a href="profile.html">Profile</a>
 </nav>
 
-<script src="js/api.js?v=20"></script>
-<script src="js/game.js?v=20"></script>
+<!-- ✅ REPLACE OLD SCRIPT TAGS WITH THIS -->
+<script>
+  // Force fresh load with timestamp
+  const t = Date.now();
+  
+  // Load API script
+  const s1 = document.createElement('script');
+  s1.src = 'js/api.js?' + t;
+  document.body.appendChild(s1);
+  
+  // Load game script after API loads
+  s1.onload = () => {
+    const s2 = document.createElement('script');
+    s2.src = 'js/game.js?' + t;
+    document.body.appendChild(s2);
+  };
+</script>
 </body>
 </html>
