@@ -1,153 +1,61 @@
-// ================= CONFIG =================
-const API_BASE = "https://YOUR_BACKEND_URL"; // 🔴 REPLACE with your backend URL
+const API = "https://YOUR_BACKEND_URL";
 const token = localStorage.getItem("token");
 
 if (!token) {
   window.location.href = "/index.html";
 }
 
-// ================= ELEMENTS =================
-const walletEl = document.getElementById("wallet");
-const roundEl = document.getElementById("round");
-const timeEl = document.getElementById("time");
-const resultsBtn = document.getElementById("resultsBtn");
-const myBetsBtn = document.getElementById("myBetsBtn");
-const listEl = document.getElementById("list");
+const walletEl = document.getElementById("walletAmount");
+const roundEl = document.getElementById("roundId");
+const timeEl = document.getElementById("timeLeft");
 
-// ================= GLOBAL STATE =================
-let CURRENT_ROUND_ID = null;
-let TIMER_INTERVAL = null;
-
-// ================= API HELPER =================
-async function api(path, options = {}) {
-  const res = await fetch(API_BASE + path, {
-    ...options,
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + token,
-      ...(options.headers || {})
-    }
-  });
-
-  if (res.status === 401) {
-    localStorage.clear();
-    window.location.href = "/index.html";
-    return;
-  }
-
-  return res.json();
-}
-
-// ================= LOAD WALLET =================
 async function loadWallet() {
-  try {
-    const data = await api("/profile");
-    walletEl.innerText = `₹${data.wallet ?? 0}`;
-  } catch (e) {
-    walletEl.innerText = "₹0";
-  }
+  const res = await fetch(`${API}/profile`, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+  const data = await res.json();
+  walletEl.innerText = `₹${data.wallet}`;
 }
 
-// ================= LOAD ROUND =================
 async function loadRound() {
-  try {
-    const data = await api("/round/current");
+  const res = await fetch(`${API}/round/current`);
+  const data = await res.json();
 
-    CURRENT_ROUND_ID = data.roundId;
-    roundEl.innerText = data.roundId;
-
-    startTimer(data.remaining);
-  } catch (e) {
-    roundEl.innerText = "---";
-    timeEl.innerText = "--s";
-  }
+  roundEl.innerText = data.roundId;
+  startTimer(data.remaining);
 }
 
-// ================= TIMER =================
+let timerInterval;
 function startTimer(seconds) {
-  clearInterval(TIMER_INTERVAL);
+  clearInterval(timerInterval);
+  timeEl.innerText = `${seconds}s`;
 
-  let remaining = seconds;
-  timeEl.innerText = `${remaining}s`;
-
-  TIMER_INTERVAL = setInterval(() => {
-    remaining--;
-    timeEl.innerText = `${remaining}s`;
-
-    if (remaining <= 0) {
-      clearInterval(TIMER_INTERVAL);
-      setTimeout(loadRound, 1500);
-      loadWallet();
-    }
+  timerInterval = setInterval(() => {
+    seconds--;
+    timeEl.innerText = `${seconds}s`;
+    if (seconds <= 0) clearInterval(timerInterval);
   }, 1000);
 }
 
-// ================= PLACE BET =================
 async function placeBet(color) {
-  if (!CURRENT_ROUND_ID) return alert("Round not ready");
+  const amount = 10; // fixed bet for now
 
-  const amount = prompt("Enter bet amount");
-  if (!amount || isNaN(amount) || Number(amount) <= 0) {
-    return alert("Invalid amount");
-  }
-
-  const res = await api("/bet", {
+  const res = await fetch(`${API}/bet`, {
     method: "POST",
-    body: JSON.stringify({
-      color,
-      amount: Number(amount)
-    })
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
+    },
+    body: JSON.stringify({ color, amount })
   });
 
-  if (res.error) {
-    alert(res.error);
-  } else {
-    alert("Bet placed");
-    loadWallet();
-    loadMyBets();
-  }
+  const data = await res.json();
+  alert(data.message || "Bet placed");
+  loadWallet();
 }
 
-// ================= LOAD RESULTS =================
-async function loadResults() {
-  listEl.innerHTML = "Loading...";
-  const bets = await api("/bets");
+document.getElementById("betRed").onclick = () => placeBet("red");
+document.getElementById("betGreen").onclick = () => placeBet("green");
 
-  listEl.innerHTML = bets
-    .map(
-      b =>
-        `<div>
-          ${b.roundId} | ${b.color} | ₹${b.amount} | ${b.status}
-        </div>`
-    )
-    .join("");
-}
-
-// ================= LOAD MY BETS =================
-async function loadMyBets() {
-  listEl.innerHTML = "Loading...";
-  const data = await api("/bets/current");
-
-  listEl.innerHTML = data.bets.length
-    ? data.bets
-        .map(
-          b =>
-            `<div>
-              ${b.roundId} | ${b.color} | ₹${b.amount} | ${b.status}
-            </div>`
-        )
-        .join("")
-    : "<div>No bets this round</div>";
-}
-
-// ================= EVENTS =================
-document.getElementById("redBtn").onclick = () => placeBet("red");
-document.getElementById("greenBtn").onclick = () => placeBet("green");
-
-resultsBtn.onclick = loadResults;
-myBetsBtn.onclick = loadMyBets;
-
-// ================= INIT =================
 loadWallet();
 loadRound();
-loadResults();
