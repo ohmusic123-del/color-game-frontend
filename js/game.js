@@ -1,4 +1,4 @@
-const API = "https://YOUR_BACKEND_URL";
+const API = "https://color-game-backend1.onrender.com";
 const token = localStorage.getItem("token");
 
 if (!token) {
