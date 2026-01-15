@@ -176,7 +176,7 @@ plusBtn.onclick = () => {
 
 placeBetBtn.onclick = async () => {
   if (!selectedColor || betAmount <= 0) {
-    alert("Select color and amount first");
+    showPopup("loss", "Select color and amount!", null);
     return;
   }
 
@@ -196,17 +196,19 @@ placeBetBtn.onclick = async () => {
     const data = await res.json();
 
     if (res.ok) {
-      alert(data.message);
+      // ✅ Show bet placed popup
+      showPopup("bet", "Bet Placed!", betAmount);
+      
       loadGame();
       betSection.classList.add("hidden");
       selectedColor = null;
       betAmount = 0;
     } else {
-      alert(data.error || "Bet failed");
+      showPopup("loss", data.error || "Bet failed", null);
     }
   } catch (err) {
     console.error("Bet error:", err);
-    alert("Network error. Please try again.");
+    showPopup("loss", "Network error!", null);
   }
 };
 
@@ -219,7 +221,7 @@ async function updateTimer() {
       roundIdEl.textContent = data.id.substring(0, 8);
       
       const elapsed = Math.floor((Date.now() - data.startTime) / 1000);
-      const remaining = Math.max(0, 30 - elapsed);
+      const remaining = Math.max(0, 60 - elapsed);  // ✅ Changed to 60
       
       timeLeftEl.textContent = remaining;
 
@@ -228,6 +230,9 @@ async function updateTimer() {
           loadResults();
           loadMyBets();
           loadWallet();
+          
+          // ✅ Check if user won/lost
+          checkRoundResult();
         }, 2000);
       }
     }
@@ -235,7 +240,39 @@ async function updateTimer() {
     console.error("Timer error:", err);
   }
 }
+/* ======================
+   CHECK ROUND RESULT
+====================== */
+let lastCheckedRound = null;
 
+async function checkRoundResult() {
+  try {
+    // Get user's last bet
+    const res = await fetch(API + "/bets", {
+      headers: { Authorization: token }
+    });
+    
+    const bets = await res.json();
+    
+    if (bets && bets.length > 0) {
+      const lastBet = bets[0];
+      
+      // Check if this is a new result we haven't shown
+      if (lastBet.roundId !== lastCheckedRound && lastBet.status !== "PENDING") {
+        lastCheckedRound = lastBet.roundId;
+        
+        if (lastBet.status === "WON") {
+          const winAmount = lastBet.amount * 2 * 0.98;
+          showPopup("win", "YOU WON!", winAmount);
+        } else if (lastBet.status === "LOST") {
+          showPopup("loss", "YOU LOST", lastBet.amount);
+        }
+      }
+    }
+  } catch (err) {
+    console.error("Result check error:", err);
+  }
+}
 async function loadWallet() {
   try {
     const res = await fetch(API + "/wallet", {
