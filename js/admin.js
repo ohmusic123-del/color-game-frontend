@@ -1,116 +1,420 @@
-const token = localStorage.getItem("adminToken");
-
-if (!token) {
-  window.location.href = "admin-login.html";
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
-/* ======================
-   LOGOUT
-====================== */
-function logout() {
-  localStorage.removeItem("adminToken");
-  window.location.href = "admin-login.html";
+body {
+  background: #0a0e1a;
+  color: #fff;
+  min-height: 100vh;
 }
 
-/* ======================
-   LOAD STATS
-====================== */
-async function loadStats() {
-  const res = await fetch(API + "/admin/stats", {
-    headers: {
-      Authorization: token
-    }
-  });
-
-  const data = await res.json();
-
-  document.getElementById("users").innerText = data.users;        // Changed
-document.getElementById("deposits").innerText = data.deposits;  // Changed
-document.getElementById("withdrawals").innerText = data.withdrawals; // Changed
-document.getElementById("wallet").innerText = data.wallet;      // Changed
-document.getElementById("profit").innerText = data.profit;
-document.getElementById("rounds").innerText = data.rounds;      // Changed
+/* HEADER */
+.admin-header {
+  background: linear-gradient(135deg, #1a1f35, #0f1419);
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #1e293b;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
 }
 
-/* ======================
-   LOAD WITHDRAWS
-====================== */
-async function loadWithdraws() {
-  const res = await fetch(API + "/admin/withdraws", {
-    headers: {
-      Authorization: token
-    }
-  });
+.admin-header h2 {
+  font-size: 24px;
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 800;
+}
 
-  const data = await res.json();
-  const list = document.getElementById("withdrawList");
-  list.innerHTML = "";
+.logout-btn {
+  background: #ef4444;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
 
-  if (!data.length) {
-    list.innerHTML = "<p>No withdrawal requests</p>";
-    return;
+.logout-btn:hover {
+  background: #dc2626;
+  transform: scale(1.05);
+}
+
+/* TABS NAVIGATION */
+.admin-tabs {
+  display: flex;
+  gap: 4px;
+  padding: 12px 20px;
+  background: #0f1419;
+  border-bottom: 1px solid #1e293b;
+  overflow-x: auto;
+}
+
+.tab-btn {
+  background: transparent;
+  color: #94a3b8;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.tab-btn:hover {
+  background: #1e293b;
+  color: #fff;
+}
+
+.tab-btn.active {
+  background: #22c55e;
+  color: #000;
+}
+
+/* TAB CONTENT */
+.tab-content {
+  display: none;
+  padding: 20px;
+  animation: fadeIn 0.3s;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* STATS GRID */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  background: linear-gradient(135deg, #1a1f35, #0f1419);
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid #1e293b;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.stat-card.highlight {
+  background: linear-gradient(135deg, #166534, #14532d);
+  border-color: #22c55e;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: #94a3b8;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.stat-value {
+  font-size: 28px;
+  font-weight: 800;
+  color: #fff;
+}
+
+.stat-value.green {
+  color: #22c55e;
+}
+
+.stat-value.red {
+  color: #ef4444;
+}
+
+/* CARD */
+.card {
+  background: linear-gradient(135deg, #1a1f35, #0f1419);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+  border: 1px solid #1e293b;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.card h3 {
+  margin-bottom: 16px;
+  font-size: 18px;
+  color: #22c55e;
+}
+
+/* CONTROLS */
+.controls-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+}
+
+.control-btn {
+  background: #1e293b;
+  color: #fff;
+  border: 1px solid #334155;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.control-btn:hover {
+  background: #334155;
+  border-color: #22c55e;
+  transform: translateY(-2px);
+}
+
+/* SEARCH INPUT */
+.search-input {
+  width: 100%;
+  padding: 12px;
+  background: #0f1419;
+  border: 1px solid #1e293b;
+  border-radius: 8px;
+  color: #fff;
+  margin-bottom: 16px;
+  font-size: 14px;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #22c55e;
+}
+
+/* FILTER TABS */
+.filter-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  background: #1e293b;
+  color: #94a3b8;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 13px;
+}
+
+.filter-btn:hover {
+  background: #334155;
+  color: #fff;
+}
+
+.filter-btn.active {
+  background: #22c55e;
+  color: #000;
+}
+
+/* DATA TABLE */
+.data-table {
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.table-row {
+  background: #0f1419;
+  padding: 16px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  border: 1px solid #1e293b;
+  transition: all 0.2s;
+}
+
+.table-row:hover {
+  border-color: #22c55e;
+  transform: translateX(4px);
+}
+
+.row-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.row-title {
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.row-status {
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.row-status.pending {
+  background: #fbbf24;
+  color: #000;
+}
+
+.row-status.success, .row-status.approved {
+  background: #22c55e;
+  color: #000;
+}
+
+.row-status.failed, .row-status.rejected {
+  background: #ef4444;
+  color: #fff;
+}
+
+.row-details {
+  font-size: 13px;
+  color: #94a3b8;
+  line-height: 1.8;
+}
+
+.row-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.row-actions textarea {
+  flex: 1;
+  background: #0a0e1a;
+  border: 1px solid #1e293b;
+  border-radius: 6px;
+  padding: 8px;
+  color: #fff;
+  resize: none;
+  font-size: 12px;
+}
+
+.btn-approve {
+  background: #22c55e;
+  color: #000;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.btn-reject {
+  background: #ef4444;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* EXPORT BUTTON */
+.export-btn {
+  background: #3b82f6;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* SETTINGS */
+.setting-group {
+  display: grid;
+  grid-template-columns: 200px 1fr auto;
+  gap: 12px;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #1e293b;
+}
+
+.setting-group:last-child {
+  border-bottom: none;
+}
+
+.setting-group label {
+  font-weight: 600;
+  color: #94a3b8;
+}
+
+.setting-group input {
+  background: #0f1419;
+  border: 1px solid #1e293b;
+  border-radius: 6px;
+  padding: 8px 12px;
+  color: #fff;
+  font-size: 14px;
+}
+
+.setting-group input:focus {
+  outline: none;
+  border-color: #22c55e;
+}
+
+.setting-group button {
+  background: #22c55e;
+  color: #000;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 6px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* SCROLLBAR */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0a0e1a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #334155;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 
-  data.forEach(w => {
-    list.innerHTML += `
-      <div class="withdraw-card">
-        <div><b>Mobile:</b> ${w.mobile}</div>
-        <div><b>Amount:</b> ₹${w.amount}</div>
-        <div><b>Method:</b> ${w.method}</div>
-        <div><b>Status:</b> ${w.status}</div>
+  .setting-group {
+    grid-template-columns: 1fr;
+  }
 
-        ${
-          w.details
-            ? `<div class="details">
-                ${w.details.upiId ? "UPI: " + w.details.upiId : ""}
-                ${w.details.accountNumber ? "<br>Acc: " + w.details.accountNumber : ""}
-                ${w.details.usdtAddress ? "<br>USDT: " + w.details.usdtAddress : ""}
-              </div>`
-            : ""
-        }
+  .admin-tabs {
+    gap: 2px;
+  }
 
-        ${
-          w.status === "PENDING"
-            ? `
-            <textarea id="note-${w._id}" placeholder="Admin note"></textarea>
-            <div class="actions">
-              <button class="approve" onclick="processWithdraw('${w._id}','APPROVED')">Approve</button>
-              <button class="reject" onclick="processWithdraw('${w._id}','REJECTED')">Reject</button>
-            </div>
-          `
-            : `<div class="note">Note: ${w.adminNote || "-"}</div>`
-        }
-      </div>
-    `;
-  });
-}
-
-/* ======================
-   PROCESS WITHDRAW
-====================== */
-async function processWithdraw(id, status) {
-  const note = document.getElementById("note-" + id)?.value || "";
-
-  const res = await fetch(API + "/admin/withdraw/" + id, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: token
-    },
-    body: JSON.stringify({
-      status,
-      adminNote: note
-    })
-  });
-
-  const data = await res.json();
-  alert(data.message || data.error);
-  loadWithdraws();
-  loadStats();
-}
-
-/* ======================
-   INIT
-====================== */
-loadStats();
-loadWithdraws();
+  .tab-btn {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+    }
