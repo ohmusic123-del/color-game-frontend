@@ -1,66 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
   <meta charset="UTF-8" />
-  <title>Deposit • BIGWIN</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Deposit</title>
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
+  <div class="container">
+    <h2>Deposit</h2>
+    <button onclick="location.href='wallet.html'">⬅ Back</button>
 
-<!-- HEADER -->
-<div class="header">
-  <h2>Deposit</h2>
-  <button onclick="history.back()">← Back</button>
-</div>
-
-<!-- CONTENT -->
-<div class="container page-padding">
-
-  <!-- AMOUNT CARD -->
-  <div class="card">
-    <div class="card-title">Enter Amount</div>
-    <input
-      type="number"
-      id="amount"
-      placeholder="Minimum ₹100"
-      class="input"
-      min="100"
-    />
-
-    <div class="quick-amounts">
-      <button onclick="setAmount(100)">₹100</button>
-      <button onclick="setAmount(500)">₹500</button>
-      <button onclick="setAmount(1000)">₹1000</button>
-      <button onclick="setAmount(5000)">₹5000</button>
+    <div class="card">
+      <input type="number" id="amount" placeholder="Enter Amount" />
+      <input type="text" id="referenceId" placeholder="Enter UTR / Reference ID" />
+      <button onclick="deposit()">Submit Deposit Request</button>
+      <p id="status"></p>
     </div>
-<div class="card">
-    <a href="deposit-history.html" style="text-decoration: none;">
-      <button class="btn btn-outline">View Deposit History</button>
-    </a>
-</div>
-    <button class="btn btn-primary" onclick="deposit()">Proceed Deposit</button>
   </div>
 
-  <!-- INFO -->
-  <div class="card info-card">
-    <p>• Minimum deposit ₹100</p>
-    <p>• Deposit is instant</p>
-    <p>• Bonus wagering required for withdrawal</p>
-  </div>
-
-</div>
-
-<!-- FOOTER -->
-<div class="footer">
-  <a href="home.html">Home</a>
-  <a href="game.html">Game</a>
-  <a href="wallet.html">Wallet</a>
-  <a href="profile.html">Profile</a>
-</div>
-
-<script src="js/api.js"></script>
-<script src="js/auth.js"></script>
-<script src="js/deposit.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/deposit.js"></script>
 </body>
 </html>
