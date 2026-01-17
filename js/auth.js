@@ -9,14 +9,22 @@ async function register() {
       body: JSON.stringify({ username, password }),
     });
 
-    const data = await res.json();
+    // ✅ Safe JSON parsing
+    const text = await res.text();
+    let data;
+    try {
+      data = JSON.parse(text);
+    } catch (e) {
+      alert("❌ Backend not JSON (Register): " + text.substring(0, 120));
+      return;
+    }
 
     if (!res.ok) {
       alert(data.error || "Registration failed");
       return;
     }
 
-    alert("Registered successfully ✅ Now login");
+    alert("✅ Registered successfully. Now login");
   } catch (err) {
     alert("Error: " + err.message);
   }
@@ -33,7 +41,15 @@ async function login() {
       body: JSON.stringify({ username, password }),
     });
 
-    const data = await res.json();
+    // ✅ Safe JSON parsing
+    const text = await res.text();
+    let data;
+    try {
+      data = JSON.parse(text);
+    } catch (e) {
+      alert("❌ Backend not JSON (Login): " + text.substring(0, 120));
+      return;
+    }
 
     if (!res.ok) {
       alert(data.error || "Login failed");
@@ -41,7 +57,7 @@ async function login() {
     }
 
     localStorage.setItem("token", data.token);
-    alert("Login successful ✅");
+    alert("✅ Login successful!");
     window.location.href = "home.html";
   } catch (err) {
     alert("Error: " + err.message);
