@@ -1,28 +1,462 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Home</title>
-  <link rel="stylesheet" href="css/style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - BIGWIN</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #0a0e1a 0%, #1a1f35 100%);
+            min-height: 100vh;
+            padding-bottom: 80px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .user-info {
+            text-align: right;
+        }
+
+        .user-mobile {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 12px;
+        }
+
+        .user-code {
+            color: #22c55e;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .balance-card {
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 40px rgba(34, 197, 94, 0.3);
+        }
+
+        .balance-label {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .balance-amount {
+            font-size: 42px;
+            font-weight: 900;
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .balance-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .detail-item {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 12px;
+            border-radius: 10px;
+        }
+
+        .detail-label {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 5px;
+        }
+
+        .detail-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: white;
+        }
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .action-card {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border-radius: 15px;
+            padding: 25px 20px;
+            text-align: center;
+            text-decoration: none;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+        }
+
+        .action-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .action-icon {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+        .action-title {
+            color: white;
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .action-subtitle {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 12px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .feature-card {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border-radius: 15px;
+            padding: 20px;
+            text-decoration: none;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-3px);
+            border-color: #22c55e;
+        }
+
+        .feature-icon {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .feature-title {
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .stats-card {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stats-card h3 {
+            color: white;
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        .stats-grid {
+            display: grid;
+            gap: 15px;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stat-row:last-child {
+            border-bottom: none;
+        }
+
+        .stat-label {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+        }
+
+        .stat-value {
+            color: white;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .promo-banner {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .promo-banner h3 {
+            color: white;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .promo-banner p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 14px;
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #0f172a;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            display: flex;
+            justify-content: space-around;
+            z-index: 100;
+        }
+
+        .nav-item {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            font-size: 12px;
+            transition: all 0.3s;
+        }
+
+        .nav-item.active {
+            color: #22c55e;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <h2>Welcome</h2>
+    <div class="container">
+        <!-- Header -->
+        <div class="header fade-in">
+            <div class="logo">BIGWIN</div>
+            <div class="user-info">
+                <div class="user-mobile" id="userMobile">Loading...</div>
+                <div class="user-code" id="userCode">Loading...</div>
+            </div>
+        </div>
 
-    <button onclick="location.href='game.html'">Play Game</button>
-    <button onclick="location.href='wallet.html'">Wallet</button>
-    <button onclick="location.href='profile.html'">Profile</button>
-    <button onclick="location.href='referral.html'">Referral</button>
+        <!-- Balance Card -->
+        <div class="balance-card fade-in">
+            <div class="balance-label">Total Balance</div>
+            <div class="balance-amount" id="totalBalance">₹0.00</div>
+            <div class="balance-details">
+                <div class="detail-item">
+                    <div class="detail-label">Wallet</div>
+                    <div class="detail-value" id="walletBalance">₹0.00</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Bonus</div>
+                    <div class="detail-value" id="bonusBalance">₹0.00</div>
+                </div>
+            </div>
+        </div>
 
-    <div style="margin:15px 0;">
-      <button onclick="location.href='bonus-history.html'">Bonus History</button>
+        <!-- Promo Banner -->
+        <div class="promo-banner fade-in">
+            <h3>🎁 Referral Bonus!</h3>
+            <p>Earn 22% commission on 6 levels. Share your code now!</p>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="quick-actions fade-in">
+            <a href="game.html" class="action-card">
+                <div class="action-icon">🎮</div>
+                <div class="action-title">Play Game</div>
+                <div class="action-subtitle">Start winning now</div>
+            </a>
+            <a href="deposit.html" class="action-card">
+                <div class="action-icon">💳</div>
+                <div class="action-title">Deposit</div>
+                <div class="action-subtitle">Add funds</div>
+            </a>
+            <a href="withdraw.html" class="action-card">
+                <div class="action-icon">💸</div>
+                <div class="action-title">Withdraw</div>
+                <div class="action-subtitle">Cash out</div>
+            </a>
+            <a href="referral.html" class="action-card">
+                <div class="action-icon">🎁</div>
+                <div class="action-title">Referrals</div>
+                <div class="action-subtitle">Earn commission</div>
+            </a>
+        </div>
+
+        <!-- Stats Card -->
+        <div class="stats-card fade-in">
+            <h3>📊 Your Stats</h3>
+            <div class="stats-grid">
+                <div class="stat-row">
+                    <span class="stat-label">Total Wagered</span>
+                    <span class="stat-value" id="totalWagered">₹0.00</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Total Referrals</span>
+                    <span class="stat-value" id="totalReferrals">0</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Referral Earnings</span>
+                    <span class="stat-value" id="referralEarnings">₹0.00</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Account Status</span>
+                    <span class="stat-value" style="color: #22c55e">Active</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Features Grid -->
+        <div class="features-grid fade-in">
+            <a href="wallet-history.html" class="feature-card">
+                <div class="feature-icon">📜</div>
+                <div class="feature-title">History</div>
+            </a>
+            <a href="profile.html" class="feature-card">
+                <div class="feature-icon">👤</div>
+                <div class="feature-title">Profile</div>
+            </a>
+            <a href="deposit-history.html" class="feature-card">
+                <div class="feature-icon">📥</div>
+                <div class="feature-title">Deposits</div>
+            </a>
+            <a href="withdraw-history.html" class="feature-card">
+                <div class="feature-icon">📤</div>
+                <div class="feature-title">Withdrawals</div>
+            </a>
+        </div>
     </div>
 
-    <button onclick="logout()">Logout</button>
-  </div>
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <a href="home.html" class="nav-item active">🏠<br>Home</a>
+        <a href="game.html" class="nav-item">🎮<br>Game</a>
+        <a href="wallet.html" class="nav-item">💰<br>Wallet</a>
+        <a href="profile.html" class="nav-item">👤<br>Profile</a>
+    </div>
 
-  <script src="js/config.js"></script>
-  <script src="js/auth.js"></script>
+    <script src="js/api.js"></script>
+    <script>
+        // Check authentication
+        if (!localStorage.getItem('token')) {
+            window.location.href = 'index.html';
+        }
+
+        // Load user profile
+        async function loadProfile() {
+            try {
+                const token = localStorage.getItem('token');
+                
+                const res = await fetch(`${API}/profile`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                const data = await res.json();
+
+                if (res.ok) {
+                    document.getElementById('userMobile').textContent = data.mobile;
+                    document.getElementById('userCode').textContent = `Code: ${data.referralCode}`;
+                    document.getElementById('totalWagered').textContent = `₹${parseFloat(data.totalWagered || 0).toFixed(2)}`;
+                }
+            } catch (err) {
+                console.error('Profile load error:', err);
+            }
+        }
+
+        // Load wallet balance
+        async function loadWallet() {
+            try {
+                const token = localStorage.getItem('token');
+                
+                const res = await fetch(`${API}/wallet`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                const data = await res.json();
+
+                if (res.ok) {
+                    const wallet = parseFloat(data.wallet || 0);
+                    const bonus = parseFloat(data.bonus || 0);
+                    const total = wallet + bonus;
+
+                    document.getElementById('walletBalance').textContent = `₹${wallet.toFixed(2)}`;
+                    document.getElementById('bonusBalance').textContent = `₹${bonus.toFixed(2)}`;
+                    document.getElementById('totalBalance').textContent = `₹${total.toFixed(2)}`;
+                }
+            } catch (err) {
+                console.error('Wallet load error:', err);
+            }
+        }
+
+        // Load referral stats
+        async function loadReferralStats() {
+            try {
+                const token = localStorage.getItem('token');
+                
+                const res = await fetch(`${API}/referral/info`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                const data = await res.json();
+
+                if (res.ok) {
+                    document.getElementById('totalReferrals').textContent = data.totalReferrals || 0;
+                    document.getElementById('referralEarnings').textContent = `₹${parseFloat(data.totalEarnings || 0).toFixed(2)}`;
+                }
+            } catch (err) {
+                console.error('Referral stats load error:', err);
+            }
+        }
+
+        // Load all data
+        loadProfile();
+        loadWallet();
+        loadReferralStats();
+
+        // Auto-refresh every 30 seconds
+        setInterval(() => {
+            loadWallet();
+            loadReferralStats();
+        }, 30000);
+    </script>
 </body>
-</html>
+  </html>
