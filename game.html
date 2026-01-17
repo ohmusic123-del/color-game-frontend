@@ -1,31 +1,652 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Game</title>
-  <link rel="stylesheet" href="css/style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BIGWIN - Game</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0a0e1a 0%, #1a1f35 100%);
+            min-height: 100vh;
+            color: white;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .balance {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: 700;
+        }
+
+        .game-card {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .round-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+
+        .info-item {
+            text-align: center;
+        }
+
+        .info-item label {
+            display: block;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 5px;
+        }
+
+        .info-item value {
+            display: block;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .timer-circle {
+            width: 120px;
+            height: 120px;
+            margin: 30px auto;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            font-weight: 900;
+            box-shadow: 0 10px 40px rgba(34, 197, 94, 0.5);
+        }
+
+        .color-selection {
+            margin: 30px 0;
+        }
+
+        .color-selection h3 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+
+        .color-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .color-btn {
+            padding: 20px;
+            border: none;
+            border-radius: 15px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+        }
+
+        .color-btn.red {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+        }
+
+        .color-btn.green {
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+            color: white;
+        }
+
+        .color-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .color-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .amount-input {
+            margin: 20px 0;
+        }
+
+        .amount-input label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .amount-input input {
+            width: 100%;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: white;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .amount-input input:focus {
+            outline: none;
+            border-color: #22c55e;
+        }
+
+        .quick-amounts {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .quick-btn {
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .quick-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: #22c55e;
+        }
+
+        .results-section {
+            margin-top: 30px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: none;
+            border-radius: 10px;
+            color: rgba(255, 255, 255, 0.6);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .tab.active {
+            background: #22c55e;
+            color: white;
+        }
+
+        .results-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .result-color {
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .result-color.red { color: #ef4444; }
+        .result-color.green { color: #22c55e; }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #0f172a;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .nav-item {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            font-size: 12px;
+        }
+
+        .nav-item.active {
+            color: #22c55e;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .modal-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .modal-message {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <h2>Color Game</h2>
-    <button onclick="location.href='home.html'">⬅ Back</button>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">BIGWIN</div>
+            <div class="balance" id="balanceDisplay">₹0.00</div>
+        </div>
 
-    <div class="card">
-      <h3>Timer: <span id="timer">0</span> sec</h3>
+        <!-- Game Card -->
+        <div class="game-card">
+            <!-- Round Info -->
+            <div class="round-info">
+                <div class="info-item">
+                    <label>Round</label>
+                    <value id="roundId">Loading...</value>
+                </div>
+                <div class="info-item">
+                    <label>Time Left</label>
+                    <value id="timeLeft">60s</value>
+                </div>
+            </div>
 
-      <input id="betAmount" placeholder="Enter bet amount" type="number" />
+            <!-- Timer Circle -->
+            <div class="timer-circle pulse" id="timerCircle">60</div>
 
-      <div style="display:flex;gap:10px;flex-wrap:wrap;">
-        <button onclick="placeBet('RED')">Bet RED</button>
-        <button onclick="placeBet('GREEN')">Bet GREEN</button>
-        <button onclick="placeBet('VIOLET')">Bet VIOLET</button>
-      </div>
+            <!-- Color Selection -->
+            <div class="color-selection">
+                <h3>Select Color</h3>
+                <div class="color-buttons">
+                    <button class="color-btn red" onclick="selectColor('red')" id="redBtn">
+                        🔴 Red
+                    </button>
+                    <button class="color-btn green" onclick="selectColor('green')" id="greenBtn">
+                        🟢 Green
+                    </button>
+                </div>
+            </div>
+
+            <!-- Amount Input -->
+            <div class="amount-input">
+                <label>Bet Amount</label>
+                <input type="number" id="betAmount" placeholder="Enter amount (Min: ₹1)" min="1" value="10">
+                <div class="quick-amounts">
+                    <button class="quick-btn" onclick="setAmount(10)">₹10</button>
+                    <button class="quick-btn" onclick="setAmount(50)">₹50</button>
+                    <button class="quick-btn" onclick="setAmount(100)">₹100</button>
+                    <button class="quick-btn" onclick="setAmount(500)">₹500</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Section -->
+        <div class="results-section">
+            <div class="tabs">
+                <button class="tab active" onclick="switchTab('results')" id="resultsTab">Results</button>
+                <button class="tab" onclick="switchTab('mybets')" id="mybetsTab">My Bets</button>
+            </div>
+
+            <div class="results-list" id="resultsList">
+                <!-- Results will be loaded here -->
+            </div>
+        </div>
     </div>
-  </div>
 
-  <script src="js/config.js"></script>
-  <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
-  <script src="js/game.js"></script>
-</body>
-</html>
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <a href="home.html" class="nav-item">🏠<br>Home</a>
+        <a href="game.html" class="nav-item active">🎮<br>Game</a>
+        <a href="wallet.html" class="nav-item">💰<br>Wallet</a>
+        <a href="profile.html" class="nav-item">👤<br>Profile</a>
+    </div>
+
+    <!-- Modals -->
+    <div class="modal" id="betModal">
+        <div class="modal-content">
+            <div class="modal-icon">🎲</div>
+            <div class="modal-title">Bet Placed!</div>
+            <div class="modal-message" id="betMessage"></div>
+        </div>
+    </div>
+
+    <div class="modal" id="resultModal">
+        <div class="modal-content">
+            <div class="modal-icon" id="resultIcon">🎉</div>
+            <div class="modal-title" id="resultTitle">You Won!</div>
+            <div class="modal-message" id="resultMessage"></div>
+        </div>
+    </div>
+
+    <script>
+        const API = "https://color-game-backend1.onrender.com";
+        let currentRound = null;
+        let selectedColor = null;
+        let userBalance = 0;
+        let hasBetThisRound = false;
+
+        // Get auth headers
+        function getAuthHeaders() {
+            const token = localStorage.getItem('token');
+            return {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            };
+        }
+
+        // Check authentication
+        if (!localStorage.getItem('token')) {
+            window.location.href = 'index.html';
+        }
+
+        // Select color
+        function selectColor(color) {
+            selectedColor = color;
+            placeBet();
+        }
+
+        // Set amount
+        function setAmount(amount) {
+            document.getElementById('betAmount').value = amount;
+        }
+
+        // Place bet - FIXED VERSION (prevents freeze)
+        async function placeBet() {
+            if (!selectedColor) return;
+            
+            const amount = parseInt(document.getElementById('betAmount').value);
+            
+            if (!amount || amount < 1) {
+                alert('❌ Please enter a valid amount (Min: ₹1)');
+                return;
+            }
+
+            if (amount > userBalance) {
+                alert('❌ Insufficient balance');
+                return;
+            }
+
+            if (hasBetThisRound) {
+                alert('❌ You already placed a bet this round');
+                return;
+            }
+
+            // Disable buttons during request
+            document.getElementById('redBtn').disabled = true;
+            document.getElementById('greenBtn').disabled = true;
+
+            try {
+                const res = await fetch(`${API}/bet`, {
+                    method: 'POST',
+                    headers: getAuthHeaders(),
+                    body: JSON.stringify({ 
+                        color: selectedColor, 
+                        amount: amount 
+                    })
+                });
+
+                const data = await res.json();
+
+                if (res.ok) {
+                    // Mark as bet placed
+                    hasBetThisRound = true;
+                    
+                    // Update balance
+                    userBalance = parseFloat(data.newWallet) + parseFloat(data.newBonus);
+                    updateBalanceDisplay();
+                    
+                    // Show success modal
+                    showBetModal(selectedColor, amount);
+                    
+                    // Keep buttons disabled
+                } else {
+                    alert('❌ ' + data.error);
+                    // Re-enable buttons on error
+                    document.getElementById('redBtn').disabled = false;
+                    document.getElementById('greenBtn').disabled = false;
+                }
+            } catch (err) {
+                console.error('Bet error:', err);
+                alert('❌ Network error. Please try again.');
+                // Re-enable buttons on error
+                document.getElementById('redBtn').disabled = false;
+                document.getElementById('greenBtn').disabled = false;
+            }
+        }
+
+        // Show bet confirmation modal
+        function showBetModal(color, amount) {
+            const modal = document.getElementById('betModal');
+            const message = document.getElementById('betMessage');
+            
+            message.textContent = `₹${amount} on ${color.toUpperCase()}`;
+            modal.classList.add('show');
+            
+            setTimeout(() => {
+                modal.classList.remove('show');
+            }, 3000);
+        }
+
+        // Show result modal
+        function showResultModal(won, amount) {
+            const modal = document.getElementById('resultModal');
+            const icon = document.getElementById('resultIcon');
+            const title = document.getElementById('resultTitle');
+            const message = document.getElementById('resultMessage');
+            
+            if (won) {
+                icon.textContent = '🎉';
+                title.textContent = 'You Won!';
+                message.textContent = `Won ₹${amount}`;
+            } else {
+                icon.textContent = '😔';
+                title.textContent = 'You Lost';
+                message.textContent = `Lost ₹${amount}`;
+            }
+            
+            modal.classList.add('show');
+            
+            setTimeout(() => {
+                modal.classList.remove('show');
+            }, 3000);
+        }
+
+        // Load wallet balance
+        async function loadBalance() {
+            try {
+                const res = await fetch(`${API}/wallet`, {
+                    headers: getAuthHeaders()
+                });
+
+                const data = await res.json();
+                
+                if (res.ok) {
+                    userBalance = parseFloat(data.wallet) + parseFloat(data.bonus);
+                    updateBalanceDisplay();
+                }
+            } catch (err) {
+                console.error('Balance load error:', err);
+            }
+        }
+
+        // Update balance display
+        function updateBalanceDisplay() {
+            document.getElementById('balanceDisplay').textContent = `₹${userBalance.toFixed(2)}`;
+        }
+
+        // Load current round
+        async function loadCurrentRound() {
+            try {
+                const res = await fetch(`${API}/round/current`);
+                const data = await res.json();
+                
+                currentRound = data;
+                document.getElementById('roundId').textContent = data.id.slice(-6);
+            } catch (err) {
+                console.error('Round load error:', err);
+            }
+        }
+
+        // Update timer
+        function updateTimer() {
+            if (!currentRound) return;
+            
+            const elapsed = Math.floor((Date.now() - currentRound.startTime) / 1000);
+            const remaining = Math.max(0, 60 - elapsed);
+            
+            document.getElementById('timerCircle').textContent = remaining;
+            document.getElementById('timeLeft').textContent = `${remaining}s`;
+            
+            // Disable betting in last 3 seconds
+            if (remaining <= 3) {
+                document.getElementById('redBtn').disabled = true;
+                document.getElementById('greenBtn').disabled = true;
+            }
+            
+            // Round ended
+            if (remaining === 0) {
+                setTimeout(() => {
+                    resetForNewRound();
+                }, 2000);
+            }
+        }
+
+        // Reset for new round
+        function resetForNewRound() {
+            hasBetThisRound = false;
+            document.getElementById('redBtn').disabled = false;
+            document.getElementById('greenBtn').disabled = false;
+            loadCurrentRound();
+            loadResults();
+            loadMyBets();
+            loadBalance();
+        }
+
+        // Load results history
+        async function loadResults() {
+            try {
+                const res = await fetch(`${API}/rounds/history`);
+                const rounds = await res.json();
+                
+                const list = document.getElementById('resultsList');
+                list.innerHTML = rounds.map(round => `
+                    <div class="result-item">
+                        <span>Round ${round.roundId.slice(-6)}</span>
+                        <span class="result-color ${round.winner}">${round.winner ? round.winner.toUpperCase() : 'PENDING'}</span>
+                    </div>
+                `).join('');
+            } catch (err) {
+                console.error('Results load error:', err);
+            }
+        }
+
+        // Load my bets
+        async function loadMyBets() {
+            try {
+                const res = await fetch(`${API}/bets`, {
+                    headers: getAuthHeaders()
+                });
+                const bets = await res.json();
+                
+                const list = document.getElementById('resultsList');
+                list.innerHTML = bets.map(bet => `
+                    <div class="result-item">
+                        <div>
+                            <span class="result-color ${bet.color}">${bet.color.toUpperCase()}</span>
+                            <span> • ₹${bet.amount}</span>
+                        </div>
+                        <span style="color: ${bet.status === 'WON' ? '#22c55e' : bet.status === 'LOST' ? '#ef4444' : '#fbbf24'}">${bet.status}</span>
+                    </div>
+                `).join('');
+            } catch (err) {
+                console.error('Bets load error:', err);
+            }
+        }
+
+        // Switch tabs
+        function switchTab(tab) {
+            document.getElementById('resultsTab').classList.remove('active');
+            document.getElementById('mybetsTab').classList.
