@@ -1,7 +1,8 @@
 async function register() {
   const username = document.getElementById("registerUsername").value;
   const password = document.getElementById("registerPassword").value;
-
+console.log("REGISTER URL =>", `${API_BASE}/api/auth/register`);
+alert(`${API_BASE}/api/auth/register`);
   try {
     const res = await fetch(`${API_BASE}/api/auth/register`, {
       method: "POST",
@@ -33,7 +34,8 @@ async function register() {
 async function login() {
   const username = document.getElementById("loginUsername").value;
   const password = document.getElementById("loginPassword").value;
-
+console.log("LOGIN URL =>", `${API_BASE}/api/auth/login`);
+alert(`${API_BASE}/api/auth/login`);
   try {
     const res = await fetch(`${API_BASE}/api/auth/login`, {
       method: "POST",
