@@ -1,43 +1,30 @@
-const historyList = document.getElementById("historyList");
+const token = localStorage.getItem("token");
+if (!token) window.location.href = "index.html";
 
 async function loadWalletHistory() {
-  try {
-    const token = localStorage.getItem("token");
+  const div = document.getElementById("history");
+  div.innerHTML = "Loading...";
 
-    const res = await fetch(`${API}/wallet/history`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+  try {
+    const res = await fetch(`${API_BASE}/api/wallet/history`, {
+      headers: { Authorization: `Bearer ${token}` },
     });
 
     const data = await res.json();
 
-    if (!data || data.length === 0) {
-      historyList.innerHTML = "<p class='empty'>No transactions found</p>";
+    if (!res.ok) {
+      div.innerHTML = data.error || "Failed";
       return;
     }
 
-    historyList.innerHTML = "";
-
-    data.forEach(tx => {
-      const row = document.createElement("div");
-      row.className = "history-row";
-
-      row.innerHTML = `
-        <div>
-          <strong>${tx.type.toUpperCase()}</strong>
-          <div class="date">${new Date(tx.createdAt).toLocaleString()}</div>
-        </div>
-        <div class="${tx.type}">
-          ₹ ${tx.amount}
-        </div>
-      `;
-
-      historyList.appendChild(row);
-    });
-
-  } catch (err) {
-    historyList.innerHTML = "<p class='error'>Failed to load history</p>";
+    div.innerHTML = `
+      <div class="card">
+        <h3>Deposits: ${data.deposits.length}</h3>
+        <h3>Withdraws: ${data.withdraws.length}</h3>
+      </div>
+    `;
+  } catch (e) {
+    div.innerHTML = e.message;
   }
 }
 
