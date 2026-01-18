@@ -607,5 +607,31 @@
                 const data = await res.json();
 
                 if (res.ok) {
-                    // Store token
-                    localStorage.setI
+    // Store token
+    localStorage.setItem('token', data.token);
+
+    // Show success
+    const successDiv = document.getElementById('successAnimation');
+    const successMsg = document.getElementById('successMessage');
+    successMsg.textContent = 'Account created successfully! Redirecting...';
+    successDiv.classList.add('show');
+
+    // Redirect to home
+    setTimeout(() => {
+        window.location.href = 'home.html';
+    }, 1000);
+} else {
+    alert('❌ ' + (data.error || 'Registration failed'));
+    registerBtn.disabled = false;
+    registerBtn.textContent = 'Create Account';
+}
+} catch (err) {
+console.error('Register error:', err);
+alert('❌ Network error. Please check your connection.');
+registerBtn.disabled = false;
+registerBtn.textContent = 'Create Account';
+}
+}
+</script>
+</body>
+</html>
