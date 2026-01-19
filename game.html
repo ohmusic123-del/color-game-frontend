@@ -163,6 +163,147 @@
       background: rgba(255, 255, 255, 0.1);
       border-color: #22c55e;
     }
+
+    /* TABS */
+    .tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .tab {
+      flex: 1;
+      padding: 12px;
+      background: rgba(255, 255, 255, 0.05);
+      border: none;
+      border-radius: 10px;
+      color: rgba(255, 255, 255, 0.6);
+      cursor: pointer;
+      transition: all 0.3s;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .tab.active {
+      background: #22c55e;
+      color: white;
+    }
+
+    /* RESULTS & HISTORY */
+    .results-section {
+      margin-top: 30px;
+    }
+    .results-list {
+      max-height: 400px;
+      overflow-y: auto;
+    }
+    .result-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
+    .result-color {
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    .result-color.red { color: #ef4444; }
+    .result-color.green { color: #22c55e; }
+    .bet-status {
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    .bet-status.WON { 
+      background: rgba(34, 197, 94, 0.2);
+      color: #22c55e;
+    }
+    .bet-status.LOST { 
+      background: rgba(239, 68, 68, 0.2);
+      color: #ef4444;
+    }
+    .bet-status.PENDING { 
+      background: rgba(251, 191, 36, 0.2);
+      color: #fbbf24;
+    }
+
+    /* RESULT POPUP */
+    .popup-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.9);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      animation: fadeIn 0.3s;
+    }
+    .popup-overlay.show {
+      display: flex;
+    }
+    .popup-content {
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      border-radius: 30px;
+      padding: 40px 30px;
+      max-width: 400px;
+      width: 90%;
+      text-align: center;
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      position: relative;
+      animation: slideUp 0.3s;
+    }
+    .popup-icon {
+      font-size: 80px;
+      margin-bottom: 20px;
+      animation: bounce 0.6s;
+    }
+    .popup-title {
+      font-size: 28px;
+      font-weight: 900;
+      margin-bottom: 15px;
+    }
+    .popup-title.won { color: #22c55e; }
+    .popup-title.lost { color: #ef4444; }
+    .popup-title.placed { color: #3b82f6; }
+    .popup-message {
+      font-size: 18px;
+      color: rgba(255, 255, 255, 0.8);
+      margin-bottom: 10px;
+    }
+    .popup-amount {
+      font-size: 36px;
+      font-weight: 900;
+      margin: 15px 0;
+    }
+    .popup-amount.won { color: #22c55e; }
+    .popup-amount.lost { color: #ef4444; }
+    .popup-amount.placed { color: #3b82f6; }
+    .popup-details {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 15px;
+      border-radius: 12px;
+      margin: 20px 0;
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.7);
+    }
+    .popup-close {
+      background: #22c55e;
+      color: white;
+      border: none;
+      padding: 14px 40px;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
     .bottom-nav {
       position: fixed;
       bottom: 0;
@@ -183,12 +324,25 @@
     .nav-item.active {
       color: #22c55e;
     }
-    .pulse {
-      animation: pulse 2s infinite;
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes slideUp {
+      from { transform: translateY(50px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    @keyframes bounce {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
     }
     @keyframes pulse {
       0%, 100% { transform: scale(1); }
       50% { transform: scale(1.05); }
+    }
+    .pulse {
+      animation: pulse 2s infinite;
     }
   </style>
 </head>
@@ -222,10 +376,10 @@
         <h3>Select Color</h3>
         <div class="color-buttons">
           <button class="color-btn red" onclick="selectColor('red')" id="redBtn">
-            🔴 Red
+            🔴 RED
           </button>
           <button class="color-btn green" onclick="selectColor('green')" id="greenBtn">
-            🟢 Green
+            🟢 GREEN
           </button>
         </div>
       </div>
@@ -241,6 +395,29 @@
           <button class="quick-btn" onclick="setAmount(500)">₹500</button>
         </div>
       </div>
+    </div>
+
+    <!-- Results Section -->
+    <div class="results-section">
+      <div class="tabs">
+        <button class="tab active" onclick="switchTab('results')" id="resultsTab">Round History</button>
+        <button class="tab" onclick="switchTab('mybets')" id="mybetsTab">My Bets</button>
+      </div>
+      <div class="results-list" id="resultsList">
+        <!-- Results will be loaded here -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Result Popup -->
+  <div class="popup-overlay" id="resultPopup">
+    <div class="popup-content">
+      <div class="popup-icon" id="popupIcon">🎯</div>
+      <div class="popup-title" id="popupTitle">Bet Placed!</div>
+      <div class="popup-message" id="popupMessage">Your bet has been placed</div>
+      <div class="popup-amount" id="popupAmount">₹0</div>
+      <div class="popup-details" id="popupDetails"></div>
+      <button class="popup-close" onclick="closePopup()">OK</button>
     </div>
   </div>
 
@@ -260,6 +437,7 @@
     let userBalance = 0;
     let hasBetThisRound = false;
     let timerInterval = null;
+    let currentTab = 'results';
 
     // Get auth headers
     function getAuthHeaders() {
@@ -293,17 +471,17 @@
       const amount = parseInt(document.getElementById('betAmount').value);
       
       if (!amount || amount < 10) {
-        alert('🎯 Minimum bet is ₹10');
+        showPopup('error', 'Minimum bet is ₹10', 0, 'Please enter at least ₹10');
         return;
       }
 
       if (amount > userBalance) {
-        alert('🎯 Insufficient balance');
+        showPopup('error', 'Insufficient Balance', userBalance, `Your balance: ₹${userBalance.toFixed(2)}`);
         return;
       }
 
       if (hasBetThisRound) {
-        alert('🎯 You already placed a bet this round');
+        showPopup('error', 'Already Placed', 0, 'You already bet this round');
         return;
       }
 
@@ -330,20 +508,82 @@
           userBalance = parseFloat(data.newWallet || 0) + parseFloat(data.newBonus || 0);
           updateBalanceDisplay();
           
-          alert(`🎯 Bet placed!\n₹${amount} on ${selectedColor.toUpperCase()}`);
+          // Show success popup
+          showPopup('placed', 'Bet Placed Successfully!', amount, `₹${amount} on ${selectedColor.toUpperCase()}\nGood luck!`);
+          
+          // Reload bets
+          if (currentTab === 'mybets') {
+            loadMyBets();
+          }
         } else {
-          alert('🎯 ' + data.error);
+          showPopup('error', 'Bet Failed', 0, data.error || 'Please try again');
           // Re-enable on error
           document.getElementById('redBtn').disabled = false;
           document.getElementById('greenBtn').disabled = false;
         }
       } catch (err) {
         console.error('Bet error:', err);
-        alert('🎯 Network error. Please try again.');
+        showPopup('error', 'Network Error', 0, 'Please check your connection');
         // Re-enable on error
         document.getElementById('redBtn').disabled = false;
         document.getElementById('greenBtn').disabled = false;
       }
+    }
+
+    // Show result popup
+    function showPopup(type, title, amount, details) {
+      const popup = document.getElementById('resultPopup');
+      const icon = document.getElementById('popupIcon');
+      const titleEl = document.getElementById('popupTitle');
+      const messageEl = document.getElementById('popupMessage');
+      const amountEl = document.getElementById('popupAmount');
+      const detailsEl = document.getElementById('popupDetails');
+
+      // Set content based on type
+      if (type === 'won') {
+        icon.textContent = '🎉';
+        titleEl.textContent = 'Congratulations!';
+        titleEl.className = 'popup-title won';
+        messageEl.textContent = 'You Won';
+        amountEl.textContent = `+₹${amount.toFixed(2)}`;
+        amountEl.className = 'popup-amount won';
+        detailsEl.textContent = details;
+      } else if (type === 'lost') {
+        icon.textContent = '😔';
+        titleEl.textContent = 'Better Luck Next Time';
+        titleEl.className = 'popup-title lost';
+        messageEl.textContent = 'You Lost';
+        amountEl.textContent = `-₹${amount.toFixed(2)}`;
+        amountEl.className = 'popup-amount lost';
+        detailsEl.textContent = details;
+      } else if (type === 'placed') {
+        icon.textContent = '✅';
+        titleEl.textContent = title;
+        titleEl.className = 'popup-title placed';
+        messageEl.textContent = 'Bet Confirmed';
+        amountEl.textContent = `₹${amount.toFixed(2)}`;
+        amountEl.className = 'popup-amount placed';
+        detailsEl.textContent = details;
+      } else {
+        icon.textContent = '⚠️';
+        titleEl.textContent = title;
+        titleEl.className = 'popup-title lost';
+        messageEl.textContent = '';
+        amountEl.textContent = '';
+        detailsEl.textContent = details;
+      }
+
+      popup.classList.add('show');
+
+      // Auto-close after 3 seconds
+      setTimeout(() => {
+        closePopup();
+      }, 3000);
+    }
+
+    // Close popup
+    function closePopup() {
+      document.getElementById('resultPopup').classList.remove('show');
     }
 
     // Load balance
@@ -385,7 +625,6 @@
         console.log('✅ Round loaded:', roundIdShort);
       } catch (err) {
         console.error('Round load error:', err);
-        // Retry after 2 seconds
         setTimeout(loadCurrentRound, 2000);
       }
     }
@@ -435,13 +674,83 @@
       loadCurrentRound();
       loadBalance();
       
+      // Reload history
+      if (currentTab === 'results') {
+        loadResults();
+      } else {
+        loadMyBets();
+      }
+      
       console.log('✅ New round started');
+    }
+
+    // Load round results
+    async function loadResults() {
+      try {
+        const res = await fetch(`${API}/rounds/history`);
+        const rounds = await res.json();
+        
+        const list = document.getElementById('resultsList');
+        list.innerHTML = rounds.map(round => `
+          <div class="result-item">
+            <div>
+              <span>Round ${round.roundId.slice(-6)}</span>
+            </div>
+            <span class="result-color ${round.winner}">${round.winner ? round.winner.toUpperCase() : 'PENDING'}</span>
+          </div>
+        `).join('');
+      } catch (err) {
+        console.error('Results load error:', err);
+      }
+    // Load my bets
+    async function loadMyBets() {
+      try {
+        const res = await fetch(`${API}/bets`, {
+          headers: getAuthHeaders()
+        });
+        const bets = await res.json();
+        
+        const list = document.getElementById('resultsList');
+        if (bets.length === 0) {
+          list.innerHTML = '<div style="text-align:center;padding:40px;color:rgba(255,255,255,0.5)">No bets yet</div>';
+          return;
+        }
+        
+        list.innerHTML = bets.map(bet => `
+          <div class="result-item">
+            <div>
+              <span class="result-color ${bet.color}">${bet.color.toUpperCase()}</span>
+              <span> • ₹${bet.amount}</span>
+            </div>
+            <span class="bet-status ${bet.status}">${bet.status}</span>
+          </div>
+        `).join('');
+      } catch (err) {
+        console.error('Bets load error:', err);
+      }
+    }
+
+    // Switch tabs
+    function switchTab(tab) {
+      currentTab = tab;
+      
+      document.getElementById('resultsTab').classList.remove('active');
+      document.getElementById('mybetsTab').classList.remove('active');
+      
+      if (tab === 'results') {
+        document.getElementById('resultsTab').classList.add('active');
+        loadResults();
+      } else {
+        document.getElementById('mybetsTab').classList.add('active');
+        loadMyBets();
+      }
     }
 
     // Initialize
     console.log('🎮 Game page loaded');
     loadBalance();
     loadCurrentRound();
+    loadResults();
 
     // Start timer (update every second)
     timerInterval = setInterval(updateTimer, 1000);
