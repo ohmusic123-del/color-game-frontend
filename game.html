@@ -5,11 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>BIGWIN - Game</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       background: linear-gradient(135deg, #0a0e1a 0%, #1a1f35 100%);
@@ -17,11 +13,7 @@
       color: white;
       padding-bottom: 80px;
     }
-    .container {
-      max-width: 600px;
-      margin: 0 auto;
-      padding: 20px;
-    }
+    .container { max-width: 600px; margin: 0 auto; padding: 20px; }
     .header {
       display: flex;
       justify-content: space-between;
@@ -54,9 +46,7 @@
       justify-content: space-between;
       margin-bottom: 30px;
     }
-    .info-item {
-      text-align: center;
-    }
+    .info-item { text-align: center; }
     .info-item label {
       display: block;
       font-size: 12px;
@@ -81,9 +71,7 @@
       font-weight: 900;
       box-shadow: 0 10px 40px rgba(34, 197, 94, 0.5);
     }
-    .color-selection {
-      margin: 30px 0;
-    }
+    .color-selection { margin: 30px 0; }
     .color-selection h3 {
       text-align: center;
       margin-bottom: 20px;
@@ -102,7 +90,6 @@
       font-weight: 700;
       cursor: pointer;
       transition: all 0.3s;
-      text-transform: uppercase;
     }
     .color-btn.red {
       background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
@@ -112,23 +99,12 @@
       background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
       color: white;
     }
-    .color-btn:hover:not(:disabled) {
-      transform: translateY(-3px);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    }
-    .color-btn:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-      transform: none;
-    }
-    .amount-input {
-      margin: 20px 0;
-    }
+    .color-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .amount-input { margin: 20px 0; }
     .amount-input label {
       display: block;
       margin-bottom: 10px;
       font-size: 14px;
-      color: rgba(255, 255, 255, 0.8);
     }
     .amount-input input {
       width: 100%;
@@ -139,10 +115,6 @@
       color: white;
       font-size: 18px;
       font-weight: 700;
-    }
-    .amount-input input:focus {
-      outline: none;
-      border-color: #22c55e;
     }
     .quick-amounts {
       display: grid;
@@ -157,14 +129,7 @@
       border-radius: 8px;
       color: white;
       cursor: pointer;
-      transition: all 0.3s;
     }
-    .quick-btn:hover {
-      background: rgba(255, 255, 255, 0.1);
-      border-color: #22c55e;
-    }
-
-    /* TABS */
     .tabs {
       display: flex;
       gap: 10px;
@@ -178,18 +143,12 @@
       border-radius: 10px;
       color: rgba(255, 255, 255, 0.6);
       cursor: pointer;
-      transition: all 0.3s;
       font-size: 14px;
       font-weight: 600;
     }
     .tab.active {
       background: #22c55e;
       color: white;
-    }
-
-    /* RESULTS & HISTORY */
-    .results-section {
-      margin-top: 30px;
     }
     .results-list {
       max-height: 400px;
@@ -198,112 +157,11 @@
     .result-item {
       display: flex;
       justify-content: space-between;
-      align-items: center;
       padding: 15px;
       background: rgba(255, 255, 255, 0.05);
       border-radius: 10px;
       margin-bottom: 10px;
     }
-    .result-color {
-      font-weight: 700;
-      text-transform: uppercase;
-    }
-    .result-color.red { color: #ef4444; }
-    .result-color.green { color: #22c55e; }
-    .bet-status {
-      padding: 4px 12px;
-      border-radius: 12px;
-      font-size: 11px;
-      font-weight: 700;
-      text-transform: uppercase;
-    }
-    .bet-status.WON { 
-      background: rgba(34, 197, 94, 0.2);
-      color: #22c55e;
-    }
-    .bet-status.LOST { 
-      background: rgba(239, 68, 68, 0.2);
-      color: #ef4444;
-    }
-    .bet-status.PENDING { 
-      background: rgba(251, 191, 36, 0.2);
-      color: #fbbf24;
-    }
-
-    /* RESULT POPUP */
-    .popup-overlay {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0, 0, 0, 0.9);
-      z-index: 1000;
-      align-items: center;
-      justify-content: center;
-      animation: fadeIn 0.3s;
-    }
-    .popup-overlay.show {
-      display: flex;
-    }
-    .popup-content {
-      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-      border-radius: 30px;
-      padding: 40px 30px;
-      max-width: 400px;
-      width: 90%;
-      text-align: center;
-      border: 2px solid rgba(255, 255, 255, 0.1);
-      position: relative;
-      animation: slideUp 0.3s;
-    }
-    .popup-icon {
-      font-size: 80px;
-      margin-bottom: 20px;
-      animation: bounce 0.6s;
-    }
-    .popup-title {
-      font-size: 28px;
-      font-weight: 900;
-      margin-bottom: 15px;
-    }
-    .popup-title.won { color: #22c55e; }
-    .popup-title.lost { color: #ef4444; }
-    .popup-title.placed { color: #3b82f6; }
-    .popup-message {
-      font-size: 18px;
-      color: rgba(255, 255, 255, 0.8);
-      margin-bottom: 10px;
-    }
-    .popup-amount {
-      font-size: 36px;
-      font-weight: 900;
-      margin: 15px 0;
-    }
-    .popup-amount.won { color: #22c55e; }
-    .popup-amount.lost { color: #ef4444; }
-    .popup-amount.placed { color: #3b82f6; }
-    .popup-details {
-      background: rgba(255, 255, 255, 0.05);
-      padding: 15px;
-      border-radius: 12px;
-      margin: 20px 0;
-      font-size: 14px;
-      color: rgba(255, 255, 255, 0.7);
-    }
-    .popup-close {
-      background: #22c55e;
-      color: white;
-      border: none;
-      padding: 14px 40px;
-      border-radius: 12px;
-      font-size: 16px;
-      font-weight: 700;
-      cursor: pointer;
-      margin-top: 10px;
-    }
-
     .bottom-nav {
       position: fixed;
       bottom: 0;
@@ -321,46 +179,21 @@
       text-decoration: none;
       font-size: 12px;
     }
-    .nav-item.active {
-      color: #22c55e;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-    @keyframes slideUp {
-      from { transform: translateY(50px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
-    @keyframes bounce {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.1); }
-    }
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.05); }
-    }
-    .pulse {
-      animation: pulse 2s infinite;
-    }
+    .nav-item.active { color: #22c55e; }
   </style>
 </head>
 <body>
   <div class="container">
-    <!-- Header -->
     <div class="header">
       <div class="logo">BIGWIN</div>
       <div class="balance" id="balanceDisplay">₹0.00</div>
     </div>
 
-    <!-- Game Card -->
     <div class="game-card">
-      <!-- Round Info -->
       <div class="round-info">
         <div class="info-item">
           <label>Round</label>
-          <value id="roundId">...</value>
+          <value id="roundId">Loading...</value>
         </div>
         <div class="info-item">
           <label>Time Left</label>
@@ -368,26 +201,19 @@
         </div>
       </div>
 
-      <!-- Timer Circle -->
-      <div class="timer-circle pulse" id="timerCircle">60</div>
+      <div class="timer-circle" id="timerCircle">60</div>
 
-      <!-- Color Selection -->
       <div class="color-selection">
         <h3>Select Color</h3>
         <div class="color-buttons">
-          <button class="color-btn red" onclick="selectColor('red')" id="redBtn">
-            🔴 RED
-          </button>
-          <button class="color-btn green" onclick="selectColor('green')" id="greenBtn">
-            🟢 GREEN
-          </button>
+          <button class="color-btn red" onclick="placeBet('red')" id="redBtn">🔴 RED</button>
+          <button class="color-btn green" onclick="placeBet('green')" id="greenBtn">🟢 GREEN</button>
         </div>
       </div>
 
-      <!-- Amount Input -->
       <div class="amount-input">
         <label>Bet Amount</label>
-        <input type="number" id="betAmount" placeholder="Enter amount (Min: ₹10)" min="10" value="10">
+        <input type="number" id="betAmount" value="10" min="10">
         <div class="quick-amounts">
           <button class="quick-btn" onclick="setAmount(10)">₹10</button>
           <button class="quick-btn" onclick="setAmount(50)">₹50</button>
@@ -397,31 +223,13 @@
       </div>
     </div>
 
-    <!-- Results Section -->
-    <div class="results-section">
-      <div class="tabs">
-        <button class="tab active" onclick="switchTab('results')" id="resultsTab">Round History</button>
-        <button class="tab" onclick="switchTab('mybets')" id="mybetsTab">My Bets</button>
-      </div>
-      <div class="results-list" id="resultsList">
-        <!-- Results will be loaded here -->
-      </div>
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('results')">Round History</button>
+      <button class="tab" onclick="switchTab('mybets')">My Bets</button>
     </div>
+    <div class="results-list" id="resultsList">Loading...</div>
   </div>
 
-  <!-- Result Popup -->
-  <div class="popup-overlay" id="resultPopup">
-    <div class="popup-content">
-      <div class="popup-icon" id="popupIcon">🎯</div>
-      <div class="popup-title" id="popupTitle">Bet Placed!</div>
-      <div class="popup-message" id="popupMessage">Your bet has been placed</div>
-      <div class="popup-amount" id="popupAmount">₹0</div>
-      <div class="popup-details" id="popupDetails"></div>
-      <button class="popup-close" onclick="closePopup()">OK</button>
-    </div>
-  </div>
-
-  <!-- Bottom Navigation -->
   <div class="bottom-nav">
     <a href="home.html" class="nav-item">🏠<br>Home</a>
     <a href="game.html" class="nav-item active">🎮<br>Game</a>
@@ -431,220 +239,101 @@
 
   <script>
     const API = "https://color-game-backend1.onrender.com";
+    const token = localStorage.getItem('token');
     
-    let currentRound = null;
-    let selectedColor = null;
-    let userBalance = 0;
-    let hasBetThisRound = false;
-    let timerInterval = null;
-    let currentTab = 'results';
-
-    // Get auth headers
-    function getAuthHeaders() {
-      const token = localStorage.getItem('token');
-      return {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      };
-    }
-
-    // Check authentication
-    if (!localStorage.getItem('token')) {
+    if (!token) {
       window.location.href = 'index.html';
     }
 
-    // Select color and place bet
-    async function selectColor(color) {
-      selectedColor = color;
-      await placeBet();
+    let currentRound = null;
+    let balance = 0;
+    let hasBet = false;
+    let currentTab = 'results';
+
+    function setAmount(val) {
+      document.getElementById('betAmount').value = val;
     }
 
-    // Set amount
-    function setAmount(amount) {
-      document.getElementById('betAmount').value = amount;
-    }
-
-    // Place bet
-    async function placeBet() {
-      if (!selectedColor) return;
-      
+    async function placeBet(color) {
       const amount = parseInt(document.getElementById('betAmount').value);
       
-      if (!amount || amount < 10) {
-        showPopup('error', 'Minimum bet is ₹10', 0, 'Please enter at least ₹10');
+      if (amount < 10) {
+        alert('Minimum bet is ₹10');
         return;
       }
 
-      if (amount > userBalance) {
-        showPopup('error', 'Insufficient Balance', userBalance, `Your balance: ₹${userBalance.toFixed(2)}`);
+      if (hasBet) {
+        alert('Already placed bet this round');
         return;
       }
 
-      if (hasBetThisRound) {
-        showPopup('error', 'Already Placed', 0, 'You already bet this round');
-        return;
-      }
-
-      // Disable buttons
       document.getElementById('redBtn').disabled = true;
       document.getElementById('greenBtn').disabled = true;
 
       try {
         const res = await fetch(`${API}/bet`, {
           method: 'POST',
-          headers: getAuthHeaders(),
-          body: JSON.stringify({ 
-            color: selectedColor, 
-            amount: amount 
-          })
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({ color, amount })
         });
 
         const data = await res.json();
 
         if (res.ok) {
-          hasBetThisRound = true;
-          
-          // Update balance
-          userBalance = parseFloat(data.newWallet || 0) + parseFloat(data.newBonus || 0);
-          updateBalanceDisplay();
-          
-          // Show success popup
-          showPopup('placed', 'Bet Placed Successfully!', amount, `₹${amount} on ${selectedColor.toUpperCase()}\nGood luck!`);
-          
-          // Reload bets
-          if (currentTab === 'mybets') {
-            loadMyBets();
-          }
+          alert(`✅ Bet placed!\n₹${amount} on ${color.toUpperCase()}`);
+          hasBet = true;
+          loadBalance();
+          if (currentTab === 'mybets') loadMyBets();
         } else {
-          showPopup('error', 'Bet Failed', 0, data.error || 'Please try again');
-          // Re-enable on error
+          alert('❌ ' + data.error);
           document.getElementById('redBtn').disabled = false;
           document.getElementById('greenBtn').disabled = false;
         }
       } catch (err) {
-        console.error('Bet error:', err);
-        showPopup('error', 'Network Error', 0, 'Please check your connection');
-        // Re-enable on error
+        alert('Network error');
         document.getElementById('redBtn').disabled = false;
         document.getElementById('greenBtn').disabled = false;
       }
     }
 
-    // Show result popup
-    function showPopup(type, title, amount, details) {
-      const popup = document.getElementById('resultPopup');
-      const icon = document.getElementById('popupIcon');
-      const titleEl = document.getElementById('popupTitle');
-      const messageEl = document.getElementById('popupMessage');
-      const amountEl = document.getElementById('popupAmount');
-      const detailsEl = document.getElementById('popupDetails');
-
-      // Set content based on type
-      if (type === 'won') {
-        icon.textContent = '🎉';
-        titleEl.textContent = 'Congratulations!';
-        titleEl.className = 'popup-title won';
-        messageEl.textContent = 'You Won';
-        amountEl.textContent = `+₹${amount.toFixed(2)}`;
-        amountEl.className = 'popup-amount won';
-        detailsEl.textContent = details;
-      } else if (type === 'lost') {
-        icon.textContent = '😔';
-        titleEl.textContent = 'Better Luck Next Time';
-        titleEl.className = 'popup-title lost';
-        messageEl.textContent = 'You Lost';
-        amountEl.textContent = `-₹${amount.toFixed(2)}`;
-        amountEl.className = 'popup-amount lost';
-        detailsEl.textContent = details;
-      } else if (type === 'placed') {
-        icon.textContent = '✅';
-        titleEl.textContent = title;
-        titleEl.className = 'popup-title placed';
-        messageEl.textContent = 'Bet Confirmed';
-        amountEl.textContent = `₹${amount.toFixed(2)}`;
-        amountEl.className = 'popup-amount placed';
-        detailsEl.textContent = details;
-      } else {
-        icon.textContent = '⚠️';
-        titleEl.textContent = title;
-        titleEl.className = 'popup-title lost';
-        messageEl.textContent = '';
-        amountEl.textContent = '';
-        detailsEl.textContent = details;
-      }
-
-      popup.classList.add('show');
-
-      // Auto-close after 3 seconds
-      setTimeout(() => {
-        closePopup();
-      }, 3000);
-    }
-
-    // Close popup
-    function closePopup() {
-      document.getElementById('resultPopup').classList.remove('show');
-    }
-
-    // Load balance
     async function loadBalance() {
       try {
         const res = await fetch(`${API}/wallet`, {
-          headers: getAuthHeaders()
+          headers: { 'Authorization': `Bearer ${token}` }
         });
-        
-        if (!res.ok) throw new Error('Failed to load balance');
-        
         const data = await res.json();
-        userBalance = parseFloat(data.wallet || 0) + parseFloat(data.bonus || 0);
-        updateBalanceDisplay();
+        balance = parseFloat(data.wallet || 0) + parseFloat(data.bonus || 0);
+        document.getElementById('balanceDisplay').textContent = `₹${balance.toFixed(2)}`;
       } catch (err) {
-        console.error('Balance load error:', err);
+        console.error('Balance error:', err);
       }
     }
 
-    // Update balance display
-    function updateBalanceDisplay() {
-      document.getElementById('balanceDisplay').textContent = `₹${userBalance.toFixed(2)}`;
-    }
-
-    // Load current round
-    async function loadCurrentRound() {
+    async function loadRound() {
       try {
         const res = await fetch(`${API}/round/current`);
-        
-        if (!res.ok) throw new Error('Failed to load round');
-        
         const data = await res.json();
         currentRound = data;
-        
-        // Update round ID display
-        const roundIdShort = data.id.toString().slice(-6);
-        document.getElementById('roundId').textContent = roundIdShort;
-        
-        console.log('✅ Round loaded:', roundIdShort);
+        document.getElementById('roundId').textContent = data.id.toString().slice(-6);
       } catch (err) {
-        console.error('Round load error:', err);
-        setTimeout(loadCurrentRound, 2000);
+        console.error('Round error:', err);
+        setTimeout(loadRound, 2000);
       }
     }
 
-    // Update timer
     function updateTimer() {
-      if (!currentRound) {
-        console.log('⏳ Waiting for round data...');
-        return;
-      }
+      if (!currentRound) return;
       
       const elapsed = Math.floor((Date.now() - currentRound.startTime) / 1000);
       const remaining = Math.max(0, 60 - elapsed);
       
-      // Update display
       document.getElementById('timerCircle').textContent = remaining;
       document.getElementById('timeLeft').textContent = `${remaining}s`;
       
-      // Disable betting in last 3 seconds or if already bet
-      if (remaining <= 3 || hasBetThisRound) {
+      if (remaining <= 3 || hasBet) {
         document.getElementById('redBtn').disabled = true;
         document.getElementById('greenBtn').disabled = true;
       } else {
@@ -652,113 +341,62 @@
         document.getElementById('greenBtn').disabled = false;
       }
       
-      // Round ended
       if (remaining === 0) {
-        console.log('🔄 Round ended, waiting for new round...');
         setTimeout(() => {
-          resetForNewRound();
+          hasBet = false;
+          loadRound();
+          loadBalance();
+          if (currentTab === 'results') loadResults();
         }, 3000);
       }
     }
 
-    // Reset for new round
-    function resetForNewRound() {
-      hasBetThisRound = false;
-      selectedColor = null;
-      
-      // Re-enable buttons
-      document.getElementById('redBtn').disabled = false;
-      document.getElementById('greenBtn').disabled = false;
-      
-      // Reload data
-      loadCurrentRound();
-      loadBalance();
-      
-      // Reload history
-      if (currentTab === 'results') {
-        loadResults();
-      } else {
-        loadMyBets();
-      }
-      
-      console.log('✅ New round started');
-    }
-
-    // Load round results
     async function loadResults() {
       try {
         const res = await fetch(`${API}/rounds/history`);
-        const rounds = await res.json();
-        
-        const list = document.getElementById('resultsList');
-        list.innerHTML = rounds.map(round => `
+        const data = await res.json();
+        document.getElementById('resultsList').innerHTML = data.map(r => `
           <div class="result-item">
-            <div>
-              <span>Round ${round.roundId.slice(-6)}</span>
-            </div>
-            <span class="result-color ${round.winner}">${round.winner ? round.winner.toUpperCase() : 'PENDING'}</span>
+            <span>Round ${r.roundId.slice(-6)}</span>
+            <span style="color:${r.winner==='red'?'#ef4444':'#22c55e'}">${r.winner?.toUpperCase()||'PENDING'}</span>
           </div>
         `).join('');
       } catch (err) {
-        console.error('Results load error:', err);
+        document.getElementById('resultsList').innerHTML = 'Failed to load';
       }
-    // Load my bets
+    }
+
     async function loadMyBets() {
       try {
         const res = await fetch(`${API}/bets`, {
-          headers: getAuthHeaders()
+          headers: { 'Authorization': `Bearer ${token}` }
         });
-        const bets = await res.json();
-        
-        const list = document.getElementById('resultsList');
-        if (bets.length === 0) {
-          list.innerHTML = '<div style="text-align:center;padding:40px;color:rgba(255,255,255,0.5)">No bets yet</div>';
-          return;
-        }
-        
-        list.innerHTML = bets.map(bet => `
+        const data = await res.json();
+        document.getElementById('resultsList').innerHTML = data.length ? data.map(b => `
           <div class="result-item">
-            <div>
-              <span class="result-color ${bet.color}">${bet.color.toUpperCase()}</span>
-              <span> • ₹${bet.amount}</span>
-            </div>
-            <span class="bet-status ${bet.status}">${bet.status}</span>
+            <span>${b.color.toUpperCase()} • ₹${b.amount}</span>
+            <span style="color:${b.status==='WON'?'#22c55e':'#ef4444'}">${b.status}</span>
           </div>
-        `).join('');
+        `).join('') : 'No bets yet';
       } catch (err) {
-        console.error('Bets load error:', err);
+        document.getElementById('resultsList').innerHTML = 'Failed to load';
       }
     }
 
-    // Switch tabs
     function switchTab(tab) {
       currentTab = tab;
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      event.target.classList.add('active');
       
-      document.getElementById('resultsTab').classList.remove('active');
-      document.getElementById('mybetsTab').classList.remove('active');
-      
-      if (tab === 'results') {
-        document.getElementById('resultsTab').classList.add('active');
-        loadResults();
-      } else {
-        document.getElementById('mybetsTab').classList.add('active');
-        loadMyBets();
-      }
+      if (tab === 'results') loadResults();
+      else loadMyBets();
     }
 
     // Initialize
-    console.log('🎮 Game page loaded');
     loadBalance();
-    loadCurrentRound();
+    loadRound();
     loadResults();
-
-    // Start timer (update every second)
-    timerInterval = setInterval(updateTimer, 1000);
-
-    // Cleanup on page unload
-    window.addEventListener('beforeunload', () => {
-      if (timerInterval) clearInterval(timerInterval);
-    });
+    setInterval(updateTimer, 1000);
   </script>
 </body>
 </html>
