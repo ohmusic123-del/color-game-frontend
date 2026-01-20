@@ -354,58 +354,57 @@
         }
 
         // Handle deposit
-        async function handleDeposit(e) {
-            e.preventDefault();
+        // ✅ Handle deposit with Cashfree
+  async function handleDeposit(e) {
+      e.preventDefault();
 
-            const amount = parseInt(document.getElementById('depositAmount').value);
-            const referenceId = document.getElementById('referenceId').value.trim();
+      const amount = parseInt(document.getElementById('depositAmount').value);
 
-            if (!amount || amount < 100) {
-                alert('❌ Minimum deposit is ₹100');
-                return;
-            }
+      if (!amount || amount < 100) {
+          alert('❌ Minimum deposit is ₹100');
+          return;
+      }
 
-            const depositBtn = document.getElementById('depositBtn');
-            depositBtn.disabled = true;
-            depositBtn.textContent = 'Processing...';
+      const depositBtn = document.getElementById('depositBtn');
+      depositBtn.disabled = true;
+      depositBtn.textContent = 'Processing...';
 
-            try {
-                const token = localStorage.getItem('token');
-                
-                const res = await fetch(`${API}/deposit`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify({ 
-                        amount,
-                        referenceId 
-                    })
-                });
+      try {
+          const token = localStorage.getItem('token');
 
-                const data = await res.json();
+          const res = await fetch(`${API}/api/cashfree/create-order`, {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${token}`
+              },
+              body: JSON.stringify({ amount })
+          });
 
-                if (res.ok) {
-                    alert(`✅ Deposit successful!\n\nAmount: ₹${amount}\nNew Balance: ₹${data.newWallet}\n\nFunds added to your wallet!`);
-                    
-                    // Redirect to wallet
-                    setTimeout(() => {
-                        window.location.href = 'wallet.html';
-                    }, 1000);
-                } else {
-                    alert('❌ ' + data.error);
-                    depositBtn.disabled = false;
-                    depositBtn.textContent = 'Submit Deposit';
-                }
+          const data = await res.json();
 
-            } catch (err) {
-                console.error('Deposit error:', err);
-                alert('❌ Network error. Please try again.');
-                depositBtn.disabled = false;
-                depositBtn.textContent = 'Submit Deposit';
-            }
-        }
-    </script>
+          if (!res.ok) {
+              alert('❌ ' + (data.message || 'Order create failed'));
+              depositBtn.disabled = false;
+              depositBtn.textContent = 'Submit Deposit';
+              return;
+          }
+
+          // ✅ Open Cashfree Checkout
+          const cashfree = Cashfree({ mode: "sandbox" });
+
+          cashfree.checkout({
+              paymentSessionId: data.payment_session_id,
+              redirectTarget: "_self"
+          });
+
+      } catch (err) {
+          console.error('Cashfree deposit error:', err);
+          alert('❌ Network error. Please try again.');
+          depositBtn.disabled = false;
+          depositBtn.textContent = 'Submit Deposit';
+      }
+  }
+</script>
 </body>
 </html>
