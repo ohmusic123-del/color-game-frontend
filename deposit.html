@@ -1,358 +1,137 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Deposit - BIGWIN</title>
-    <link rel="stylesheet" href="css/style.css">
-    <style>
-        body {
-            background: linear-gradient(135deg, #0a0e1a 0%, #1a1f35 100%);
-            min-height: 100vh;
-            padding: 20px;
-            padding-bottom: 100px;
-        }
+  <meta charset="UTF-8" />
+  <title>Deposit | BIGWIN</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-        .container {
-            max-width: 500px;
-            margin: 0 auto;
-        }
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
 
-        .header {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 30px;
-        }
+    .box {
+      background: #020617;
+      padding: 20px;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 400px;
+    }
 
-        .back-btn {
-            background: rgba(255, 255, 255, 0.1);
-            border: none;
-            color: white;
-            padding: 10px 15px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 18px;
-        }
+    h2 {
+      text-align: center;
+      margin-bottom: 15px;
+    }
 
-        .header h1 {
-            color: white;
-            font-size: 24px;
-            margin: 0;
-        }
+    input {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: none;
+      margin-bottom: 12px;
+    }
 
-        .card {
-            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-            border-radius: 20px;
-            padding: 30px;
-            margin-bottom: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
+    button {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      background: #22c55e;
+      color: #000;
+      font-weight: bold;
+    }
 
-        .bonus-banner {
-            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
-            border-radius: 15px;
-            padding: 20px;
-            text-align: center;
-            margin-bottom: 25px;
-        }
-
-        .bonus-banner h3 {
-            color: white;
-            font-size: 20px;
-            margin-bottom: 5px;
-        }
-
-        .bonus-banner p {
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 14px;
-            margin: 0;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 14px 16px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            color: white;
-            font-size: 18px;
-            font-weight: 700;
-            transition: all 0.3s;
-        }
-
-        .form-group input:focus {
-            outline: none;
-            border-color: #22c55e;
-            background: rgba(255, 255, 255, 0.08);
-        }
-
-        .quick-amounts {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            margin-top: 10px;
-        }
-
-        .quick-btn {
-            padding: 12px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 8px;
-            color: white;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-size: 14px;
-            font-weight: 600;
-        }
-
-        .quick-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: #22c55e;
-        }
-
-        .info-box {
-            background: rgba(59, 130, 246, 0.1);
-            border: 1px solid rgba(59, 130, 246, 0.3);
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 20px;
-        }
-
-        .info-box ul {
-            margin: 10px 0;
-            padding-left: 20px;
-            color: #60a5fa;
-            font-size: 13px;
-            line-height: 1.8;
-        }
-
-        .btn-primary {
-            width: 100%;
-            padding: 16px;
-            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
-            border: none;
-            border-radius: 12px;
-            color: white;
-            font-size: 16px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(34, 197, 94, 0.4);
-        }
-
-        .btn-primary:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: #0f172a;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 15px;
-            display: flex;
-            justify-content: space-around;
-        }
-
-        .nav-item {
-            text-align: center;
-            color: rgba(255, 255, 255, 0.6);
-            text-decoration: none;
-            font-size: 12px;
-        }
-
-        .nav-item.active {
-            color: #22c55e;
-        }
-    </style>
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  </style>
 </head>
+
 <body>
-    <div class="container">
-        <div class="header">
-            <button class="back-btn" onclick="window.location.href='wallet.html'">←</button>
-            <h1>Deposit Funds</h1>
-        </div>
+  <div class="box">
+    <h2>Deposit Amount</h2>
 
-        <!-- Bonus Banner -->
-        <div class="bonus-banner">
-            <h3>🎁 100% First Deposit Bonus!</h3>
-            <p>Deposit ₹100, Get ₹200 Total Balance</p>
-        </div>
+    <input
+      type="number"
+      id="amount"
+      placeholder="Enter amount (min ₹100)"
+      min="100"
+      value="100"
+    />
 
-        <div class="card">
-            <!-- Amount Input -->
-            <form id="depositForm" onsubmit="handleDeposit(event)">
-                <div class="form-group">
-                    <label>Deposit Amount</label>
-                    <input 
-                        type="number" 
-                        id="depositAmount" 
-                        placeholder="Enter amount (Min: ₹10)"
-                        min="10"
-                        required
-                    >
-                    <div class="quick-amounts">
-                        <button type="button" class="quick-btn" onclick="setAmount(100)">₹100</button>
-                        <button type="button" class="quick-btn" onclick="setAmount(500)">₹500</button>
-                        <button type="button" class="quick-btn" onclick="setAmount(1000)">₹1000</button>
-                        <button type="button" class="quick-btn" onclick="setAmount(5000)">₹5000</button>
-                    </div>
-                </div>
+    <button id="depositBtn" onclick="startDeposit()">
+      Deposit Now
+    </button>
+  </div>
 
-                <!-- Info Box -->
-                <div class="info-box">
-                    <ul>
-                        <li>Minimum deposit: ₹10</li>
-                        <li>Payment via UPI (Google Pay, PhonePe, Paytm)</li>
-                        <li>Instant credit after payment</li>
-                        <li>First deposit gets 100% bonus</li>
-                    </ul>
-                </div>
+  <!-- ✅ Cashfree PG v3 SDK (PRODUCTION) -->
+  <script src="https://sdk.cashfree.com/js/v3/cashfree.js"></script>
 
-                <button type="submit" class="btn-primary" id="depositBtn">
-                    Proceed to Payment
-                </button>
-            </form>
-        </div>
-    </div>
+  <script>
+    // ✅ PRODUCTION MODE
+    const cashfree = Cashfree({
+      mode: "production"
+    });
 
-    <!-- Bottom Navigation -->
-    <div class="bottom-nav">
-        <a href="home.html" class="nav-item">🏠<br>Home</a>
-        <a href="game.html" class="nav-item">🎮<br>Game</a>
-        <a href="wallet.html" class="nav-item active">💰<br>Wallet</a>
-        <a href="profile.html" class="nav-item">👤<br>Profile</a>
-    </div>
+    async function startDeposit() {
+      const btn = document.getElementById("depositBtn");
+      const amount = Number(document.getElementById("amount").value);
 
-    <!-- Cashfree SDK -->
-    <script src="https://sdk.cashfree.com/js/v3/cashfree.js"></script>
-    
-    <script>
-        // Check authentication
-        if (!localStorage.getItem('token')) {
-            window.location.href = 'index.html';
+      if (!amount || amount < 100) {
+        alert("Minimum deposit is ₹100");
+        return;
+      }
+
+      btn.disabled = true;
+      btn.innerText = "Processing...";
+
+      try {
+        const res = await fetch(
+          "https://color-game-backend1.onrender.com/api/cashfree/create-order",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: localStorage.getItem("token") || ""
+            },
+            body: JSON.stringify({ amount })
+          }
+        );
+
+        const data = await res.json();
+
+        if (!data.payment_session_id) {
+          console.error("Invalid response:", data);
+          alert("Unable to start payment. Try again.");
+          btn.disabled = false;
+          btn.innerText = "Deposit Now";
+          return;
         }
 
-        // API Configuration
-        const API_URL = 'https://color-game-backend1-v0fz.onrender.com'; // Replace with your actual backend URL
+        // ✅ OPEN CASHFREE PAYMENT PAGE
+        await cashfree.checkout({
+          paymentSessionId: data.payment_session_id,
+          redirectTarget: "_self"
+        });
 
-        // Set amount
-        function setAmount(value) {
-            document.getElementById('depositAmount').value = value;
-        }
-
-        // Handle deposit form submission
-        async function handleDeposit(event) {
-            event.preventDefault();
-            
-            const amount = document.getElementById('depositAmount').value;
-            const depositBtn = document.getElementById('depositBtn');
-            
-            // Validate amount
-            if (!amount || amount < 10) {
-                alert('Minimum deposit is ₹10');
-                return;
-            }
-            
-            // Disable button
-            depositBtn.disabled = true;
-            depositBtn.textContent = 'Creating order...';
-            
-            try {
-                // Get token
-                const token = localStorage.getItem('token');
-                
-                if (!token) {
-                    alert('Please login first');
-                    window.location.href = 'index.html';
-                    return;
-                }
-                
-                console.log('Creating order for amount:', amount);
-                
-                // Call backend to create order
-                const response = await fetch(`${API_URL}/api/cashfree/create-order`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify({ amount: Number(amount) })
-                });
-                
-                const data = await response.json();
-                
-                console.log('Order response:', data);
-                
-                if (!data.success || !data.payment_session_id) {
-                    throw new Error(data.error || data.message || 'Failed to create order');
-                }
-                
-                // Initialize Cashfree
-                console.log('Initializing Cashfree checkout...');
-                
-                const cashfree = Cashfree({
-                    mode: "production" // Change to "sandbox" for testing
-                });
-                
-                // Prepare checkout options
-                const checkoutOptions = {
-                    paymentSessionId: data.payment_session_id,
-                    redirectTarget: "_modal" // Opens in modal/popup
-                };
-                
-                console.log('Opening Cashfree checkout with session:', data.payment_session_id);
-                
-                // Open checkout
-                cashfree.checkout(checkoutOptions).then((result) => {
-                    console.log('Checkout result:', result);
-                    
-                    if (result.error) {
-                        console.error('Payment error:', result.error);
-                        alert('Payment failed: ' + result.error.message);
-                        depositBtn.disabled = false;
-                        depositBtn.textContent = 'Proceed to Payment';
-                    }
-                    
-                    if (result.paymentDetails) {
-                        console.log('Payment details:', result.paymentDetails);
-                        alert('Payment successful! Your wallet will be updated shortly.');
-                        
-                        // Redirect to wallet after 2 seconds
-                        setTimeout(() => {
-                            window.location.href = 'wallet.html';
-                        }, 2000);
-                    }
-                });
-                
-            } catch (error) {
-                console.error('Deposit error:', error);
-                alert('Deposit failed: ' + error.message);
-                depositBtn.disabled = false;
-                depositBtn.textContent = 'Proceed to Payment';
-            }
-        }
-    </script>
+      } catch (err) {
+        console.error("Deposit error:", err);
+        alert("Payment failed");
+        btn.disabled = false;
+        btn.innerText = "Deposit Now";
+      }
+    }
+  </script>
 </body>
 </html>
