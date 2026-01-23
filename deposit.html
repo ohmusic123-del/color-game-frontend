@@ -263,8 +263,8 @@
                     <input 
                         type="number" 
                         id="depositAmount" 
-                        placeholder="Enter amount (Min: ₹100)"
-                        min="100"
+                        placeholder="Enter amount (Min: ₹10)"
+                        min="10"
                         step="1"
                         required
                     >
@@ -372,7 +372,7 @@
             const amountInput = document.getElementById('depositAmount');
             const amount = parseInt(amountInput.value);
 
-            if (!amount || amount < 100) {
+            if (!amount || amount < 10) {
                 showError('Minimum deposit is ₹100');
                 return;
             }
