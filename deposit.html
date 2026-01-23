@@ -330,58 +330,43 @@
             });
         }
 
-        // Handle deposit
-        // ✅ Handle deposit with Cashfree
-  async function handleDeposit(e) {
-      e.preventDefault();
-
-      const amount = parseInt(document.getElementById('depositAmount').value);
-
-      if (!amount || amount < 100) {
-          alert('❌ Minimum deposit is ₹100');
-          return;
-      }
-
-      const depositBtn = document.getElementById('depositBtn');
-      depositBtn.disabled = true;
-      depositBtn.textContent = 'Processing...';
-
-      try {
-          const token = localStorage.getItem('token');
-
-          const res = await fetch(`${API}/api/cashfree/create-order`, {
-              method: 'POST',
-              headers: {
-                  'Content-Type': 'application/json',
-                  'Authorization': `Bearer ${token}`
-              },
-              body: JSON.stringify({ amount })
-          });
-
-          const data = await res.json();
-
-          if (!res.ok) {
-              alert('❌ ' + (data.message || 'Order create failed'));
-              depositBtn.disabled = false;
-              depositBtn.textContent = 'Submit Deposit';
-              return;
-          }
-
-          // ✅ Open Cashfree Checkout
-          const cashfree = Cashfree({ mode: "sandbox" });
-
-          cashfree.checkout({
-              paymentSessionId: data.payment_session_id,
-              redirectTarget: "_self"
-          });
-
-      } catch (err) {
-          console.error('Cashfree deposit error:', err);
-          alert('❌ Network error. Please try again.');
-          depositBtn.disabled = false;
-          depositBtn.textContent = 'Submit Deposit';
-      }
+    // When user clicks "Deposit" button
+async function initiateDeposit(amount) {
+  try {
+    // 1. Call your backend to create order
+    const response = await fetch('https://your-backend.onrender.com/api/cashfree/create-order', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${userToken}`
+      },
+      body: JSON.stringify({ amount })
+    });
+    
+    const data = await response.json();
+    
+    if (!data.success || !data.payment_session_id) {
+      alert('Failed to create order');
+      return;
+    }
+    
+    // 2. Initialize Cashfree Checkout
+    const cashfree = window.Cashfree({
+      mode: "production" // or "sandbox" for testing
+    });
+    
+    // 3. Open checkout
+    cashfree.checkout({
+      paymentSessionId: data.payment_session_id,
+      returnUrl: `${window.location.origin}/payment/success?order_id=${data.orderId}`,
+      redirectTarget: "_modal" // Opens in modal/popup
+    });
+    
+  } catch (error) {
+    console.error('Deposit error:', error);
+    alert('Deposit failed');
   }
+}
 </script>
 </body>
 </html>
