@@ -157,10 +157,38 @@
     .result-item {
       display: flex;
       justify-content: space-between;
+      align-items: center;
       padding: 15px;
       background: rgba(255, 255, 255, 0.05);
       border-radius: 10px;
       margin-bottom: 10px;
+    }
+    .result-item.current {
+      border: 2px solid #22c55e;
+      background: rgba(34, 197, 94, 0.1);
+    }
+    .round-number {
+      font-weight: 700;
+      font-size: 14px;
+    }
+    .winner-badge {
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    .winner-red {
+      background: rgba(239, 68, 68, 0.2);
+      color: #ef4444;
+    }
+    .winner-green {
+      background: rgba(34, 197, 94, 0.2);
+      color: #22c55e;
+    }
+    .winner-pending {
+      background: rgba(251, 191, 36, 0.2);
+      color: #fbbf24;
     }
     .bottom-nav {
       position: fixed;
@@ -237,9 +265,8 @@
     <a href="profile.html" class="nav-item">👤<br>Profile</a>
   </div>
 
+  <script src="js/api.js"></script>
   <script>
-    // IMPORTANT: Update this to your actual backend URL
-    const API = "https://color-game-backend1.onrender.com";
     const token = localStorage.getItem('token');
     
     console.log('🚀 Game page loaded');
@@ -300,6 +327,7 @@
           document.getElementById('greenBtn').disabled = false;
         }
       } catch (err) {
+        console.error('Bet error:', err);
         alert('Network error');
         document.getElementById('redBtn').disabled = false;
         document.getElementById('greenBtn').disabled = false;
@@ -321,43 +349,42 @@
 
     async function loadRound() {
       try {
-        console.log('🔄 Loading round data from:', `${API}/round/current`);
+        console.log('🔄 Loading round data');
         
         const res = await fetch(`${API}/round/current`);
         
-        console.log('📥 Response status:', res.status);
-        
         if (!res.ok) {
-          throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+          throw new Error(`HTTP ${res.status}`);
         }
         
         const data = await res.json();
         
-        console.log('✅ Round data received:', data);
+        console.log('✅ Round data:', data);
         
         // Check if new round started
         if (currentRound && data.id !== currentRound.id) {
-          console.log('🆕 New round started:', data.id);
+          console.log('🆕 New round detected:', data.id);
           hasBet = false;
           
           // Force refresh results when round changes
           if (currentTab === 'results') {
-            loadResults();
+            setTimeout(loadResults, 1000); // Wait 1s for DB to update
+          }
+          if (currentTab === 'mybets') {
+            setTimeout(loadMyBets, 1000);
           }
         }
         
         currentRound = data;
         lastRoundId = data.id;
-        document.getElementById('roundId').textContent = data.id.toString().slice(-6);
         
-        console.log('✅ Round loaded successfully');
+        // Display full round ID or last 6 digits
+        const displayId = data.id.length > 6 ? data.id : data.id;
+        document.getElementById('roundId').textContent = displayId;
         
       } catch (err) {
-        console.error('❌ Round loading error:', err);
+        console.error('❌ Round error:', err);
         document.getElementById('roundId').textContent = 'Error';
-        
-        // Retry after 5 seconds
-        console.log('⏳ Retrying in 5 seconds...');
         setTimeout(loadRound, 5000);
       }
     }
@@ -371,6 +398,7 @@
       document.getElementById('timerCircle').textContent = remaining;
       document.getElementById('timeLeft').textContent = `${remaining}s`;
       
+      // Close betting in last 3 seconds or if already bet
       if (remaining <= 3 || hasBet) {
         document.getElementById('redBtn').disabled = true;
         document.getElementById('greenBtn').disabled = true;
@@ -379,76 +407,117 @@
         document.getElementById('greenBtn').disabled = false;
       }
       
-      // When round ends, refresh everything
+      // When round ends, wait for processing then refresh
       if (remaining === 0) {
+        console.log('⏰ Round ended, waiting for results...');
         setTimeout(() => {
           hasBet = false;
           loadRound();
           loadBalance();
           if (currentTab === 'results') loadResults();
           if (currentTab === 'mybets') loadMyBets();
-        }, 3000);
+        }, 4000); // Wait 4 seconds for backend to process
       }
     }
 
     async function loadResults() {
       try {
+        console.log('📊 Loading round history...');
+        
         const res = await fetch(`${API}/rounds/history`);
         const data = await res.json();
         
-        console.log('Round history loaded:', data); // Debug log
+        console.log('✅ Round history:', data);
+        
+        if (!data || data.length === 0) {
+          document.getElementById('resultsList').innerHTML = 
+            '<div style="text-align: center; padding: 20px; color: rgba(255,255,255,0.5);">No rounds yet</div>';
+          return;
+        }
         
         document.getElementById('resultsList').innerHTML = data.map(r => {
-          // Determine winner display
-          let winnerText = 'PENDING';
-          let winnerColor = '#fbbf24'; // Yellow for pending
+          // Check if this is the current round
+          const isCurrent = currentRound && r.roundId === currentRound.id;
           
-          if (r.winner) {
-            winnerText = r.winner.toUpperCase();
-            winnerColor = r.winner === 'red' ? '#ef4444' : '#22c55e';
+          // Determine winner display
+          let winnerText = '⏳ PENDING';
+          let winnerClass = 'winner-pending';
+          
+          if (r.winner === 'red') {
+            winnerText = '🔴 RED';
+            winnerClass = 'winner-red';
+          } else if (r.winner === 'green') {
+            winnerText = '🟢 GREEN';
+            winnerClass = 'winner-green';
           }
           
           return `
-            <div class="result-item">
-              <span>Round ${r.roundId.toString().slice(-6)}</span>
-              <span style="color:${winnerColor}; font-weight: bold;">${winnerText}</span>
+            <div class="result-item ${isCurrent ? 'current' : ''}">
+              <div>
+                <div class="round-number">Round ${r.roundId}</div>
+                ${isCurrent ? '<div style="font-size: 10px; color: #22c55e;">● LIVE</div>' : ''}
+              </div>
+              <span class="winner-badge ${winnerClass}">${winnerText}</span>
             </div>
           `;
         }).join('');
+        
       } catch (err) {
-        console.error('Results error:', err);
-        document.getElementById('resultsList').innerHTML = 'Failed to load';
+        console.error('❌ Results error:', err);
+        document.getElementById('resultsList').innerHTML = 
+          '<div style="text-align: center; padding: 20px; color: #ef4444;">Failed to load</div>';
       }
     }
 
     async function loadMyBets() {
       try {
+        console.log('📊 Loading my bets...');
+        
         const res = await fetch(`${API}/bets`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         const data = await res.json();
         
-        console.log('My bets loaded:', data); // Debug log
+        console.log('✅ My bets:', data);
         
-        document.getElementById('resultsList').innerHTML = data.length ? data.map(b => {
-          let statusColor = '#fbbf24'; // Yellow for pending
+        if (!data || data.length === 0) {
+          document.getElementById('resultsList').innerHTML = 
+            '<div style="text-align: center; padding: 20px; color: rgba(255,255,255,0.5);">No bets yet</div>';
+          return;
+        }
+        
+        document.getElementById('resultsList').innerHTML = data.map(b => {
+          let statusText = '⏳ PENDING';
+          let statusClass = 'winner-pending';
           
           if (b.status === 'WON') {
-            statusColor = '#22c55e';
+            statusText = '✅ WON';
+            statusClass = 'winner-green';
           } else if (b.status === 'LOST') {
-            statusColor = '#ef4444';
+            statusText = '❌ LOST';
+            statusClass = 'winner-red';
           }
+          
+          const colorEmoji = b.color === 'red' ? '🔴' : '🟢';
           
           return `
             <div class="result-item">
-              <span>${b.color.toUpperCase()} • ₹${b.amount}</span>
-              <span style="color:${statusColor}; font-weight: bold;">${b.status}</span>
+              <div>
+                <div class="round-number">Round ${b.roundId}</div>
+                <div style="font-size: 12px; color: rgba(255,255,255,0.6); margin-top: 4px;">
+                  ${colorEmoji} ${b.color.toUpperCase()} • ₹${b.amount}
+                  ${b.winAmount > 0 ? ` → ₹${b.winAmount.toFixed(2)}` : ''}
+                </div>
+              </div>
+              <span class="winner-badge ${statusClass}">${statusText}</span>
             </div>
           `;
-        }).join('') : '<div style="text-align: center; padding: 20px; color: rgba(255,255,255,0.5);">No bets yet</div>';
+        }).join('');
+        
       } catch (err) {
-        console.error('My bets error:', err);
-        document.getElementById('resultsList').innerHTML = 'Failed to load';
+        console.error('❌ My bets error:', err);
+        document.getElementById('resultsList').innerHTML = 
+          '<div style="text-align: center; padding: 20px; color: #ef4444;">Failed to load</div>';
       }
     }
 
@@ -462,6 +531,7 @@
     }
 
     // Initialize
+    console.log('🎬 Initializing game...');
     loadBalance();
     loadRound();
     loadResults();
@@ -469,17 +539,19 @@
     // Update timer every second
     setInterval(updateTimer, 1000);
     
-    // Auto-refresh results every 5 seconds to catch updates
+    // Refresh results every 10 seconds to catch updates
     setInterval(() => {
       if (currentTab === 'results') {
         loadResults();
       } else if (currentTab === 'mybets') {
         loadMyBets();
       }
-    }, 5000);
+    }, 10000);
     
-    // Also refresh round data every 5 seconds to detect new rounds
+    // Check for new rounds every 5 seconds
     setInterval(loadRound, 5000);
+    
+    console.log('✅ Game initialized');
   </script>
 </body>
 </html>
