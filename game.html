@@ -162,6 +162,16 @@
       border-radius: 10px;
       margin-bottom: 10px;
     }
+    .error-banner {
+      background: rgba(239, 68, 68, 0.2);
+      border: 1px solid #ef4444;
+      color: #ef4444;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      text-align: center;
+      display: none;
+    }
     .bottom-nav {
       position: fixed;
       bottom: 0;
@@ -184,6 +194,10 @@
 </head>
 <body>
   <div class="container">
+    <div class="error-banner" id="errorBanner">
+      Backend connection error. Retrying...
+    </div>
+
     <div class="header">
       <div class="logo">BIGWIN</div>
       <div class="balance" id="balanceDisplay">₹0.00</div>
@@ -213,7 +227,7 @@
 
       <div class="amount-input">
         <label>Bet Amount</label>
-        <input type="number" id="betAmount" value="10" min="10">
+        <input type="number" id="betAmount" value="10" min="1">
         <div class="quick-amounts">
           <button class="quick-btn" onclick="setAmount(10)">₹10</button>
           <button class="quick-btn" onclick="setAmount(50)">₹50</button>
@@ -224,8 +238,8 @@
     </div>
 
     <div class="tabs">
-      <button class="tab active" onclick="switchTab('results')">Round History</button>
-      <button class="tab" onclick="switchTab('mybets')">My Bets</button>
+      <button class="tab active" id="resultsTab" onclick="switchTab('results')">Round History</button>
+      <button class="tab" id="betsTab" onclick="switchTab('mybets')">My Bets</button>
     </div>
     <div class="results-list" id="resultsList">Loading...</div>
   </div>
@@ -238,11 +252,13 @@
   </div>
 
   <script>
-    // ✅ CHANGE THIS TO YOUR ACTUAL BACKEND URL
+    // 🔧 CRITICAL: UPDATE THIS TO YOUR ACTUAL BACKEND URL FROM RENDER
     const API = "https://color-game-backend1.onrender.com";
+    
     const token = localStorage.getItem('token');
     
     if (!token) {
+      alert('Please login first');
       window.location.href = 'index.html';
     }
 
@@ -250,6 +266,16 @@
     let balance = 0;
     let hasBet = false;
     let currentTab = 'results';
+    let connectionAttempts = 0;
+
+    function showError(message) {
+      const banner = document.getElementById('errorBanner');
+      banner.textContent = message;
+      banner.style.display = 'block';
+      setTimeout(() => {
+        banner.style.display = 'none';
+      }, 5000);
+    }
 
     function setAmount(val) {
       document.getElementById('betAmount').value = val;
@@ -258,8 +284,8 @@
     async function placeBet(color) {
       const amount = parseInt(document.getElementById('betAmount').value);
       
-      if (amount < 10) {
-        alert('Minimum bet is ₹10');
+      if (amount < 1) {
+        alert('Minimum bet is ₹1');
         return;
       }
 
@@ -294,7 +320,8 @@
           document.getElementById('greenBtn').disabled = false;
         }
       } catch (err) {
-        alert('Network error');
+        console.error('Bet error:', err);
+        alert('❌ Network error. Please try again.');
         document.getElementById('redBtn').disabled = false;
         document.getElementById('greenBtn').disabled = false;
       }
@@ -305,6 +332,9 @@
         const res = await fetch(`${API}/wallet`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
+        
+        if (!res.ok) throw new Error('Failed to fetch balance');
+        
         const data = await res.json();
         balance = parseFloat(data.wallet || 0) + parseFloat(data.bonus || 0);
         document.getElementById('balanceDisplay').textContent = `₹${balance.toFixed(2)}`;
@@ -316,25 +346,43 @@
     async function loadRound() {
       try {
         const res = await fetch(`${API}/round/current`);
+        
+        if (!res.ok) {
+          throw new Error(`HTTP ${res.status}`);
+        }
+        
         const data = await res.json();
+        
+        // Hide error banner on success
+        document.getElementById('errorBanner').style.display = 'none';
+        connectionAttempts = 0;
         
         // Check if new round started
         if (currentRound && data.id !== currentRound.id) {
-          console.log('New round started');
           hasBet = false;
-          
-          // Refresh results after 2 seconds (give backend time to process)
           setTimeout(() => {
             if (currentTab === 'results') loadResults();
-            if (currentTab === 'mybets') loadMyBets();
           }, 2000);
         }
         
         currentRound = data;
-        document.getElementById('roundId').textContent = data.id.toString();
+        
+        // Display round ID (show last 6 digits for readability)
+        const roundIdDisplay = data.id.toString().length > 8 
+          ? data.id.toString().slice(-6) 
+          : data.id.toString();
+        document.getElementById('roundId').textContent = roundIdDisplay;
+        
       } catch (err) {
         console.error('Round error:', err);
-        setTimeout(loadRound, 2000);
+        connectionAttempts++;
+        
+        if (connectionAttempts > 2) {
+          showError('⚠️ Cannot connect to server. Please check your connection.');
+        }
+        
+        document.getElementById('roundId').textContent = 'Error';
+        setTimeout(loadRound, 5000);
       }
     }
 
@@ -355,14 +403,12 @@
         document.getElementById('greenBtn').disabled = false;
       }
       
-      // When round ends
       if (remaining === 0) {
         setTimeout(() => {
           hasBet = false;
           loadRound();
           loadBalance();
           if (currentTab === 'results') loadResults();
-          if (currentTab === 'mybets') loadMyBets();
         }, 3000);
       }
     }
@@ -370,10 +416,13 @@
     async function loadResults() {
       try {
         const res = await fetch(`${API}/rounds/history`);
+        
+        if (!res.ok) throw new Error('Failed to fetch');
+        
         const data = await res.json();
         
-        // ✅ CRITICAL FIX: Only show rounds with winners (completed rounds)
-        const completedRounds = data.filter(r => r.winner !== null && r.winner !== undefined);
+        // Filter to only show completed rounds
+        const completedRounds = data.filter(r => r.winner !== null);
         
         if (completedRounds.length === 0) {
           document.getElementById('resultsList').innerHTML = 
@@ -394,7 +443,8 @@
         }).join('');
       } catch (err) {
         console.error('Results error:', err);
-        document.getElementById('resultsList').innerHTML = 'Failed to load';
+        document.getElementById('resultsList').innerHTML = 
+          '<div style="text-align: center; padding: 20px; color: #ef4444;">Failed to load results</div>';
       }
     }
 
@@ -403,9 +453,18 @@
         const res = await fetch(`${API}/bets`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
+        
+        if (!res.ok) throw new Error('Failed to fetch');
+        
         const data = await res.json();
         
-        document.getElementById('resultsList').innerHTML = data.length ? data.map(b => {
+        if (!data || data.length === 0) {
+          document.getElementById('resultsList').innerHTML = 
+            '<div style="text-align: center; padding: 20px; color: rgba(255,255,255,0.5);">No bets yet</div>';
+          return;
+        }
+        
+        document.getElementById('resultsList').innerHTML = data.map(b => {
           let statusColor = b.status === 'WON' ? '#22c55e' : b.status === 'LOST' ? '#ef4444' : '#fbbf24';
           
           return `
@@ -414,35 +473,45 @@
               <span style="color:${statusColor}; font-weight: bold;">${b.status}</span>
             </div>
           `;
-        }).join('') : '<div style="text-align: center; padding: 20px; color: rgba(255,255,255,0.5);">No bets yet</div>';
+        }).join('');
       } catch (err) {
-        document.getElementById('resultsList').innerHTML = 'Failed to load';
+        console.error('Bets error:', err);
+        document.getElementById('resultsList').innerHTML = 
+          '<div style="text-align: center; padding: 20px; color: #ef4444;">Failed to load bets</div>';
       }
     }
 
     function switchTab(tab) {
       currentTab = tab;
-      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-      event.target.classList.add('active');
       
-      if (tab === 'results') loadResults();
-      else loadMyBets();
+      document.getElementById('resultsTab').classList.remove('active');
+      document.getElementById('betsTab').classList.remove('active');
+      
+      if (tab === 'results') {
+        document.getElementById('resultsTab').classList.add('active');
+        loadResults();
+      } else {
+        document.getElementById('betsTab').classList.add('active');
+        loadMyBets();
+      }
     }
 
     // Initialize
+    console.log('🎮 Game initializing...');
+    console.log('📡 API:', API);
+    
     loadBalance();
     loadRound();
     loadResults();
-    setInterval(updateTimer, 1000);
     
-    // Auto-refresh every 5 seconds
+    setInterval(updateTimer, 1000);
     setInterval(() => {
       if (currentTab === 'results') loadResults();
-      else if (currentTab === 'mybets') loadMyBets();
+      else loadMyBets();
     }, 5000);
-    
-    // Check for new rounds every 3 seconds
     setInterval(loadRound, 3000);
+    
+    console.log('✅ Game initialized');
   </script>
 </body>
 </html>
