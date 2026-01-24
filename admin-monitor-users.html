@@ -611,4 +611,22 @@
                     loadActivityLog();
                 } else {
                     alert('⚠️ Failed to delete');
-           
+                }
+            } catch (err) {
+                console.error('Delete error:', err);
+                alert('⚠️ Network error');
+            }
+        }
+
+        // Initialize
+        loadMonitorUsers();
+        loadActivityLog();
+
+        // Auto-refresh every 30 seconds
+        setInterval(() => {
+            loadMonitorUsers();
+            loadActivityLog();
+        }, 30000);
+    </script>
+</body>
+</html>
