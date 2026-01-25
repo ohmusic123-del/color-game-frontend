@@ -4,28 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Monitor Users Management - BIGWIN Admin</title>
-    <link rel="stylesheet" href="css/admin.css">
     <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: linear-gradient(135deg, #0a0e1a 0%, #1a1f35 100%);
             min-height: 100vh;
             color: white;
             padding-bottom: 80px;
         }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 30px;
+            padding: 20px;
+            background: #0f172a;
+            border-radius: 15px;
         }
-
         .header h1 {
             font-size: 28px;
             font-weight: 900;
@@ -33,7 +30,6 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-
         .back-btn {
             padding: 10px 20px;
             background: rgba(255, 255, 255, 0.1);
@@ -43,13 +39,11 @@
             text-decoration: none;
             cursor: pointer;
         }
-
         .action-bar {
             display: flex;
             gap: 15px;
             margin-bottom: 30px;
         }
-
         .btn-create {
             padding: 14px 24px;
             background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
@@ -60,43 +54,24 @@
             cursor: pointer;
             transition: all 0.3s;
         }
-
         .btn-create:hover {
             transform: translateY(-2px);
             box-shadow: 0 10px 30px rgba(34, 197, 94, 0.4);
         }
-
-        .monitor-grid {
-            display: grid;
-            gap: 20px;
-        }
-
+        .monitor-grid { display: grid; gap: 20px; }
         .monitor-card {
             background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
             border-radius: 20px;
             padding: 25px;
             border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s;
         }
-
-        .monitor-card:hover {
-            transform: translateY(-5px);
-            border-color: #22c55e;
-        }
-
         .monitor-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
         }
-
-        .monitor-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
+        .monitor-info { display: flex; align-items: center; gap: 15px; }
         .monitor-icon {
             width: 50px;
             height: 50px;
@@ -107,41 +82,21 @@
             justify-content: center;
             font-size: 24px;
         }
-
-        .monitor-details h3 {
-            font-size: 18px;
-            margin-bottom: 5px;
-        }
-
-        .monitor-username {
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 14px;
-        }
-
+        .monitor-details h3 { font-size: 18px; margin-bottom: 5px; }
+        .monitor-username { color: rgba(255, 255, 255, 0.6); font-size: 14px; }
         .monitor-stats {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 15px;
             margin-bottom: 20px;
         }
-
         .stat-item {
             background: rgba(255, 255, 255, 0.05);
             padding: 12px;
             border-radius: 10px;
         }
-
-        .stat-label {
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 12px;
-            margin-bottom: 5px;
-        }
-
-        .stat-value {
-            font-size: 18px;
-            font-weight: 700;
-        }
-
+        .stat-label { color: rgba(255, 255, 255, 0.6); font-size: 12px; margin-bottom: 5px; }
+        .stat-value { font-size: 18px; font-weight: 700; }
         .status-badge {
             display: inline-block;
             padding: 6px 14px;
@@ -149,22 +104,9 @@
             font-size: 12px;
             font-weight: 700;
         }
-
-        .status-active {
-            background: rgba(34, 197, 94, 0.2);
-            color: #22c55e;
-        }
-
-        .status-inactive {
-            background: rgba(239, 68, 68, 0.2);
-            color: #ef4444;
-        }
-
-        .monitor-actions {
-            display: flex;
-            gap: 10px;
-        }
-
+        .status-active { background: rgba(34, 197, 94, 0.2); color: #22c55e; }
+        .status-inactive { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
+        .monitor-actions { display: flex; gap: 10px; }
         .btn-action {
             padding: 8px 16px;
             border: none;
@@ -174,29 +116,14 @@
             cursor: pointer;
             transition: all 0.3s;
         }
-
-        .btn-edit {
-            background: #3b82f6;
-            color: white;
-        }
-
-        .btn-disable {
-            background: #ef4444;
-            color: white;
-        }
-
-        .btn-enable {
-            background: #22c55e;
-            color: white;
-        }
-
+        .btn-edit { background: #3b82f6; color: white; }
+        .btn-disable { background: #ef4444; color: white; }
+        .btn-enable { background: #22c55e; color: white; }
         .btn-delete {
             background: rgba(239, 68, 68, 0.2);
             color: #ef4444;
             border: 1px solid rgba(239, 68, 68, 0.3);
         }
-
-        /* Modal Styles */
         .modal {
             display: none;
             position: fixed;
@@ -210,11 +137,7 @@
             justify-content: center;
             padding: 20px;
         }
-
-        .modal.active {
-            display: flex;
-        }
-
+        .modal.active { display: flex; }
         .modal-content {
             background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
             border-radius: 20px;
@@ -223,19 +146,13 @@
             width: 100%;
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
-
         .modal-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 25px;
         }
-
-        .modal-title {
-            font-size: 20px;
-            font-weight: 700;
-        }
-
+        .modal-title { font-size: 20px; font-weight: 700; }
         .close-btn {
             background: none;
             border: none;
@@ -243,11 +160,7 @@
             font-size: 24px;
             cursor: pointer;
         }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
+        .form-group { margin-bottom: 20px; }
         .form-group label {
             display: block;
             color: rgba(255, 255, 255, 0.9);
@@ -255,7 +168,6 @@
             font-weight: 600;
             margin-bottom: 8px;
         }
-
         .form-group input {
             width: 100%;
             padding: 12px 16px;
@@ -265,12 +177,10 @@
             color: white;
             font-size: 16px;
         }
-
         .form-group input:focus {
             outline: none;
             border-color: #22c55e;
         }
-
         .btn-submit {
             width: 100%;
             padding: 14px;
@@ -281,42 +191,45 @@
             font-weight: 700;
             cursor: pointer;
         }
-
-        .activity-log {
-            margin-top: 30px;
-            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-            border-radius: 20px;
-            padding: 25px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .activity-item {
-            display: flex;
-            justify-content: space-between;
+        .error-message {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
             padding: 12px;
-            background: rgba(255, 255, 255, 0.05);
             border-radius: 8px;
-            margin-bottom: 10px;
+            color: #ef4444;
+            margin-bottom: 20px;
+            display: none;
         }
-
-        .activity-time {
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 12px;
+        .error-message.show { display: block; }
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-top-color: #22c55e;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 15px;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <div class="admin-header" style="background: #0f172a; padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.1);">
-        <div class="container">
-            <div class="header">
-                <h1>👥 Monitor Users Management</h1>
-                <a href="admin-dashboard.html" class="back-btn">← Back to Dashboard</a>
-            </div>
-        </div>
-    </div>
-
     <div class="container">
+        <div class="header">
+            <h1>👥 Monitor Users Management</h1>
+            <a href="admin-dashboard.html" class="back-btn">← Back to Dashboard</a>
+        </div>
+
+        <!-- Error Message -->
+        <div id="errorMessage" class="error-message"></div>
+
         <!-- Action Bar -->
         <div class="action-bar">
             <button class="btn-create" onclick="openCreateModal()">
@@ -326,17 +239,9 @@
 
         <!-- Monitor Users Grid -->
         <div class="monitor-grid" id="monitorUsersGrid">
-            <!-- Will be populated by JavaScript -->
-            <div style="text-align: center; padding: 40px; color: rgba(255,255,255,0.5);">
+            <div class="loading">
+                <div class="spinner"></div>
                 Loading monitor users...
-            </div>
-        </div>
-
-        <!-- Activity Log -->
-        <div class="activity-log">
-            <h3 style="margin-bottom: 20px;">📊 Recent Monitor Activity</h3>
-            <div id="activityLog">
-                <!-- Will be populated by JavaScript -->
             </div>
         </div>
     </div>
@@ -348,6 +253,7 @@
                 <h2 class="modal-title" id="modalTitle">Create Monitor User</h2>
                 <button class="close-btn" onclick="closeModal()">×</button>
             </div>
+            <div id="modalError" class="error-message"></div>
             <form id="monitorForm" onsubmit="handleSubmit(event)">
                 <div class="form-group">
                     <label>Username</label>
@@ -355,7 +261,7 @@
                 </div>
                 <div class="form-group">
                     <label>Password</label>
-                    <input type="password" id="password" placeholder="Enter password" required>
+                    <input type="password" id="password" placeholder="Enter password" required minlength="6">
                 </div>
                 <div class="form-group">
                     <label>Display Name</label>
@@ -375,6 +281,7 @@
 
         // Check admin auth
         if (!localStorage.getItem('adminToken')) {
+            alert('Please login as admin first');
             window.location.href = 'admin-login.html';
         }
 
@@ -385,18 +292,52 @@
             };
         }
 
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.textContent = '⚠️ ' + message;
+            errorDiv.classList.add('show');
+            setTimeout(() => {
+                errorDiv.classList.remove('show');
+            }, 5000);
+        }
+
+        function showModalError(message) {
+            const errorDiv = document.getElementById('modalError');
+            errorDiv.textContent = '⚠️ ' + message;
+            errorDiv.classList.add('show');
+        }
+
+        function hideModalError() {
+            const errorDiv = document.getElementById('modalError');
+            errorDiv.classList.remove('show');
+        }
+
         // Load monitor users
         async function loadMonitorUsers() {
             try {
+                console.log('Loading monitor users...');
                 const res = await fetch(`${API}/admin/monitor-users`, {
                     headers: getAdminHeaders()
                 });
+
+                console.log('Response status:', res.status);
                 const data = await res.json();
+                console.log('Data received:', data);
+
+                if (!res.ok) {
+                    throw new Error(data.error || 'Failed to load monitor users');
+                }
+
                 monitorUsers = data;
                 displayMonitorUsers();
             } catch (err) {
                 console.error('Load error:', err);
-                alert('Failed to load monitor users');
+                showError('Failed to load monitor users: ' + err.message);
+                document.getElementById('monitorUsersGrid').innerHTML = `
+                    <div style="text-align: center; padding: 40px; color: #ef4444;">
+                        Failed to load monitor users. Please check console.
+                    </div>
+                `;
             }
         }
 
@@ -468,39 +409,15 @@
             `).join('');
         }
 
-        // Load activity log
-        async function loadActivityLog() {
-            try {
-                const res = await fetch(`${API}/admin/monitor-activity`, {
-                    headers: getAdminHeaders()
-                });
-                const data = await res.json();
-                
-                const logDiv = document.getElementById('activityLog');
-                if (data.length === 0) {
-                    logDiv.innerHTML = '<p style="text-align: center; color: rgba(255,255,255,0.5);">No activity yet</p>';
-                    return;
-                }
-
-                logDiv.innerHTML = data.slice(0, 10).map(activity => `
-                    <div class="activity-item">
-                        <div>
-                            <strong>${activity.username}</strong> ${activity.action}
-                        </div>
-                        <div class="activity-time">${new Date(activity.timestamp).toLocaleString()}</div>
-                    </div>
-                `).join('');
-            } catch (err) {
-                console.error('Activity log error:', err);
-            }
-        }
-
         // Open create modal
         function openCreateModal() {
             editingId = null;
             document.getElementById('modalTitle').textContent = 'Create Monitor User';
             document.getElementById('submitBtn').textContent = 'Create Monitor User';
             document.getElementById('monitorForm').reset();
+            document.getElementById('password').placeholder = 'Enter password';
+            document.getElementById('password').required = true;
+            hideModalError();
             document.getElementById('monitorModal').classList.add('active');
         }
 
@@ -515,24 +432,45 @@
             document.getElementById('username').value = user.username;
             document.getElementById('displayName').value = user.displayName || '';
             document.getElementById('password').value = '';
-            document.getElementById('password').placeholder = 'Leave blank to keep current password';
+            document.getElementById('password').placeholder = 'Leave blank to keep current';
+            document.getElementById('password').required = false;
+            hideModalError();
             document.getElementById('monitorModal').classList.add('active');
         }
 
         // Close modal
         function closeModal() {
             document.getElementById('monitorModal').classList.remove('active');
+            hideModalError();
         }
 
         // Handle form submit
         async function handleSubmit(e) {
             e.preventDefault();
+            hideModalError();
 
             const username = document.getElementById('username').value.trim();
             const password = document.getElementById('password').value.trim();
             const displayName = document.getElementById('displayName').value.trim();
 
+            // Validation
+            if (!username || !displayName) {
+                showModalError('Username and display name are required');
+                return;
+            }
+
+            if (!editingId && !password) {
+                showModalError('Password is required for new users');
+                return;
+            }
+
+            if (password && password.length < 6) {
+                showModalError('Password must be at least 6 characters');
+                return;
+            }
+
             const submitBtn = document.getElementById('submitBtn');
+            const originalText = submitBtn.textContent;
             submitBtn.disabled = true;
             submitBtn.textContent = 'Processing...';
 
@@ -546,6 +484,8 @@
                 const body = { username, displayName };
                 if (password) body.password = password;
 
+                console.log('Submitting:', method, url, body);
+
                 const res = await fetch(url, {
                     method,
                     headers: getAdminHeaders(),
@@ -553,22 +493,22 @@
                 });
 
                 const data = await res.json();
+                console.log('Response:', res.status, data);
 
                 if (res.ok) {
                     alert('✅ ' + (editingId ? 'Updated' : 'Created') + ' successfully!');
                     closeModal();
                     loadMonitorUsers();
-                    loadActivityLog();
                 } else {
-                    alert('⚠️ ' + (data.error || 'Operation failed'));
+                    showModalError(data.error || 'Operation failed');
                 }
             } catch (err) {
                 console.error('Submit error:', err);
-                alert('⚠️ Network error');
+                showModalError('Network error: ' + err.message);
             }
 
             submitBtn.disabled = false;
-            submitBtn.textContent = editingId ? 'Update Monitor User' : 'Create Monitor User';
+            submitBtn.textContent = originalText;
         }
 
         // Toggle monitor user active status
@@ -582,19 +522,21 @@
                     body: JSON.stringify({ active })
                 });
 
+                const data = await res.json();
+
                 if (res.ok) {
                     alert('✅ Status updated!');
                     loadMonitorUsers();
-                    loadActivityLog();
                 } else {
-                    alert('⚠️ Failed to update status');
+                    showError(data.error || 'Failed to update status');
                 }
             } catch (err) {
                 console.error('Toggle error:', err);
-                alert('⚠️ Network error');
+                showError('Network error: ' + err.message);
             }
         }
 
+  
         // Delete monitor user
         async function deleteMonitorUser(id) {
             if (!confirm('⚠️ Delete this monitor user? This action cannot be undone!')) return;
@@ -605,28 +547,25 @@
                     headers: getAdminHeaders()
                 });
 
+                const data = await res.json();
+
                 if (res.ok) {
                     alert('✅ Monitor user deleted!');
                     loadMonitorUsers();
-                    loadActivityLog();
                 } else {
-                    alert('⚠️ Failed to delete');
+                    showError(data.error || 'Failed to delete');
                 }
             } catch (err) {
                 console.error('Delete error:', err);
-                alert('⚠️ Network error');
+                showError('Network error: ' + err.message);
             }
         }
 
         // Initialize
+        console.log('Initializing page...');
+        console.log('API URL:', API);
+        console.log('Admin token:', localStorage.getItem('adminToken') ? 'Present' : 'Missing');
         loadMonitorUsers();
-        loadActivityLog();
-
-        // Auto-refresh every 30 seconds
-        setInterval(() => {
-            loadMonitorUsers();
-            loadActivityLog();
-        }, 30000);
     </script>
 </body>
 </html>
