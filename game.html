@@ -202,7 +202,29 @@
       <div class="logo">BIGWIN</div>
       <div class="balance" id="balanceDisplay">₹0.00</div>
     </div>
-
+<div class="deposit-warning" id="depositWarning" style="display: none;">
+  <div style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); 
+              border-radius: 15px; 
+              padding: 20px; 
+              margin-bottom: 20px; 
+              text-align: center;
+              border: 2px solid rgba(239, 68, 68, 0.5);">
+    <h3 style="margin: 0 0 10px 0; font-size: 18px;">🔒 Deposit Required</h3>
+    <p style="margin: 0 0 15px 0; font-size: 14px; opacity: 0.9;">
+      Make your first deposit to unlock betting
+    </p>
+    <button onclick="window.location.href='deposit.html'" 
+            style="padding: 12px 24px; 
+                   background: white; 
+                   color: #dc2626; 
+                   border: none; 
+                   border-radius: 8px; 
+                   font-weight: 700; 
+                   cursor: pointer;">
+      💰 Deposit Now
+    </button>
+  </div>
+</div>
     <div class="game-card">
       <div class="round-info">
         <div class="info-item">
@@ -267,7 +289,32 @@
     let hasBet = false;
     let currentTab = 'results';
     let connectionAttempts = 0;
+// Add this function
+async function checkDepositStatus() {
+  try {
+    const res = await fetch(`${API}/profile`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    
+    const data = await res.json();
+    
+    if (res.ok && !data.deposited) {
+      // Show warning banner
+      document.getElementById('depositWarning').style.display = 'block';
+      
+      // Disable bet buttons
+      document.getElementById('redBtn').disabled = true;
+      document.getElementById('greenBtn').disabled = true;
+      document.getElementById('redBtn').style.opacity = '0.5';
+      document.getElementById('greenBtn').style.opacity = '0.5';
+    }
+  } catch (err) {
+    console.error('Deposit status check error:', err);
+  }
+}
 
+// Call it on page load - add this to your initialization
+checkDepositStatus();
     function showError(message) {
       const banner = document.getElementById('errorBanner');
       banner.textContent = message;
