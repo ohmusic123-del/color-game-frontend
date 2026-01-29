@@ -13,6 +13,193 @@
       color: white;
       padding-bottom: 80px;
     }
+
+    /* ✅ POPUP STYLES */
+    .popup-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.8);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    .popup-overlay.show {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes slideUp {
+      from {
+        transform: translateY(100px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes celebrateWin {
+      0%, 100% { transform: scale(1) rotate(0deg); }
+      25% { transform: scale(1.1) rotate(-5deg); }
+      50% { transform: scale(1.15) rotate(5deg); }
+      75% { transform: scale(1.1) rotate(-5deg); }
+    }
+
+    .popup-box {
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      border-radius: 25px;
+      padding: 40px 30px;
+      max-width: 400px;
+      width: 90%;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      animation: slideUp 0.4s ease-out;
+      position: relative;
+    }
+
+    .popup-icon {
+      font-size: 80px;
+      margin-bottom: 20px;
+      display: inline-block;
+    }
+
+    .popup-box.win .popup-icon {
+      animation: celebrateWin 0.6s ease-in-out;
+    }
+
+    .popup-title {
+      font-size: 32px;
+      font-weight: 900;
+      margin-bottom: 15px;
+      text-transform: uppercase;
+    }
+
+    .popup-box.bet-placed .popup-title {
+      background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .popup-box.win .popup-title {
+      background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .popup-box.loss .popup-title {
+      color: #ef4444;
+    }
+
+    .popup-details {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 15px;
+      padding: 20px;
+      margin: 20px 0;
+    }
+
+    .popup-detail-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 12px 0;
+      font-size: 16px;
+    }
+
+    .popup-detail-label {
+      color: rgba(255, 255, 255, 0.6);
+      font-weight: 500;
+    }
+
+    .popup-detail-value {
+      font-weight: 700;
+      font-size: 18px;
+    }
+
+    .popup-box.bet-placed .popup-detail-value {
+      color: #22c55e;
+    }
+
+    .popup-box.win .popup-detail-value {
+      color: #fbbf24;
+    }
+
+    .popup-box.loss .popup-detail-value {
+      color: #ef4444;
+    }
+
+    .popup-timer {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    .popup-close {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      color: white;
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .popup-close:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    /* Confetti for wins */
+    @keyframes confetti-fall {
+      0% {
+        transform: translateY(-100vh) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0;
+      }
+    }
+
+    .confetti {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: #fbbf24;
+      top: -10px;
+      animation: confetti-fall 3s linear;
+    }
+
+    /* Rest of existing styles */
     .container { max-width: 600px; margin: 0 auto; padding: 20px; }
     .header {
       display: flex;
@@ -99,36 +286,53 @@
       background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
       color: white;
     }
-    .color-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-    .amount-input { margin: 20px 0; }
+    .color-btn:hover:not(:disabled) {
+      transform: scale(1.05);
+      box-shadow: 0 10px 30px rgba(255, 255, 255, 0.2);
+    }
+    .color-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    .amount-input {
+      margin: 30px 0;
+    }
     .amount-input label {
       display: block;
-      margin-bottom: 10px;
-      font-size: 14px;
+      text-align: center;
+      margin-bottom: 15px;
+      font-size: 16px;
+      color: rgba(255, 255, 255, 0.8);
     }
     .amount-input input {
       width: 100%;
       padding: 15px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 2px solid rgba(255, 255, 255, 0.1);
-      border-radius: 12px;
-      color: white;
-      font-size: 18px;
+      font-size: 20px;
       font-weight: 700;
+      text-align: center;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.05);
+      color: white;
     }
     .quick-amounts {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 10px;
-      margin-top: 10px;
+      margin-top: 15px;
     }
     .quick-btn {
       padding: 10px;
-      background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.05);
       color: white;
+      border-radius: 8px;
       cursor: pointer;
+      transition: all 0.2s;
+    }
+    .quick-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: scale(1.05);
     }
     .tabs {
       display: flex;
@@ -138,39 +342,34 @@
     .tab {
       flex: 1;
       padding: 12px;
-      background: rgba(255, 255, 255, 0.05);
       border: none;
       border-radius: 10px;
+      background: rgba(255, 255, 255, 0.05);
       color: rgba(255, 255, 255, 0.6);
-      cursor: pointer;
-      font-size: 14px;
       font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
     }
     .tab.active {
-      background: #22c55e;
+      background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
       color: white;
     }
-    .results-list {
+    .results-card {
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      border-radius: 20px;
+      padding: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
       max-height: 400px;
       overflow-y: auto;
     }
     .result-item {
       display: flex;
       justify-content: space-between;
+      align-items: center;
       padding: 15px;
+      margin-bottom: 10px;
       background: rgba(255, 255, 255, 0.05);
       border-radius: 10px;
-      margin-bottom: 10px;
-    }
-    .error-banner {
-      background: rgba(239, 68, 68, 0.2);
-      border: 1px solid #ef4444;
-      color: #ef4444;
-      padding: 15px;
-      border-radius: 10px;
-      margin-bottom: 20px;
-      text-align: center;
-      display: none;
     }
     .bottom-nav {
       position: fixed;
@@ -190,45 +389,58 @@
       font-size: 12px;
     }
     .nav-item.active { color: #22c55e; }
+    .error-banner {
+      background: #dc2626;
+      color: white;
+      padding: 15px;
+      text-align: center;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      display: none;
+    }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="error-banner" id="errorBanner">
-      Backend connection error. Retrying...
+  <!-- ✅ POPUP OVERLAYS -->
+  <div id="popupOverlay" class="popup-overlay">
+    <div id="popupBox" class="popup-box">
+      <button class="popup-close" onclick="closePopup()">×</button>
+      <div class="popup-icon" id="popupIcon">🎮</div>
+      <div class="popup-title" id="popupTitle">Bet Placed!</div>
+      <div class="popup-details">
+        <div class="popup-detail-row">
+          <span class="popup-detail-label">Round ID</span>
+          <span class="popup-detail-value" id="popupRoundId">-</span>
+        </div>
+        <div class="popup-detail-row">
+          <span class="popup-detail-label">Amount</span>
+          <span class="popup-detail-value" id="popupAmount">₹0</span>
+        </div>
+        <div class="popup-detail-row" id="popupColorRow" style="display:none;">
+          <span class="popup-detail-label">Color</span>
+          <span class="popup-detail-value" id="popupColor">-</span>
+        </div>
+        <div class="popup-detail-row" id="popupWinAmountRow" style="display:none;">
+          <span class="popup-detail-label">Win Amount</span>
+          <span class="popup-detail-value" id="popupWinAmount">₹0</span>
+        </div>
+      </div>
+      <div class="popup-timer" id="popupTimer">5</div>
     </div>
+  </div>
 
+  <div id="errorBanner" class="error-banner"></div>
+
+  <div class="container">
     <div class="header">
       <div class="logo">BIGWIN</div>
       <div class="balance" id="balanceDisplay">₹0.00</div>
     </div>
-<div class="deposit-warning" id="depositWarning" style="display: none;">
-  <div style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); 
-              border-radius: 15px; 
-              padding: 20px; 
-              margin-bottom: 20px; 
-              text-align: center;
-              border: 2px solid rgba(239, 68, 68, 0.5);">
-    <h3 style="margin: 0 0 10px 0; font-size: 18px;">🔒 Deposit Required</h3>
-    <p style="margin: 0 0 15px 0; font-size: 14px; opacity: 0.9;">
-      Make your first deposit to unlock betting
-    </p>
-    <button onclick="window.location.href='deposit.html'" 
-            style="padding: 12px 24px; 
-                   background: white; 
-                   color: #dc2626; 
-                   border: none; 
-                   border-radius: 8px; 
-                   font-weight: 700; 
-                   cursor: pointer;">
-      💰 Deposit Now
-    </button>
-  </div>
-</div>
+
     <div class="game-card">
       <div class="round-info">
         <div class="info-item">
-          <label>Round</label>
+          <label>Round ID</label>
           <value id="roundId">Loading...</value>
         </div>
         <div class="info-item">
@@ -242,14 +454,18 @@
       <div class="color-selection">
         <h3>Select Color</h3>
         <div class="color-buttons">
-          <button class="color-btn red" onclick="placeBet('red')" id="redBtn">🔴 RED</button>
-          <button class="color-btn green" onclick="placeBet('green')" id="greenBtn">🟢 GREEN</button>
+          <button class="color-btn red" id="redBtn" onclick="selectColor('red')">
+            🔴 RED<br>Win 1.96x
+          </button>
+          <button class="color-btn green" id="greenBtn" onclick="selectColor('green')">
+            🟢 GREEN<br>Win 1.96x
+          </button>
         </div>
       </div>
 
       <div class="amount-input">
         <label>Bet Amount</label>
-        <input type="number" id="betAmount" value="10" min="1">
+        <input type="number" id="betAmount" placeholder="Enter amount" value="10" min="10" max="10000">
         <div class="quick-amounts">
           <button class="quick-btn" onclick="setAmount(10)">₹10</button>
           <button class="quick-btn" onclick="setAmount(50)">₹50</button>
@@ -260,10 +476,13 @@
     </div>
 
     <div class="tabs">
-      <button class="tab active" id="resultsTab" onclick="switchTab('results')">Round History</button>
+      <button class="tab active" id="resultsTab" onclick="switchTab('results')">Results</button>
       <button class="tab" id="betsTab" onclick="switchTab('mybets')">My Bets</button>
     </div>
-    <div class="results-list" id="resultsList">Loading...</div>
+
+    <div class="results-card">
+      <div id="resultsList"></div>
+    </div>
   </div>
 
   <div class="bottom-nav">
@@ -273,115 +492,249 @@
     <a href="profile.html" class="nav-item">👤<br>Profile</a>
   </div>
 
+  <script src="js/api.js"></script>
   <script>
-    // UPDATE THIS TO YOUR RENDER URL
-    const API = "https://color-game-backend1.onrender.com";
-    
-    const token = localStorage.getItem('token');
-    
-    if (!token) {
-      alert('Please login first');
+    if (!localStorage.getItem('token')) {
       window.location.href = 'index.html';
     }
 
-    let currentRound = null;
+    const token = localStorage.getItem('token');
     let balance = 0;
+    let currentRound = null;
+    let selectedColor = null;
     let hasBet = false;
     let currentTab = 'results';
     let connectionAttempts = 0;
-// Add this function
-async function checkDepositStatus() {
-  try {
-    const res = await fetch(`${API}/profile`, {
-      headers: { 'Authorization': `Bearer ${token}` }
-    });
-    
-    const data = await res.json();
-    
-    if (res.ok && !data.deposited) {
-      // Show warning banner
-      document.getElementById('depositWarning').style.display = 'block';
-      
-      // Disable bet buttons
-      document.getElementById('redBtn').disabled = true;
-      document.getElementById('greenBtn').disabled = true;
-      document.getElementById('redBtn').style.opacity = '0.5';
-      document.getElementById('greenBtn').style.opacity = '0.5';
-    }
-  } catch (err) {
-    console.error('Deposit status check error:', err);
-  }
-}
 
-// Call it on page load - add this to your initialization
-checkDepositStatus();
+    // ✅ POPUP FUNCTIONS
+    let popupTimer = null;
+    let popupTimeLeft = 5;
+
+    function showPopup(type, data) {
+      const overlay = document.getElementById('popupOverlay');
+      const box = document.getElementById('popupBox');
+      const icon = document.getElementById('popupIcon');
+      const title = document.getElementById('popupTitle');
+      const roundId = document.getElementById('popupRoundId');
+      const amount = document.getElementById('popupAmount');
+      const colorRow = document.getElementById('popupColorRow');
+      const colorValue = document.getElementById('popupColor');
+      const winAmountRow = document.getElementById('popupWinAmountRow');
+      const winAmount = document.getElementById('popupWinAmount');
+
+      // Reset classes
+      box.className = 'popup-box';
+      
+      // Set content based on type
+      if (type === 'bet-placed') {
+        box.classList.add('bet-placed');
+        icon.textContent = '✅';
+        title.textContent = 'Bet Placed!';
+        roundId.textContent = data.roundId;
+        amount.textContent = `₹${data.amount}`;
+        colorRow.style.display = 'flex';
+        colorValue.textContent = data.color.toUpperCase();
+        colorValue.style.color = data.color === 'red' ? '#ef4444' : '#22c55e';
+        winAmountRow.style.display = 'none';
+      } else if (type === 'win') {
+        box.classList.add('win');
+        icon.textContent = '🎉';
+        title.textContent = 'You Won!';
+        roundId.textContent = data.roundId;
+        amount.textContent = `₹${data.betAmount}`;
+        colorRow.style.display = 'flex';
+        colorValue.textContent = data.color.toUpperCase();
+        colorValue.style.color = data.color === 'red' ? '#ef4444' : '#22c55e';
+        winAmountRow.style.display = 'flex';
+        winAmount.textContent = `₹${data.winAmount}`;
+        
+        // Add confetti
+        createConfetti();
+      } else if (type === 'loss') {
+        box.classList.add('loss');
+        icon.textContent = '😢';
+        title.textContent = 'You Lost';
+        roundId.textContent = data.roundId;
+        amount.textContent = `₹${data.betAmount}`;
+        colorRow.style.display = 'flex';
+        colorValue.textContent = data.color.toUpperCase();
+        colorValue.style.color = data.color === 'red' ? '#ef4444' : '#22c55e';
+        winAmountRow.style.display = 'none';
+      }
+
+      // Show overlay
+      overlay.classList.add('show');
+
+      // Start countdown timer
+      popupTimeLeft = 5;
+      document.getElementById('popupTimer').textContent = popupTimeLeft;
+      
+      if (popupTimer) clearInterval(popupTimer);
+      
+      popupTimer = setInterval(() => {
+        popupTimeLeft--;
+        document.getElementById('popupTimer').textContent = popupTimeLeft;
+        
+        if (popupTimeLeft <= 0) {
+          closePopup();
+        }
+      }, 1000);
+    }
+
+    function closePopup() {
+      const overlay = document.getElementById('popupOverlay');
+      overlay.classList.remove('show');
+      
+      if (popupTimer) {
+        clearInterval(popupTimer);
+        popupTimer = null;
+      }
+      
+      // Remove confetti
+      const confettiElements = document.querySelectorAll('.confetti');
+      confettiElements.forEach(el => el.remove());
+    }
+
+    function createConfetti() {
+      const colors = ['#fbbf24', '#22c55e', '#ef4444', '#3b82f6', '#a855f7'];
+      
+      for (let i = 0; i < 30; i++) {
+        setTimeout(() => {
+          const confetti = document.createElement('div');
+          confetti.className = 'confetti';
+          confetti.style.left = Math.random() * 100 + '%';
+          confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+          confetti.style.animationDelay = (Math.random() * 0.5) + 's';
+          confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+          document.getElementById('popupBox').appendChild(confetti);
+          
+          setTimeout(() => confetti.remove(), 5000);
+        }, i * 50);
+      }
+    }
+
+    // ✅ MONITOR BET RESULTS
+    let lastCheckedBets = new Set();
+
+    async function checkBetResults() {
+      try {
+        const res = await fetch(`${API}/bets`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        
+        if (!res.ok) return;
+        
+        const bets = await res.json();
+        
+        // Check for newly completed bets
+        bets.forEach(bet => {
+          const betId = bet._id;
+          
+          // If this bet wasn't checked before and it's completed
+          if (!lastCheckedBets.has(betId) && bet.status !== 'PENDING') {
+            if (bet.status === 'WON') {
+              showPopup('win', {
+                roundId: bet.roundId,
+                betAmount: bet.amount,
+                color: bet.color,
+                winAmount: bet.winAmount
+              });
+            } else if (bet.status === 'LOST') {
+              showPopup('loss', {
+                roundId: bet.roundId,
+                betAmount: bet.amount,
+                color: bet.color
+              });
+            }
+          }
+          
+          lastCheckedBets.add(betId);
+        });
+        
+        // Keep only recent bets in the Set to prevent memory leak
+        if (lastCheckedBets.size > 100) {
+          const recentBetIds = bets.slice(0, 50).map(b => b._id);
+          lastCheckedBets = new Set(recentBetIds);
+        }
+        
+      } catch (err) {
+        console.error('Check bet results error:', err);
+      }
+    }
+
     function showError(message) {
       const banner = document.getElementById('errorBanner');
       banner.textContent = message;
       banner.style.display = 'block';
-      setTimeout(() => {
-        banner.style.display = 'none';
-      }, 5000);
     }
 
-    function setAmount(val) {
-      document.getElementById('betAmount').value = val;
+    function setAmount(amt) {
+      document.getElementById('betAmount').value = amt;
     }
 
-   async function placeBet(color) {
-  const amount = parseInt(document.getElementById('betAmount').value);
-  
-  if (amount < 1) {
-    alert('⚠️ Minimum bet is ₹1');
-    return;
-  }
-  
-  if (hasBet) {
-    alert('⚠️ Already placed bet this round');
-    return;
-  }
-  
-  document.getElementById('redBtn').disabled = true;
-  document.getElementById('greenBtn').disabled = true;
-  
-  try {
-    const res = await fetch(`${API}/bet`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-      body: JSON.stringify({ color, amount })
-    });
-    
-    const data = await res.json();
-    
-    if (res.ok) {
-      alert(`✅ Bet placed!\n₹${amount} on ${color.toUpperCase()}`);
-      hasBet = true;
-      loadBalance();
-      if (currentTab === 'mybets') loadMyBets();
-    } else {
-      // ✅ ADD THIS - Check if deposit required
-      if (data.requireDeposit) {
-        if (confirm('🔒 First Deposit Required!\n\nYou must deposit to start playing.\n\nGo to deposit page now?')) {
-          window.location.href = 'deposit.html';
-        }
-      } else {
-        alert('⚠️ ' + data.error);
+    function selectColor(color) {
+      selectedColor = color;
+      placeBet(color);
+    }
+
+    async function placeBet(color) {
+      const amount = parseFloat(document.getElementById('betAmount').value);
+      
+      if (!amount || amount < 10 || amount > 10000) {
+        alert('⚠️ Please enter amount between ₹10 and ₹10,000');
+        return;
       }
       
-      document.getElementById('redBtn').disabled = false;
-      document.getElementById('greenBtn').disabled = false;
+      if (hasBet) {
+        alert('⚠️ Already placed bet this round');
+        return;
+      }
+      
+      document.getElementById('redBtn').disabled = true;
+      document.getElementById('greenBtn').disabled = true;
+      
+      try {
+        const res = await fetch(`${API}/bet`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({ color, amount })
+        });
+        
+        const data = await res.json();
+        
+        if (res.ok) {
+          // ✅ SHOW BET PLACED POPUP
+          showPopup('bet-placed', {
+            roundId: data.roundId,
+            amount: amount,
+            color: color
+          });
+          
+          hasBet = true;
+          loadBalance();
+          if (currentTab === 'mybets') loadMyBets();
+        } else {
+          if (data.requireDeposit) {
+            if (confirm('🔒 First Deposit Required!\n\nYou must deposit to start playing.\n\nGo to deposit page now?')) {
+              window.location.href = 'deposit.html';
+            }
+          } else {
+            alert('⚠️ ' + data.error);
+          }
+          
+          document.getElementById('redBtn').disabled = false;
+          document.getElementById('greenBtn').disabled = false;
+        }
+      } catch (err) {
+        console.error('Bet error:', err);
+        alert('❌ Network error. Please try again.');
+        document.getElementById('redBtn').disabled = false;
+        document.getElementById('greenBtn').disabled = false;
+      }
     }
-  } catch (err) {
-    console.error('Bet error:', err);
-    alert('❌ Network error. Please try again.');
-    document.getElementById('redBtn').disabled = false;
-    document.getElementById('greenBtn').disabled = false;
-  }
-}
-
 
     async function loadBalance() {
       try {
@@ -409,11 +762,9 @@ checkDepositStatus();
         
         const data = await res.json();
         
-        // Hide error banner on success
         document.getElementById('errorBanner').style.display = 'none';
         connectionAttempts = 0;
         
-        // Check if new round started
         if (currentRound && data.id !== currentRound.id) {
           hasBet = false;
           setTimeout(() => {
@@ -423,8 +774,6 @@ checkDepositStatus();
         }
         
         currentRound = data;
-        
-        // Display the ACTUAL round ID from server
         document.getElementById('roundId').textContent = data.id;
         
       } catch (err) {
@@ -565,6 +914,9 @@ checkDepositStatus();
       else loadMyBets();
     }, 5000);
     setInterval(loadRound, 3000);
+    
+    // ✅ CHECK FOR BET RESULTS EVERY 3 SECONDS
+    setInterval(checkBetResults, 3000);
     
     console.log('✅ Game initialized');
   </script>
