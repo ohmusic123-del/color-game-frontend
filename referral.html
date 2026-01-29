@@ -287,7 +287,7 @@
 
         <!-- Commission Structure -->
         <div class="commission-card">
-            <h3>💰 Commission Structure</h3>
+            <h3>💰 Commission Structure (Updated - HALVED)</h3>
             <div id="levelBreakdown">
                 <!-- Levels will be loaded here -->
             </div>
@@ -355,17 +355,18 @@
             }
         }
 
-        // Load level breakdown
+        // Load level breakdown - ✅ UPDATED WITH HALVED COMMISSION RATES
         function loadLevelBreakdown(breakdown) {
             const container = document.getElementById('levelBreakdown');
             
+            // ✅ FIX: Updated commission rates (halved)
             const levels = [
-                { level: 1, rate: '10%' },
-                { level: 2, rate: '5%' },
-                { level: 3, rate: '3%' },
-                { level: 4, rate: '2%' },
-                { level: 5, rate: '1%' },
-                { level: 6, rate: '1%' }
+                { level: 1, rate: '5%' },      // Was 10%
+                { level: 2, rate: '2.5%' },    // Was 5%
+                { level: 3, rate: '1.5%' },    // Was 3%
+                { level: 4, rate: '1%' },      // Was 2%
+                { level: 5, rate: '0.5%' },    // Was 1%
+                { level: 6, rate: '0.5%' }     // Was 1%
             ];
 
             container.innerHTML = levels.map(l => {
@@ -423,24 +424,51 @@
             });
         }
 
-        // Share code
+        // ✅ FIX #1: Share code WITH referral code in the URL
         function shareCode() {
-            const text = `🎮 Join BIGWIN and start winning!\n\n💰 Use my referral code: ${referralCodeText}\n\n🎁 Get ₹50 welcome bonus!\n\nSign up now: ${window.location.origin}`;
+            // ✅ Get current website URL
+            const baseUrl = window.location.origin;
+            
+            // ✅ Create registration link with referral code as query parameter
+            const referralLink = `${baseUrl}/index.html?ref=${referralCodeText}`;
+            
+            const text = `🎮 Join BIGWIN and start winning!
+
+💰 Use my referral code: ${referralCodeText}
+
+🎁 Get ₹50 welcome bonus!
+
+📲 Sign up now: ${referralLink}`;
 
             if (navigator.share) {
                 navigator.share({
                     title: 'Join BIGWIN',
                     text: text
                 }).catch(() => {
-                    copyCode();
+                    copyToClipboard(text);
                 });
             } else {
-                copyCode();
+                copyToClipboard(text);
             }
+        }
+
+        // Helper function to copy full message
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('✅ Referral link copied to clipboard!');
+            }).catch(() => {
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                alert('✅ Referral link copied to clipboard!');
+            });
         }
 
         // Load data
         loadReferralInfo();
     </script>
 </body>
-          </html>
+</html>
