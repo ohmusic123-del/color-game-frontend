@@ -5,191 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>modi vs rahul- BIGWIN</title>
   <style>
-
-    /* ✅ POPUP STYLES */
-.popup-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.8);
-  display: none;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-  animation: fadeIn 0.3s ease-in-out;
-}
-
-.popup-overlay.show {
-  display: flex;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes slideUp {
-  from {
-    transform: translateY(100px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-@keyframes celebrateWin {
-  0%, 100% { transform: scale(1) rotate(0deg); }
-  25% { transform: scale(1.1) rotate(-5deg); }
-  50% { transform: scale(1.15) rotate(5deg); }
-  75% { transform: scale(1.1) rotate(-5deg); }
-}
-
-.popup-box {
-  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-  border-radius: 25px;
-  padding: 40px 30px;
-  max-width: 400px;
-  width: 90%;
-  text-align: center;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-  border: 2px solid rgba(255, 255, 255, 0.1);
-  animation: slideUp 0.4s ease-out;
-  position: relative;
-}
-
-.popup-icon {
-  font-size: 80px;
-  margin-bottom: 20px;
-  display: inline-block;
-}
-
-.popup-box.win .popup-icon {
-  animation: celebrateWin 0.6s ease-in-out;
-}
-
-.popup-title {
-  font-size: 32px;
-  font-weight: 900;
-  margin-bottom: 15px;
-  text-transform: uppercase;
-}
-
-.popup-box.bet-placed .popup-title {
-  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.popup-box.win .popup-title {
-  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.popup-box.loss .popup-title {
-  color: #ef4444;
-}
-
-.popup-details {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 15px;
-  padding: 20px;
-  margin: 20px 0;
-}
-
-.popup-detail-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 12px 0;
-  font-size: 16px;
-}
-
-.popup-detail-label {
-  color: rgba(255, 255, 255, 0.6);
-  font-weight: 500;
-}
-
-.popup-detail-value {
-  font-weight: 700;
-  font-size: 18px;
-}
-
-.popup-box.bet-placed .popup-detail-value {
-  color: #22c55e;
-}
-
-.popup-box.win .popup-detail-value {
-  color: #fbbf24;
-}
-
-.popup-box.loss .popup-detail-value {
-  color: #ef4444;
-}
-
-.popup-timer {
-  position: absolute;
-  bottom: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.1);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 24px;
-  font-weight: 700;
-  color: rgba(255, 255, 255, 0.5);
-}
-
-.popup-close {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  background: rgba(255, 255, 255, 0.1);
-  border: none;
-  color: white;
-  width: 35px;
-  height: 35px;
-  border-radius: 50%;
-  cursor: pointer;
-  font-size: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s;
-}
-
-.popup-close:hover {
-  background: rgba(255, 255, 255, 0.2);
-}
-
-/* Confetti for wins */
-@keyframes confetti-fall {
-  0% {
-    transform: translateY(-100vh) rotate(0deg);
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(100vh) rotate(720deg);
-    opacity: 0;
-  }
-}
-
-.confetti {
-  position: absolute;
-  width: 10px;
-  height: 10px;
-  background: #fbbf24;
-  top: -10px;
-  animation: confetti-fall 3s linear;
-}
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -473,33 +288,6 @@
   </style>
 </head>
 <body>
-  <!-- ✅ POPUP OVERLAYS -->
-<div id="popupOverlay" class="popup-overlay">
-  <div id="popupBox" class="popup-box">
-    <button class="popup-close" onclick="closePopup()">×</button>
-    <div class="popup-icon" id="popupIcon">🎮</div>
-    <div class="popup-title" id="popupTitle">Bet Placed!</div>
-    <div class="popup-details">
-      <div class="popup-detail-row">
-        <span class="popup-detail-label">Round ID</span>
-        <span class="popup-detail-value" id="popupRoundId">-</span>
-      </div>
-      <div class="popup-detail-row">
-        <span class="popup-detail-label">Amount</span>
-        <span class="popup-detail-value" id="popupAmount">₹0</span>
-      </div>
-      <div class="popup-detail-row" id="popupColorRow" style="display:none;">
-        <span class="popup-detail-label">Color</span>
-        <span class="popup-detail-value" id="popupColor">-</span>
-      </div>
-      <div class="popup-detail-row" id="popupWinAmountRow" style="display:none;">
-        <span class="popup-detail-label">Win Amount</span>
-        <span class="popup-detail-value" id="popupWinAmount">₹0</span>
-      </div>
-    </div>
-    <div class="popup-timer" id="popupTimer">5</div>
-  </div>
-</div>
   <div class="container">
     <div class="error-banner" id="errorBanner">
       Backend connection error. Retrying...
@@ -584,161 +372,7 @@
       alert('Please login first');
       window.location.href = 'index.html';
     }
-    // ✅ POPUP FUNCTIONS
-let popupTimer = null;
-let popupTimeLeft = 5;
-
-function showPopup(type, data) {
-  const overlay = document.getElementById('popupOverlay');
-  const box = document.getElementById('popupBox');
-  const icon = document.getElementById('popupIcon');
-  const title = document.getElementById('popupTitle');
-  const roundId = document.getElementById('popupRoundId');
-  const amount = document.getElementById('popupAmount');
-  const colorRow = document.getElementById('popupColorRow');
-  const colorValue = document.getElementById('popupColor');
-  const winAmountRow = document.getElementById('popupWinAmountRow');
-  const winAmount = document.getElementById('popupWinAmount');
-
-  // Reset classes
-  box.className = 'popup-box';
-  
-  // Set content based on type
-  if (type === 'bet-placed') {
-    box.classList.add('bet-placed');
-    icon.textContent = '✅';
-    title.textContent = 'Bet Placed!';
-    roundId.textContent = data.roundId;
-    amount.textContent = `₹${data.amount}`;
-    colorRow.style.display = 'flex';
-    colorValue.textContent = data.color.toUpperCase();
-    colorValue.style.color = data.color === 'red' ? '#ef4444' : '#22c55e';
-    winAmountRow.style.display = 'none';
-  } else if (type === 'win') {
-    box.classList.add('win');
-    icon.textContent = '🎉';
-    title.textContent = 'You Won!';
-    roundId.textContent = data.roundId;
-    amount.textContent = `₹${data.betAmount}`;
-    colorRow.style.display = 'flex';
-    colorValue.textContent = data.color.toUpperCase();
-    colorValue.style.color = data.color === 'red' ? '#ef4444' : '#22c55e';
-    winAmountRow.style.display = 'flex';
-    winAmount.textContent = `₹${data.winAmount}`;
     
-    // Add confetti
-    createConfetti();
-  } else if (type === 'loss') {
-    box.classList.add('loss');
-    icon.textContent = '😢';
-    title.textContent = 'You Lost';
-    roundId.textContent = data.roundId;
-    amount.textContent = `₹${data.betAmount}`;
-    colorRow.style.display = 'flex';
-    colorValue.textContent = data.color.toUpperCase();
-    colorValue.style.color = data.color === 'red' ? '#ef4444' : '#22c55e';
-    winAmountRow.style.display = 'none';
-  }
-
-  // Show overlay
-  overlay.classList.add('show');
-
-  // Start countdown timer
-  popupTimeLeft = 5;
-  document.getElementById('popupTimer').textContent = popupTimeLeft;
-  
-  if (popupTimer) clearInterval(popupTimer);
-  
-  popupTimer = setInterval(() => {
-    popupTimeLeft--;
-    document.getElementById('popupTimer').textContent = popupTimeLeft;
-    
-    if (popupTimeLeft <= 0) {
-      closePopup();
-    }
-  }, 1000);
-}
-
-function closePopup() {
-  const overlay = document.getElementById('popupOverlay');
-  overlay.classList.remove('show');
-  
-  if (popupTimer) {
-    clearInterval(popupTimer);
-    popupTimer = null;
-  }
-  
-  // Remove confetti
-  const confettiElements = document.querySelectorAll('.confetti');
-  confettiElements.forEach(el => el.remove());
-}
-
-function createConfetti() {
-  const colors = ['#fbbf24', '#22c55e', '#ef4444', '#3b82f6', '#a855f7'];
-  
-  for (let i = 0; i < 30; i++) {
-    setTimeout(() => {
-      const confetti = document.createElement('div');
-      confetti.className = 'confetti';
-      confetti.style.left = Math.random() * 100 + '%';
-      confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
-      confetti.style.animationDelay = (Math.random() * 0.5) + 's';
-      confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
-      document.getElementById('popupBox').appendChild(confetti);
-      
-      setTimeout(() => confetti.remove(), 5000);
-    }, i * 50);
-  }
-}
-
-// ✅ MONITOR BET RESULTS
-let lastCheckedBets = new Set();
-
-async function checkBetResults() {
-  try {
-    const res = await fetch(`${API}/bets`, {
-      headers: { 'Authorization': `Bearer ${token}` }
-    });
-    
-    if (!res.ok) return;
-    
-    const bets = await res.json();
-    
-    // Check for newly completed bets
-    bets.forEach(bet => {
-      const betId = bet._id;
-      
-      // If this bet wasn't checked before and it's completed
-      if (!lastCheckedBets.has(betId) && bet.status !== 'PENDING') {
-        if (bet.status === 'WON') {
-          showPopup('win', {
-            roundId: bet.roundId,
-            betAmount: bet.amount,
-            color: bet.color,
-            winAmount: bet.winAmount
-          });
-        } else if (bet.status === 'LOST') {
-          showPopup('loss', {
-            roundId: bet.roundId,
-            betAmount: bet.amount,
-            color: bet.color
-          });
-        }
-      }
-      
-      lastCheckedBets.add(betId);
-    });
-    
-    // Keep only recent bets in the Set to prevent memory leak
-    if (lastCheckedBets.size > 100) {
-      const recentBetIds = bets.slice(0, 50).map(b => b._id);
-      lastCheckedBets = new Set(recentBetIds);
-    }
-    
-  } catch (err) {
-    console.error('Check bet results error:', err);
-  }
-}
     let currentRound = null;
     let balance = 0;
     let hasBet = false;
@@ -788,9 +422,8 @@ async function checkBetResults() {
         
         if (res.ok) {
           const partyName = option === 'modi' ? 'modi' : 'Rahul';
-            showPopup('bet-placed', {
-        roundId: data.roundId,
-        amount: amount
+          alert(`✅ Bet placed!\n₹${amount} on ${partyName}`);
+          hasBet = true;
           loadBalance();
           if (currentTab === 'mybets') loadMyBets();
         } else {
@@ -1005,6 +638,10 @@ async function checkBetResults() {
     }, 5000);
     setInterval(loadRound, 3000);
     
+    console.log('🇮🇳 Game initialized');
+  </script>
+</body>
+</html>
     console.log('🇮🇳 Game initialized');
   </script>
 </body>
