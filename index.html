@@ -624,6 +624,22 @@ registerBtn.disabled = false;
 registerBtn.textContent = 'Create Account';
 }
 }
+        // ✅ Auto-fill referral code from URL
+(function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const refCode = urlParams.get('ref');
+    if (refCode) {
+        showForm('register');
+        setTimeout(() => {
+            const refInput = document.getElementById('registerReferralCode');
+            if (refInput) {
+                refInput.value = refCode.toUpperCase();
+                refInput.style.borderColor = '#22c55e';
+                refInput.style.backgroundColor = 'rgba(34, 197, 94, 0.1)';
+            }
+        }, 100);
+    }
+})();
 </script>
 </body>
 </html>
