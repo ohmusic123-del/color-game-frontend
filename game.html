@@ -1241,6 +1241,8 @@ let lastCheckedBets = new Set(JSON.parse(localStorage.getItem('lastCheckedBets')
             }
           }
           lastCheckedBets.add(betId);
+          // ADD:
+localStorage.setItem('lastCheckedBets', JSON.stringify([...lastCheckedBets]));
         });
         
         if (lastCheckedBets.size > 100) {
