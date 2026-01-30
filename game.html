@@ -3,326 +3,853 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BIGWIN - Game</title>
+  <title>BIGWIN - Color Game</title>
   <style>
-  /* ✅ BEAUTIFUL PROFESSIONAL POPUPS */
-.popup-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.85);
-  backdrop-filter: blur(10px);
-  display: none;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-  animation: fadeIn 0.3s ease-in-out;
-}
+    * { 
+      margin: 0; 
+      padding: 0; 
+      box-sizing: border-box; 
+    }
+    
+    body {
+      font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+      min-height: 100vh;
+      color: white;
+      padding-bottom: 90px;
+      position: relative;
+      overflow-x: hidden;
+    }
 
-.popup-overlay.show {
-  display: flex;
-}
+    /* Animated background particles */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 40% 20%, rgba(255, 255, 255, 0.08) 0%, transparent 50%);
+      animation: floatParticles 20s ease-in-out infinite;
+      pointer-events: none;
+      z-index: 0;
+    }
 
-@keyframes fadeIn {
-  from { 
-    opacity: 0;
-    backdrop-filter: blur(0px);
-  }
-  to { 
-    opacity: 1;
-    backdrop-filter: blur(10px);
-  }
-}
+    @keyframes floatParticles {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-20px) scale(1.05); }
+    }
 
-@keyframes slideUp {
-  from {
-    transform: translateY(150px) scale(0.8);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0) scale(1);
-    opacity: 1;
-  }
-}
+    .container { 
+      max-width: 600px; 
+      margin: 0 auto; 
+      padding: 20px; 
+      position: relative;
+      z-index: 1;
+    }
+    
+    /* Header Section */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: 25px;
+      margin-bottom: 25px;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    }
+    
+    .logo {
+      font-size: 28px;
+      font-weight: 900;
+      background: linear-gradient(135deg, #ffd700 0%, #ffed4e 50%, #fff44f 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+      letter-spacing: 2px;
+      animation: logoGlow 3s ease-in-out infinite;
+    }
 
-@keyframes celebrateWin {
-  0%, 100% { transform: scale(1) rotate(0deg); }
-  15% { transform: scale(1.15) rotate(-8deg); }
-  30% { transform: scale(1.2) rotate(8deg); }
-  45% { transform: scale(1.15) rotate(-8deg); }
-  60% { transform: scale(1.2) rotate(8deg); }
-  75% { transform: scale(1.15) rotate(-5deg); }
-}
+    @keyframes logoGlow {
+      0%, 100% { filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.5)); }
+      50% { filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.8)); }
+    }
+    
+    .balance-card {
+      background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+      padding: 12px 24px;
+      border-radius: 20px;
+      font-weight: 800;
+      font-size: 18px;
+      box-shadow: 
+        0 8px 20px rgba(79, 172, 254, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      animation: balancePulse 2s ease-in-out infinite;
+    }
 
-@keyframes pulseGlow {
-  0%, 100% { 
-    box-shadow: 0 20px 60px rgba(34, 197, 94, 0.4);
-  }
-  50% { 
-    box-shadow: 0 20px 80px rgba(34, 197, 94, 0.6);
-  }
-}
+    @keyframes balancePulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
 
-.popup-box {
-  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-  border-radius: 30px;
-  padding: 45px 35px;
-  max-width: 420px;
-  width: 92%;
-  text-align: center;
-  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.6);
-  border: 3px solid rgba(255, 255, 255, 0.15);
-  animation: slideUp 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-  position: relative;
-  overflow: hidden;
-}
+    /* Main Game Card */
+    .game-card {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.1) 100%);
+      backdrop-filter: blur(30px);
+      -webkit-backdrop-filter: blur(30px);
+      border-radius: 35px;
+      padding: 35px 25px;
+      margin-bottom: 25px;
+      border: 3px solid rgba(255, 255, 255, 0.25);
+      box-shadow: 
+        0 20px 60px rgba(0, 0, 0, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+      position: relative;
+      overflow: hidden;
+    }
 
-/* Animated gradient background for popups */
-.popup-box::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle, rgba(34, 197, 94, 0.1) 0%, transparent 70%);
-  animation: rotateGradient 8s linear infinite;
-  z-index: 0;
-}
+    .game-card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(
+        45deg,
+        transparent 30%,
+        rgba(255, 255, 255, 0.1) 50%,
+        transparent 70%
+      );
+      animation: shimmer 3s linear infinite;
+    }
 
-@keyframes rotateGradient {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
+    @keyframes shimmer {
+      0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+      100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+    }
 
-.popup-box > * {
-  position: relative;
-  z-index: 1;
-}
+    .game-card > * {
+      position: relative;
+      z-index: 1;
+    }
+    
+    /* Round Info */
+    .round-info {
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 30px;
+      gap: 15px;
+    }
+    
+    .info-item { 
+      text-align: center; 
+      flex: 1;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%);
+      padding: 15px;
+      border-radius: 20px;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .info-item label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.8);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    
+    .info-item value {
+      display: block;
+      font-size: 22px;
+      font-weight: 900;
+      background: linear-gradient(135deg, #fff 0%, #f0f0f0 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    /* Timer Circle */
+    .timer-circle {
+      width: 140px;
+      height: 140px;
+      margin: 35px auto;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 56px;
+      font-weight: 900;
+      box-shadow: 
+        0 15px 50px rgba(250, 112, 154, 0.5),
+        inset 0 -5px 15px rgba(0, 0, 0, 0.2),
+        inset 0 5px 15px rgba(255, 255, 255, 0.3);
+      position: relative;
+      animation: timerBounce 1s ease-in-out infinite;
+    }
 
-.popup-icon {
-  font-size: 90px;
-  margin-bottom: 25px;
-  display: inline-block;
-  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.3));
-}
+    @keyframes timerBounce {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.08); }
+    }
 
-.popup-box.bet-placed .popup-icon {
-  animation: pulseGlow 2s ease-in-out infinite;
-}
+    .timer-circle::before {
+      content: '';
+      position: absolute;
+      top: -10px;
+      left: -10px;
+      right: -10px;
+      bottom: -10px;
+      border-radius: 50%;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      animation: ringPulse 2s ease-in-out infinite;
+    }
 
-.popup-box.win .popup-icon {
-  animation: celebrateWin 1s ease-in-out;
-}
+    @keyframes ringPulse {
+      0%, 100% { 
+        transform: scale(1);
+        opacity: 1;
+      }
+      50% { 
+        transform: scale(1.15);
+        opacity: 0.5;
+      }
+    }
+    
+    /* Color Selection */
+    .color-selection { 
+      margin: 35px 0; 
+    }
+    
+    .color-selection h3 {
+      text-align: center;
+      margin-bottom: 25px;
+      font-size: 20px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      background: linear-gradient(135deg, #fff 0%, #f0f0f0 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .color-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    
+    .color-btn {
+      padding: 25px 20px;
+      border: none;
+      border-radius: 25px;
+      font-size: 20px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      position: relative;
+      overflow: hidden;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
 
-.popup-box.loss .popup-icon {
-  animation: shake 0.5s ease-in-out;
-}
+    .color-btn::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
 
-@keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-15px); }
-  75% { transform: translateX(15px); }
-}
+    .color-btn:active::before {
+      width: 300px;
+      height: 300px;
+    }
+    
+    .color-btn.red {
+      background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 50%, #c44569 100%);
+      color: white;
+      box-shadow: 
+        0 10px 30px rgba(255, 107, 107, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+      border: 3px solid rgba(255, 255, 255, 0.3);
+    }
+    
+    .color-btn.green {
+      background: linear-gradient(135deg, #56f000 0%, #0ec40e 50%, #0a8f08 100%);
+      color: white;
+      box-shadow: 
+        0 10px 30px rgba(86, 240, 0, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+      border: 3px solid rgba(255, 255, 255, 0.3);
+    }
+    
+    .color-btn:hover:not(:disabled) {
+      transform: translateY(-5px) scale(1.05);
+      box-shadow: 
+        0 15px 40px rgba(255, 255, 255, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    }
 
-.popup-title {
-  font-size: 36px;
-  font-weight: 900;
-  margin-bottom: 20px;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-}
+    .color-btn:active:not(:disabled) {
+      transform: translateY(-2px) scale(1.02);
+    }
+    
+    .color-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      filter: grayscale(50%);
+    }
 
-.popup-box.bet-placed {
-  border-color: #22c55e;
-  box-shadow: 0 25px 80px rgba(34, 197, 94, 0.4);
-}
+    .color-btn .emoji {
+      font-size: 32px;
+      display: block;
+      margin-bottom: 5px;
+      animation: emojiFloat 3s ease-in-out infinite;
+    }
 
-.popup-box.bet-placed .popup-title {
-  background: linear-gradient(135deg, #22c55e 0%, #10b981 50%, #059669 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
+    @keyframes emojiFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
+    
+    /* Amount Input */
+    .amount-input {
+      margin: 35px 0;
+    }
+    
+    .amount-input label {
+      display: block;
+      text-align: center;
+      margin-bottom: 15px;
+      font-size: 16px;
+      font-weight: 700;
+      color: white;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    
+    .amount-input input {
+      width: 100%;
+      padding: 18px;
+      font-size: 24px;
+      font-weight: 800;
+      text-align: center;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-radius: 20px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.1) 100%);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      color: white;
+      box-shadow: 
+        inset 0 2px 10px rgba(0, 0, 0, 0.1),
+        0 5px 20px rgba(255, 255, 255, 0.1);
+    }
 
-.popup-box.win {
-  border-color: #fbbf24;
-  box-shadow: 0 25px 80px rgba(251, 191, 36, 0.5);
-}
+    .amount-input input::placeholder {
+      color: rgba(255, 255, 255, 0.5);
+    }
 
-.popup-box.win .popup-title {
-  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
+    .amount-input input:focus {
+      outline: none;
+      border-color: #ffd700;
+      box-shadow: 
+        inset 0 2px 10px rgba(0, 0, 0, 0.1),
+        0 5px 25px rgba(255, 215, 0, 0.5);
+    }
+    
+    .quick-amounts {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 15px;
+    }
+    
+    .quick-btn {
+      padding: 12px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      color: white;
+      border-radius: 15px;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-weight: 700;
+      font-size: 15px;
+    }
+    
+    .quick-btn:hover {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.15) 100%);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(255, 255, 255, 0.2);
+    }
 
-.popup-box.loss {
-  border-color: #ef4444;
-  box-shadow: 0 25px 80px rgba(239, 68, 68, 0.4);
-}
+    .quick-btn:active {
+      transform: translateY(-1px);
+    }
+    
+    /* Tabs */
+    .tabs {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    
+    .tab {
+      flex: 1;
+      padding: 15px;
+      border: none;
+      border-radius: 20px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      color: rgba(255, 255, 255, 0.7);
+      font-weight: 700;
+      font-size: 15px;
+      cursor: pointer;
+      transition: all 0.3s;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    
+    .tab.active {
+      background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+      color: white;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(79, 172, 254, 0.5);
+      border-color: rgba(255, 255, 255, 0.4);
+    }
 
-.popup-box.loss .popup-title {
-  color: #ef4444;
-  text-shadow: 0 4px 20px rgba(239, 68, 68, 0.5);
-}
+    .tab:hover:not(.active) {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.1) 100%);
+      transform: translateY(-2px);
+    }
+    
+    /* Results Card */
+    .results-card {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: 25px;
+      padding: 25px;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      max-height: 450px;
+      overflow-y: auto;
+      box-shadow: 
+        0 15px 40px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    }
 
-.popup-details {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.03) 100%);
-  border-radius: 20px;
-  padding: 25px 20px;
-  margin: 25px 0;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.2);
-}
+    .results-card::-webkit-scrollbar {
+      width: 8px;
+    }
 
-.popup-detail-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 15px 0;
-  font-size: 17px;
-  padding: 8px 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-}
+    .results-card::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+    }
 
-.popup-detail-row:last-child {
-  border-bottom: none;
-}
+    .results-card::-webkit-scrollbar-thumb {
+      background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+      border-radius: 10px;
+    }
+    
+    .result-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-radius: 18px;
+      border: 2px solid rgba(255, 255, 255, 0.15);
+      transition: all 0.3s;
+    }
 
-.popup-detail-label {
-  color: rgba(255, 255, 255, 0.7);
-  font-weight: 600;
-  text-transform: uppercase;
-  font-size: 13px;
-  letter-spacing: 1px;
-}
+    .result-item:hover {
+      transform: translateX(5px);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.08) 100%);
+      box-shadow: 0 5px 20px rgba(255, 255, 255, 0.1);
+    }
+    
+    /* Bottom Navigation */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-top: 2px solid rgba(255, 255, 255, 0.2);
+      padding: 15px;
+      display: flex;
+      justify-content: space-around;
+      z-index: 1000;
+      box-shadow: 0 -5px 30px rgba(0, 0, 0, 0.2);
+    }
+    
+    .nav-item {
+      text-align: center;
+      color: rgba(255, 255, 255, 0.7);
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 8px 15px;
+      border-radius: 15px;
+      transition: all 0.3s;
+      min-width: 70px;
+    }
 
-.popup-detail-value {
-  font-weight: 900;
-  font-size: 20px;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-}
+    .nav-item:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateY(-3px);
+    }
+    
+    .nav-item.active { 
+      color: #ffd700;
+      background: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+    }
 
-.popup-box.bet-placed .popup-detail-value {
-  color: #22c55e;
-  text-shadow: 0 2px 12px rgba(34, 197, 94, 0.4);
-}
+    .nav-item .icon {
+      font-size: 24px;
+      display: block;
+      margin-bottom: 3px;
+    }
+    
+    /* Error Banner */
+    .error-banner {
+      background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+      color: white;
+      padding: 18px;
+      text-align: center;
+      border-radius: 20px;
+      margin-bottom: 20px;
+      display: none;
+      font-weight: 700;
+      box-shadow: 0 10px 30px rgba(255, 107, 107, 0.4);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      animation: slideDown 0.3s ease-out;
+    }
 
-.popup-box.win .popup-detail-value {
-  color: #fbbf24;
-  text-shadow: 0 2px 12px rgba(251, 191, 36, 0.4);
-}
+    @keyframes slideDown {
+      from {
+        transform: translateY(-20px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
 
-.popup-box.loss .popup-detail-value {
-  color: #ef4444;
-  text-shadow: 0 2px 12px rgba(239, 68, 68, 0.4);
-}
+    /* ✅ ENHANCED PROFESSIONAL POPUPS */
+    .popup-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      animation: fadeIn 0.3s ease-in-out;
+    }
 
-.popup-timer {
-  position: absolute;
-  bottom: 15px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 70px;
-  height: 70px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%);
-  border: 3px solid rgba(255, 255, 255, 0.2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 28px;
-  font-weight: 900;
-  color: white;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
-  animation: timerPulse 1s ease-in-out infinite;
-}
+    .popup-overlay.show {
+      display: flex;
+    }
 
-@keyframes timerPulse {
-  0%, 100% { 
-    transform: translateX(-50%) scale(1);
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
-  }
-  50% { 
-    transform: translateX(-50%) scale(1.08);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
-  }
-}
+    @keyframes fadeIn {
+      from { opacity: 0; backdrop-filter: blur(0px); }
+      to { opacity: 1; backdrop-filter: blur(10px); }
+    }
 
-.popup-close {
-  position: absolute;
-  top: 18px;
-  right: 18px;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.1) 100%);
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  color: white;
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  cursor: pointer;
-  font-size: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s;
-  font-weight: 700;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-}
+    @keyframes slideUp {
+      from { transform: translateY(150px) scale(0.8); opacity: 0; }
+      to { transform: translateY(0) scale(1); opacity: 1; }
+    }
 
-.popup-close:hover {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.2) 100%);
-  transform: rotate(90deg) scale(1.1);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
-}
+    @keyframes celebrateWin {
+      0%, 100% { transform: scale(1) rotate(0deg); }
+      15% { transform: scale(1.15) rotate(-8deg); }
+      30% { transform: scale(1.2) rotate(8deg); }
+      45% { transform: scale(1.15) rotate(-8deg); }
+      60% { transform: scale(1.2) rotate(8deg); }
+      75% { transform: scale(1.15) rotate(-5deg); }
+    }
 
-.popup-close:active {
-  transform: rotate(90deg) scale(0.95);
-}
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-15px); }
+      75% { transform: translateX(15px); }
+    }
 
-/* Enhanced Confetti */
-@keyframes confetti-fall {
-  0% {
-    transform: translateY(-100vh) rotate(0deg) scale(1);
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(100vh) rotate(1080deg) scale(0.5);
-    opacity: 0;
-  }
-}
+    .popup-box {
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      border-radius: 30px;
+      padding: 45px 35px;
+      max-width: 420px;
+      width: 92%;
+      text-align: center;
+      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.6);
+      border: 3px solid rgba(255, 255, 255, 0.15);
+      animation: slideUp 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+      position: relative;
+      overflow: hidden;
+    }
 
-.confetti {
-  position: absolute;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  top: -20px;
-  box-shadow: 0 0 10px currentColor;
-  animation: confetti-fall 4s linear;
-}
+    .popup-box::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(34, 197, 94, 0.1) 0%, transparent 70%);
+      animation: rotateGradient 8s linear infinite;
+      z-index: 0;
+    }
 
-/* Sparkle effect for wins */
-@keyframes sparkle {
-  0%, 100% { opacity: 0; transform: scale(0); }
-  50% { opacity: 1; transform: scale(1); }
-}
+    @keyframes rotateGradient {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
 
-.sparkle {
-  position: absolute;
-  width: 6px;
-  height: 6px;
-  background: white;
-  border-radius: 50%;
-  box-shadow: 0 0 10px white;
-  animation: sparkle 1.5s ease-in-out infinite;
-}
+    .popup-box > * { position: relative; z-index: 1; }
 
+    .popup-icon {
+      font-size: 90px;
+      margin-bottom: 25px;
+      display: inline-block;
+      filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.3));
+    }
+
+    .popup-box.bet-placed .popup-icon { animation: pulseGlow 2s ease-in-out infinite; }
+    .popup-box.win .popup-icon { animation: celebrateWin 1s ease-in-out; }
+    .popup-box.loss .popup-icon { animation: shake 0.5s ease-in-out; }
+
+    @keyframes pulseGlow {
+      0%, 100% { transform: scale(1); filter: drop-shadow(0 10px 20px rgba(34, 197, 94, 0.5)); }
+      50% { transform: scale(1.05); filter: drop-shadow(0 15px 30px rgba(34, 197, 94, 0.7)); }
+    }
+
+    .popup-title {
+      font-size: 36px;
+      font-weight: 900;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      text-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    }
+
+    .popup-box.bet-placed {
+      border-color: #22c55e;
+      box-shadow: 0 25px 80px rgba(34, 197, 94, 0.4);
+    }
+
+    .popup-box.bet-placed::before {
+      background: radial-gradient(circle, rgba(34, 197, 94, 0.15) 0%, transparent 70%);
+    }
+
+    .popup-box.bet-placed .popup-title {
+      background: linear-gradient(135deg, #22c55e 0%, #10b981 50%, #059669 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .popup-box.win {
+      border-color: #fbbf24;
+      box-shadow: 0 25px 80px rgba(251, 191, 36, 0.5);
+    }
+
+    .popup-box.win::before {
+      background: radial-gradient(circle, rgba(251, 191, 36, 0.15) 0%, transparent 70%);
+    }
+
+    .popup-box.win .popup-title {
+      background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .popup-box.loss {
+      border-color: #ef4444;
+      box-shadow: 0 25px 80px rgba(239, 68, 68, 0.4);
+    }
+
+    .popup-box.loss::before {
+      background: radial-gradient(circle, rgba(239, 68, 68, 0.15) 0%, transparent 70%);
+    }
+
+    .popup-box.loss .popup-title {
+      color: #ef4444;
+      text-shadow: 0 4px 20px rgba(239, 68, 68, 0.5);
+    }
+
+    .popup-details {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.03) 100%);
+      border-radius: 20px;
+      padding: 25px 20px;
+      margin: 25px 0;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .popup-detail-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 15px 0;
+      font-size: 17px;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .popup-detail-row:last-child { border-bottom: none; }
+
+    .popup-detail-label {
+      color: rgba(255, 255, 255, 0.7);
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 13px;
+      letter-spacing: 1px;
+    }
+
+    .popup-detail-value {
+      font-weight: 900;
+      font-size: 20px;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .popup-box.bet-placed .popup-detail-value {
+      color: #22c55e;
+      text-shadow: 0 2px 12px rgba(34, 197, 94, 0.4);
+    }
+
+    .popup-box.win .popup-detail-value {
+      color: #fbbf24;
+      text-shadow: 0 2px 12px rgba(251, 191, 36, 0.4);
+    }
+
+    .popup-box.loss .popup-detail-value {
+      color: #ef4444;
+      text-shadow: 0 2px 12px rgba(239, 68, 68, 0.4);
+    }
+
+    .popup-timer {
+      position: absolute;
+      bottom: 15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%);
+      border: 3px solid rgba(255, 255, 255, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      font-weight: 900;
+      color: white;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+      animation: timerPulse 1s ease-in-out infinite;
+    }
+
+    @keyframes timerPulse {
+      0%, 100% { transform: translateX(-50%) scale(1); box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3); }
+      50% { transform: translateX(-50%) scale(1.08); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4); }
+    }
+
+    .popup-close {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.1) 100%);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      color: white;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s;
+      font-weight: 700;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .popup-close:hover {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.2) 100%);
+      transform: rotate(90deg) scale(1.1);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .popup-close:active {
+      transform: rotate(90deg) scale(0.95);
+    }
+
+    @keyframes confetti-fall {
+      0% { transform: translateY(-100vh) rotate(0deg) scale(1); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(1080deg) scale(0.5); opacity: 0; }
+    }
+
+    .confetti {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      top: -20px;
+      box-shadow: 0 0 10px currentColor;
+      animation: confetti-fall 4s linear;
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 480px) {
+      .header { padding: 15px; }
+      .logo { font-size: 24px; }
+      .balance-card { font-size: 16px; padding: 10px 18px; }
+      .game-card { padding: 25px 18px; }
+      .timer-circle { width: 120px; height: 120px; font-size: 48px; }
+      .color-btn { padding: 20px 15px; font-size: 18px; }
+      .quick-amounts { grid-template-columns: repeat(2, 1fr); }
+    }
   </style>
 </head>
 <body>
-  <!-- ✅ POPUP OVERLAYS -->
+  <!-- Popups -->
   <div id="popupOverlay" class="popup-overlay">
     <div id="popupBox" class="popup-box">
       <button class="popup-close" onclick="closePopup()">×</button>
@@ -353,11 +880,13 @@
   <div id="errorBanner" class="error-banner"></div>
 
   <div class="container">
+    <!-- Header -->
     <div class="header">
-      <div class="logo">BIGWIN</div>
-      <div class="balance" id="balanceDisplay">₹0.00</div>
+      <div class="logo">💎 BIGWIN</div>
+      <div class="balance-card" id="balanceDisplay">₹0.00</div>
     </div>
 
+    <!-- Main Game Card -->
     <div class="game-card">
       <div class="round-info">
         <div class="info-item">
@@ -373,19 +902,23 @@
       <div class="timer-circle" id="timerCircle">60</div>
 
       <div class="color-selection">
-        <h3>Select Color</h3>
+        <h3>🎯 Choose Your Color</h3>
         <div class="color-buttons">
           <button class="color-btn red" id="redBtn" onclick="selectColor('red')">
-            🔴 RED<br>Win 1.96x
+            <span class="emoji">🔴</span>
+            RED<br>
+            <small style="opacity: 0.8;">Win 1.96x</small>
           </button>
           <button class="color-btn green" id="greenBtn" onclick="selectColor('green')">
-            🟢 GREEN<br>Win 1.96x
+            <span class="emoji">🟢</span>
+            GREEN<br>
+            <small style="opacity: 0.8;">Win 1.96x</small>
           </button>
         </div>
       </div>
 
       <div class="amount-input">
-        <label>Bet Amount</label>
+        <label>💰 Bet Amount</label>
         <input type="number" id="betAmount" placeholder="Enter amount" value="10" min="10" max="10000">
         <div class="quick-amounts">
           <button class="quick-btn" onclick="setAmount(10)">₹10</button>
@@ -396,21 +929,36 @@
       </div>
     </div>
 
+    <!-- Tabs -->
     <div class="tabs">
-      <button class="tab active" id="resultsTab" onclick="switchTab('results')">Results</button>
-      <button class="tab" id="betsTab" onclick="switchTab('mybets')">My Bets</button>
+      <button class="tab active" id="resultsTab" onclick="switchTab('results')">📊 Results</button>
+      <button class="tab" id="betsTab" onclick="switchTab('mybets')">🎲 My Bets</button>
     </div>
 
+    <!-- Results Card -->
     <div class="results-card">
       <div id="resultsList"></div>
     </div>
   </div>
 
+  <!-- Bottom Navigation -->
   <div class="bottom-nav">
-    <a href="home.html" class="nav-item">🏠<br>Home</a>
-    <a href="game.html" class="nav-item active">🎮<br>Game</a>
-    <a href="wallet.html" class="nav-item">💰<br>Wallet</a>
-    <a href="profile.html" class="nav-item">👤<br>Profile</a>
+    <a href="home.html" class="nav-item">
+      <span class="icon">🏠</span>
+      Home
+    </a>
+    <a href="game.html" class="nav-item active">
+      <span class="icon">🎮</span>
+      Game
+    </a>
+    <a href="wallet.html" class="nav-item">
+      <span class="icon">💰</span>
+      Wallet
+    </a>
+    <a href="profile.html" class="nav-item">
+      <span class="icon">👤</span>
+      Profile
+    </a>
   </div>
 
   <script src="js/api.js"></script>
@@ -427,7 +975,7 @@
     let currentTab = 'results';
     let connectionAttempts = 0;
 
-    // ✅ POPUP FUNCTIONS
+    // Popup Functions
     let popupTimer = null;
     let popupTimeLeft = 5;
 
@@ -443,10 +991,8 @@
       const winAmountRow = document.getElementById('popupWinAmountRow');
       const winAmount = document.getElementById('popupWinAmount');
 
-      // Reset classes
       box.className = 'popup-box';
       
-      // Set content based on type
       if (type === 'bet-placed') {
         box.classList.add('bet-placed');
         icon.textContent = '✅';
@@ -468,8 +1014,6 @@
         colorValue.style.color = data.color === 'red' ? '#ef4444' : '#22c55e';
         winAmountRow.style.display = 'flex';
         winAmount.textContent = `₹${data.winAmount}`;
-        
-        // Add confetti
         createConfetti();
       } else if (type === 'loss') {
         box.classList.add('loss');
@@ -483,42 +1027,29 @@
         winAmountRow.style.display = 'none';
       }
 
-      // Show overlay
       overlay.classList.add('show');
-
-      // Start countdown timer
       popupTimeLeft = 5;
       document.getElementById('popupTimer').textContent = popupTimeLeft;
       
       if (popupTimer) clearInterval(popupTimer);
-      
       popupTimer = setInterval(() => {
         popupTimeLeft--;
         document.getElementById('popupTimer').textContent = popupTimeLeft;
-        
-        if (popupTimeLeft <= 0) {
-          closePopup();
-        }
+        if (popupTimeLeft <= 0) closePopup();
       }, 1000);
     }
 
     function closePopup() {
-      const overlay = document.getElementById('popupOverlay');
-      overlay.classList.remove('show');
-      
+      document.getElementById('popupOverlay').classList.remove('show');
       if (popupTimer) {
         clearInterval(popupTimer);
         popupTimer = null;
       }
-      
-      // Remove confetti
-      const confettiElements = document.querySelectorAll('.confetti');
-      confettiElements.forEach(el => el.remove());
+      document.querySelectorAll('.confetti').forEach(el => el.remove());
     }
 
     function createConfetti() {
       const colors = ['#fbbf24', '#22c55e', '#ef4444', '#3b82f6', '#a855f7'];
-      
       for (let i = 0; i < 30; i++) {
         setTimeout(() => {
           const confetti = document.createElement('div');
@@ -528,13 +1059,11 @@
           confetti.style.animationDelay = (Math.random() * 0.5) + 's';
           confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
           document.getElementById('popupBox').appendChild(confetti);
-          
           setTimeout(() => confetti.remove(), 5000);
         }, i * 50);
       }
     }
 
-    // ✅ MONITOR BET RESULTS
     let lastCheckedBets = new Set();
 
     async function checkBetResults() {
@@ -542,16 +1071,11 @@
         const res = await fetch(`${API}/bets`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
-        
         if (!res.ok) return;
-        
         const bets = await res.json();
         
-        // Check for newly completed bets
         bets.forEach(bet => {
           const betId = bet._id;
-          
-          // If this bet wasn't checked before and it's completed
           if (!lastCheckedBets.has(betId) && bet.status !== 'PENDING') {
             if (bet.status === 'WON') {
               showPopup('win', {
@@ -568,16 +1092,13 @@
               });
             }
           }
-          
           lastCheckedBets.add(betId);
         });
         
-        // Keep only recent bets in the Set to prevent memory leak
         if (lastCheckedBets.size > 100) {
           const recentBetIds = bets.slice(0, 50).map(b => b._id);
           lastCheckedBets = new Set(recentBetIds);
         }
-        
       } catch (err) {
         console.error('Check bet results error:', err);
       }
@@ -627,7 +1148,6 @@
         const data = await res.json();
         
         if (res.ok) {
-          // ✅ SHOW BET PLACED POPUP
           showPopup('bet-placed', {
             roundId: data.roundId,
             amount: amount,
@@ -662,9 +1182,7 @@
         const res = await fetch(`${API}/wallet`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
-        
         if (!res.ok) throw new Error('Failed to fetch balance');
-        
         const data = await res.json();
         balance = parseFloat(data.wallet || 0) + parseFloat(data.bonus || 0);
         document.getElementById('balanceDisplay').textContent = `₹${balance.toFixed(2)}`;
@@ -676,11 +1194,7 @@
     async function loadRound() {
       try {
         const res = await fetch(`${API}/round/current`);
-        
-        if (!res.ok) {
-          throw new Error(`HTTP ${res.status}`);
-        }
-        
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
         
         document.getElementById('errorBanner').style.display = 'none';
@@ -696,15 +1210,12 @@
         
         currentRound = data;
         document.getElementById('roundId').textContent = data.id;
-        
       } catch (err) {
         console.error('Round error:', err);
         connectionAttempts++;
-        
         if (connectionAttempts > 2) {
           showError('⚠️ Cannot connect to server. Please check your connection.');
         }
-        
         document.getElementById('roundId').textContent = 'Error';
         setTimeout(loadRound, 5000);
       }
@@ -712,7 +1223,6 @@
 
     function updateTimer() {
       if (!currentRound) return;
-      
       const elapsed = Math.floor((Date.now() - currentRound.startTime) / 1000);
       const remaining = Math.max(0, 60 - elapsed);
       
@@ -741,32 +1251,30 @@
     async function loadResults() {
       try {
         const res = await fetch(`${API}/rounds/history`);
-        
         if (!res.ok) throw new Error('Failed to fetch');
-        
         const data = await res.json();
         
         if (!data || data.length === 0) {
           document.getElementById('resultsList').innerHTML = 
-            '<div style="text-align: center; padding: 20px; color: rgba(255,255,255,0.5);">No completed rounds yet</div>';
+            '<div style="text-align: center; padding: 20px; color: rgba(255,255,255,0.6);">No completed rounds yet</div>';
           return;
         }
         
         document.getElementById('resultsList').innerHTML = data.map(r => {
           const winnerText = r.winner.toUpperCase();
-          const winnerColor = r.winner === 'red' ? '#ef4444' : '#22c55e';
+          const winnerColor = r.winner === 'red' ? '#ff6b6b' : '#56f000';
           
           return `
             <div class="result-item">
-              <span>Round ${r.roundId}</span>
-              <span style="color:${winnerColor}; font-weight: bold;">${winnerText}</span>
+              <span style="font-weight: 700;">Round ${r.roundId}</span>
+              <span style="color:${winnerColor}; font-weight: 900; font-size: 18px;">${winnerText}</span>
             </div>
           `;
         }).join('');
       } catch (err) {
         console.error('Results error:', err);
         document.getElementById('resultsList').innerHTML = 
-          '<div style="text-align: center; padding: 20px; color: #ef4444;">Failed to load results</div>';
+          '<div style="text-align: center; padding: 20px; color: #ff6b6b;">Failed to load results</div>';
       }
     }
 
@@ -775,40 +1283,37 @@
         const res = await fetch(`${API}/bets`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
-        
         if (!res.ok) throw new Error('Failed to fetch');
-        
         const data = await res.json();
         
         if (!data || data.length === 0) {
           document.getElementById('resultsList').innerHTML = 
-            '<div style="text-align: center; padding: 20px; color: rgba(255,255,255,0.5);">No bets yet</div>';
+            '<div style="text-align: center; padding: 20px; color: rgba(255,255,255,0.6);">No bets yet</div>';
           return;
         }
         
         document.getElementById('resultsList').innerHTML = data.map(b => {
-          let statusColor = b.status === 'WON' ? '#22c55e' : b.status === 'LOST' ? '#ef4444' : '#fbbf24';
+          let statusColor = b.status === 'WON' ? '#56f000' : b.status === 'LOST' ? '#ff6b6b' : '#fbbf24';
           
           return `
             <div class="result-item">
               <div>
-                <div>${b.color.toUpperCase()} • ₹${b.amount}</div>
-                <div style="font-size: 12px; color: rgba(255,255,255,0.5);">Round ${b.roundId}</div>
+                <div style="font-weight: 700; margin-bottom: 3px;">${b.color.toUpperCase()} • ₹${b.amount}</div>
+                <div style="font-size: 12px; color: rgba(255,255,255,0.6);">Round ${b.roundId}</div>
               </div>
-              <span style="color:${statusColor}; font-weight: bold;">${b.status}</span>
+              <span style="color:${statusColor}; font-weight: 900; font-size: 16px;">${b.status}</span>
             </div>
           `;
         }).join('');
       } catch (err) {
         console.error('Bets error:', err);
         document.getElementById('resultsList').innerHTML = 
-          '<div style="text-align: center; padding: 20px; color: #ef4444;">Failed to load bets</div>';
+          '<div style="text-align: center; padding: 20px; color: #ff6b6b;">Failed to load bets</div>';
       }
     }
 
     function switchTab(tab) {
       currentTab = tab;
-      
       document.getElementById('resultsTab').classList.remove('active');
       document.getElementById('betsTab').classList.remove('active');
       
@@ -822,9 +1327,6 @@
     }
 
     // Initialize
-    console.log('🎮 Game initializing...');
-    console.log('📡 API:', API);
-    
     loadBalance();
     loadRound();
     loadResults();
@@ -835,11 +1337,7 @@
       else loadMyBets();
     }, 5000);
     setInterval(loadRound, 3000);
-    
-    // ✅ CHECK FOR BET RESULTS EVERY 3 SECONDS
     setInterval(checkBetResults, 3000);
-    
-    console.log('✅ Game initialized');
   </script>
 </body>
 </html>
