@@ -1397,15 +1397,16 @@ localStorage.setItem('lastCheckedBets', JSON.stringify([...lastCheckedBets]));
         document.getElementById('greenBtn').disabled = false;
       }
       
-      if (remaining === 0) {
-        setTimeout(() => {
-          hasBet = false;
-          loadRound();
-          loadBalance();
-          if (currentTab === 'results') loadResults();
-          if (currentTab === 'mybets') loadMyBets();
-        }, 3000);
-      }
+     // NEW:
+if (remaining === 0) {
+  setTimeout(() => {
+    hasBet = false;
+    loadRound();
+    loadBalance();
+    loadResults(); // ✅ Always refresh
+    if (currentTab === 'mybets') loadMyBets();
+  }, 3000);
+}
     }
 
     async function loadResults() {
