@@ -501,19 +501,36 @@
         async function loadWalletData() {
             try {
                 const token = localStorage.getItem('token');
+                console.log('Loading wallet data...');
+                
                 const res = await fetch(`${API}/wallet`, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
 
-                if (!res.ok) throw new Error('Failed');
-                const data = await res.json();
+                console.log('Wallet API response:', res.status);
 
-                document.getElementById('totalBalance').textContent = `₹${(data.wallet + data.bonus).toFixed(2)}`;
-                document.getElementById('walletBalance').textContent = `₹${data.wallet.toFixed(2)}`;
-                document.getElementById('bonusBalance').textContent = `₹${data.bonus.toFixed(2)}`;
+                if (!res.ok) {
+                    const errorData = await res.json().catch(() => ({ error: 'Unknown' }));
+                    console.error('Wallet API error:', errorData);
+                    throw new Error(`API Error: ${res.status}`);
+                }
+                
+                const data = await res.json();
+                console.log('Wallet data received:', data);
+
+                const wallet = Number(data.wallet) || 0;
+                const bonus = Number(data.bonus) || 0;
+
+                document.getElementById('totalBalance').textContent = `₹${(wallet + bonus).toFixed(2)}`;
+                document.getElementById('walletBalance').textContent = `₹${wallet.toFixed(2)}`;
+                document.getElementById('bonusBalance').textContent = `₹${bonus.toFixed(2)}`;
 
             } catch (err) {
-                console.error('Wallet data error:', err);
+                console.error('❌ Wallet data error:', err);
+                // Show error state
+                document.getElementById('totalBalance').textContent = '₹0.00';
+                document.getElementById('walletBalance').textContent = '₹0.00';
+                document.getElementById('bonusBalance').textContent = '₹0.00';
             }
         }
 
