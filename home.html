@@ -537,32 +537,62 @@
             window.location.href = 'index.html';
         }
 
-        // Load user data
+        // Load user data with improved error handling
         async function loadData() {
             try {
                 const token = localStorage.getItem('token');
+                console.log('Loading wallet data...', { hasToken: !!token });
+                
                 const res = await fetch(`${API}/wallet`, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
 
-                if (!res.ok) throw new Error('Failed to fetch');
-                const data = await res.json();
+                console.log('Wallet API response status:', res.status);
 
-                // Update UI
-                document.getElementById('userMobile').textContent = data.mobile;
-                document.getElementById('userCode').textContent = `Code: ${data.userCode}`;
-                document.getElementById('totalBalance').textContent = `₹${(data.wallet + data.bonus).toFixed(2)}`;
-                document.getElementById('walletBalance').textContent = `₹${data.wallet.toFixed(2)}`;
-                document.getElementById('bonusBalance').textContent = `₹${data.bonus.toFixed(2)}`;
-                document.getElementById('totalWagered').textContent = `₹${data.totalWagered.toFixed(2)}`;
-                document.getElementById('totalReferrals').textContent = data.totalReferrals;
-                document.getElementById('referralEarnings').textContent = `₹${data.referralEarnings.toFixed(2)}`;
+                if (!res.ok) {
+                    const errorData = await res.json().catch(() => ({ error: 'Unknown error' }));
+                    console.error('API Error:', errorData);
+                    throw new Error(`API Error: ${res.status}`);
+                }
+                
+                const data = await res.json();
+                console.log('Wallet data received:', data);
+
+                // Safely update UI with fallback values
+                document.getElementById('userMobile').textContent = data.mobile || 'Unknown';
+                document.getElementById('userCode').textContent = data.userCode ? `Code: ${data.userCode}` : 'Code: N/A';
+                
+                const wallet = Number(data.wallet) || 0;
+                const bonus = Number(data.bonus) || 0;
+                const totalWagered = Number(data.totalWagered) || 0;
+                const totalReferrals = Number(data.totalReferrals) || 0;
+                const referralEarnings = Number(data.referralEarnings) || 0;
+                
+                document.getElementById('totalBalance').textContent = `₹${(wallet + bonus).toFixed(2)}`;
+                document.getElementById('walletBalance').textContent = `₹${wallet.toFixed(2)}`;
+                document.getElementById('bonusBalance').textContent = `₹${bonus.toFixed(2)}`;
+                document.getElementById('totalWagered').textContent = `₹${totalWagered.toFixed(2)}`;
+                document.getElementById('totalReferrals').textContent = totalReferrals;
+                document.getElementById('referralEarnings').textContent = `₹${referralEarnings.toFixed(2)}`;
 
             } catch (err) {
-                console.error('Load data error:', err);
-                if (err.message.includes('401')) {
-                    localStorage.removeItem('token');
-                    window.location.href = 'index.html';
+                console.error('❌ Load data error:', err);
+                console.error('Error details:', {
+                    message: err.message,
+                    stack: err.stack
+                });
+                
+                // Show error to user
+                document.getElementById('userCode').textContent = 'Error loading data';
+                document.getElementById('userCode').style.color = '#ef4444';
+                
+                // Check if token is invalid
+                if (err.message.includes('401') || err.message.includes('403')) {
+                    console.warn('Token invalid, redirecting to login...');
+                    setTimeout(() => {
+                        localStorage.removeItem('token');
+                        window.location.href = 'index.html';
+                    }, 2000);
                 }
             }
         }
