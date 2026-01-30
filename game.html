@@ -1210,7 +1210,9 @@
       }
     }
 
-    let lastCheckedBets = new Set();
+   // NEW:
+let lastCheckedBets = new Set(JSON.parse(localStorage.getItem('lastCheckedBets') || '[]'));
+
 
     async function checkBetResults() {
       try {
