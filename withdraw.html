@@ -541,7 +541,7 @@
             try {
                 const token = localStorage.getItem('token');
                 
-                const res = await fetch(`${API}/withdraw`, {
+                const res = await fetch(`${API}/wallet/withdraw`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
