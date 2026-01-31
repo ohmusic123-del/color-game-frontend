@@ -1383,9 +1383,14 @@ localStorage.setItem('lastCheckedBets', JSON.stringify([...lastCheckedBets]));
 
     function updateTimer() {
       if (!currentRound) return;
+      
+      // Calculate based on server startTime (not local time)
       const elapsed = Math.floor((Date.now() - currentRound.startTime) / 1000);
       const remaining = Math.max(0, 60 - elapsed);
       
+      // Update period display - use roundId field if available
+      const periodDisplay = currentRound.roundId || currentRound.id;
+      document.getElementById('roundId').textContent = periodDisplay;
       document.getElementById('timerCircle').textContent = remaining;
       document.getElementById('timeLeft').textContent = `${remaining}s`;
       
