@@ -706,6 +706,8 @@
         async function quickRedeem() {
             const code = document.getElementById('quickRedeemCode').value.trim().toUpperCase();
             
+            console.log('Quick redeem attempt:', code);
+            
             if (!code) {
                 showToast('Please enter a gift code', 'error');
                 return;
@@ -718,6 +720,14 @@
 
             try {
                 const token = localStorage.getItem('token');
+                if (!token) {
+                    showToast('Please login first', 'error');
+                    setTimeout(() => window.location.href = 'index.html', 1500);
+                    return;
+                }
+                
+                console.log('Sending redeem request...');
+                
                 const res = await fetch(`${API}/giftcode/redeem`, {
                     method: 'POST',
                     headers: {
@@ -727,10 +737,13 @@
                     body: JSON.stringify({ code })
                 });
 
+                console.log('Redeem response status:', res.status);
+                
                 const data = await res.json();
+                console.log('Redeem response data:', data);
 
                 if (res.ok) {
-                    showToast(data.message, 'success');
+                    showToast(data.message || 'Gift code redeemed successfully!', 'success');
                     document.getElementById('quickRedeemCode').value = '';
                     // Reload balance
                     setTimeout(() => loadData(), 1000);
@@ -778,7 +791,8 @@
 
                 // Safely update UI with fallback values
                 document.getElementById('userMobile').textContent = data.mobile || 'Unknown';
-                document.getElementById('userCode').textContent = data.userCode ? `Code: ${data.userCode}` : 'Code: N/A';
+                // Show referralCode (shareable invite code), not userCode
+                document.getElementById('userCode').textContent = data.referralCode ? `Code: ${data.referralCode}` : 'Code: N/A';
                 
                 const wallet = Number(data.wallet) || 0;
                 const bonus = Number(data.bonus) || 0;
