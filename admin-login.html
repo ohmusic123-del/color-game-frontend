@@ -217,7 +217,8 @@
 
                 if (res.ok) {
                     // Store admin token
-                    localStorage.setItem('adminToken', data.token);
+                   localStorage.setItem('token', data.token);
+
                     
                     // Redirect to admin panel
                     window.location.href = 'admin.html';
