@@ -860,15 +860,6 @@
                 showToast('Failed to load dashboard stats. Check console.', 'error');
             }
         }
-
-        // Initialize
-        document.addEventListener('DOMContentLoaded', () => {
-            loadDashboardStats();
-            loadUsers();
-            
-            // Set admin name (from token or default)
-            document.getElementById('adminName').textContent = 'Admin';
-        });
     </script>
 
     <script>
@@ -1467,6 +1458,20 @@
 
             document.getElementById('analyticsContent').innerHTML = html;
         }
+
+        // Initialize - MUST BE AT END after all functions are defined
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('Admin panel initializing...');
+            
+            // Set admin name
+            document.getElementById('adminName').textContent = 'Admin';
+            
+            // Load initial data
+            loadDashboardStats();
+            loadUsers();
+            
+            console.log('Admin panel initialized');
+        });
     </script>
 </body>
 </html>
