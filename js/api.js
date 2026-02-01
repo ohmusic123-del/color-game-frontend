@@ -3,7 +3,10 @@ const API = "https://color-game-backend1.onrender.com";
 
 // Helper function to get auth headers
 function getAuthHeaders() {
-  const token = localStorage.getItem('token');
+ const token =
+  localStorage.getItem('adminToken') ||
+  localStorage.getItem('token');
+
   return {
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${token}`
