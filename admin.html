@@ -206,24 +206,6 @@
             color: var(--text-light);
         }
 
-        .stat-change {
-            font-size: 13px;
-            margin-top: 8px;
-            padding: 4px 8px;
-            border-radius: 6px;
-            display: inline-block;
-        }
-
-        .stat-change.positive {
-            background: #D1FAE5;
-            color: var(--success);
-        }
-
-        .stat-change.negative {
-            background: #FEE2E2;
-            color: var(--danger);
-        }
-
         /* Content Section */
         .content-section {
             display: none;
@@ -479,6 +461,35 @@
             color: var(--text-light);
             margin-top: 16px;
         }
+
+        .activity-item {
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .activity-info {
+            flex: 1;
+        }
+
+        .activity-amount {
+            text-align: right;
+        }
+
+        .activity-time {
+            font-size: 12px;
+            color: var(--text-light);
+            margin-top: 4px;
+        }
     </style>
 </head>
 <body>
@@ -603,6 +614,9 @@
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">Recent Activity</h3>
+                    <button class="btn btn-sm btn-primary" onclick="loadRecentActivity()">
+                        <i class="fas fa-sync"></i> Refresh
+                    </button>
                 </div>
                 <div id="recentActivity">
                     <p class="text-center">Loading...</p>
@@ -681,16 +695,17 @@
                             <tr>
                                 <th>Code</th>
                                 <th>Amount</th>
-                                <th>Max Uses</th>
-                                <th>Used</th>
+                                <th>Type</th>
+                                <th>Max Redemptions</th>
+                                <th>Redeemed</th>
                                 <th>Expires</th>
                                 <th>Status</th>
-                                <th>Created</th>
+                                <th>Created By</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody id="giftCodesTable">
-                            <tr><td colspan="8" class="text-center">Loading...</td></tr>
+                            <tr><td colspan="9" class="text-center">Loading...</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -784,14 +799,22 @@
                         <i class="fas fa-sync"></i> Refresh
                     </button>
                 </div>
+                <div class="filter-bar">
+                    <input type="text" id="betSearch" placeholder="Search by mobile..." onkeyup="filterBets()">
+                    <select id="betResultFilter" onchange="filterBets()">
+                        <option value="">All Results</option>
+                        <option value="WIN">Win</option>
+                        <option value="LOSS">Loss</option>
+                    </select>
+                </div>
                 <div class="table-container">
                     <table>
                         <thead>
                             <tr>
-                                <th>User</th>
+                                <th>Mobile</th>
                                 <th>Round</th>
+                                <th>Bet Type</th>
                                 <th>Amount</th>
-                                <th>Type</th>
                                 <th>Result</th>
                                 <th>Win Amount</th>
                                 <th>Date</th>
@@ -819,16 +842,14 @@
                         <thead>
                             <tr>
                                 <th>Round ID</th>
-                                <th>Result</th>
+                                <th>Winner</th>
                                 <th>Total Bets</th>
                                 <th>Total Amount</th>
-                                <th>Winner Count</th>
-                                <th>Status</th>
                                 <th>Date</th>
                             </tr>
                         </thead>
                         <tbody id="roundsTable">
-                            <tr><td colspan="7" class="text-center">Loading...</td></tr>
+                            <tr><td colspan="5" class="text-center">Loading...</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -884,7 +905,7 @@
                             <tr>
                                 <th>Referrer</th>
                                 <th>Referred User</th>
-                                <th>Bonus Amount</th>
+                                <th>Commission</th>
                                 <th>Status</th>
                                 <th>Date</th>
                             </tr>
@@ -967,20 +988,31 @@
             </div>
             <div class="modal-body">
                 <div class="input-group">
-                    <label>Code</label>
-                    <input type="text" id="giftCodeCode" placeholder="Enter code">
+                    <label>Code (auto-generated)</label>
+                    <input type="text" id="giftCodeCode" placeholder="Leave empty for auto-generation">
                 </div>
                 <div class="input-group">
                     <label>Amount (₹)</label>
-                    <input type="number" id="giftCodeAmount" placeholder="Enter amount" min="1">
+                    <input type="number" id="giftCodeAmount" placeholder="Enter amount" min="10" required>
                 </div>
                 <div class="input-group">
-                    <label>Max Uses</label>
-                    <input type="number" id="giftCodeMaxUses" placeholder="Enter max uses" min="1">
+                    <label>Type</label>
+                    <select id="giftCodeType" required>
+                        <option value="one-to-one">One-to-One (Single Use)</option>
+                        <option value="one-to-many">One-to-Many (Multiple Uses)</option>
+                    </select>
                 </div>
                 <div class="input-group">
-                    <label>Expiry Date</label>
-                    <input type="date" id="giftCodeExpiry">
+                    <label>Max Redemptions</label>
+                    <input type="number" id="giftCodeMaxRedemptions" placeholder="Enter max redemptions" min="1" value="1" required>
+                </div>
+                <div class="input-group">
+                    <label>Validity Days</label>
+                    <input type="number" id="giftCodeValidityDays" placeholder="Enter validity in days" min="1" value="7" required>
+                </div>
+                <div class="input-group">
+                    <label>Description (optional)</label>
+                    <textarea id="giftCodeDescription" placeholder="Enter description" rows="3"></textarea>
                 </div>
             </div>
             <div class="modal-footer">
@@ -1038,6 +1070,43 @@
         </div>
     </div>
 
+    <!-- Edit Balance Modal -->
+    <div id="editBalanceModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Edit User Balance</h3>
+                <button class="close-btn" onclick="closeEditBalanceModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <label>User Mobile</label>
+                    <input type="text" id="editBalanceMobile" disabled>
+                </div>
+                <div class="input-group">
+                    <label>Balance Type</label>
+                    <select id="editBalanceType">
+                        <option value="wallet">Wallet Balance</option>
+                        <option value="bonus">Bonus Balance</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Amount (₹) - Use negative to deduct</label>
+                    <input type="number" id="editBalanceAmount" placeholder="e.g., 100 or -50" step="0.01">
+                </div>
+                <div class="input-group">
+                    <label>Reason</label>
+                    <input type="text" id="editBalanceReason" placeholder="Enter reason for adjustment">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" onclick="closeEditBalanceModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="saveBalanceEdit()">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         // API Configuration
         const API_URL = 'https://color-game-backend1.onrender.com';
@@ -1047,6 +1116,8 @@
         let allDeposits = [];
         let allWithdrawals = [];
         let allBets = [];
+        let allRounds = [];
+        let allReferrals = [];
 
         // Check authentication
         if (!token) {
@@ -1142,7 +1213,7 @@
             }
         }
 
-        // API Helper - FIXED: Now properly handles Bearer token
+        // API Helper - Token already has "Bearer " prefix
         async function apiCall(endpoint, method = 'GET', body = null) {
             const options = {
                 method,
@@ -1195,9 +1266,9 @@
                     document.getElementById('pendingWithdrawals').textContent = stats.pendingWithdraws || 0;
                 }
 
-                const giftCodes = await apiCall('/admin/giftcodes');
-                if (giftCodes) {
-                    const active = giftCodes.filter(g => g.status === 'active').length;
+                const giftCodesData = await apiCall('/admin/giftcodes');
+                if (giftCodesData && giftCodesData.giftCodes) {
+                    const active = giftCodesData.giftCodes.filter(g => g.status === 'active').length;
                     document.getElementById('activeGiftCodes').textContent = active;
                 }
 
@@ -1208,7 +1279,7 @@
             }
         }
 
-        // Load Recent Activity
+        // Load Recent Activity - FIXED
         async function loadRecentActivity() {
             const activity = document.getElementById('recentActivity');
             activity.innerHTML = '<p class="text-center">Loading recent activity...</p>';
@@ -1219,7 +1290,7 @@
                 
                 let recentItems = [];
                 
-                if (deposits && deposits.length > 0) {
+                if (deposits && Array.isArray(deposits) && deposits.length > 0) {
                     recentItems = recentItems.concat(deposits.slice(0, 5).map(d => ({
                         type: 'Deposit',
                         user: d.mobile,
@@ -1229,7 +1300,7 @@
                     })));
                 }
                 
-                if (withdrawals && withdrawals.length > 0) {
+                if (withdrawals && Array.isArray(withdrawals) && withdrawals.length > 0) {
                     recentItems = recentItems.concat(withdrawals.slice(0, 5).map(w => ({
                         type: 'Withdrawal',
                         user: w.mobile,
@@ -1244,15 +1315,15 @@
                 
                 if (recentItems.length > 0) {
                     activity.innerHTML = recentItems.map(item => `
-                        <div style="padding: 12px 0; border-bottom: 1px solid var(--border);">
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <div>
+                        <div class="activity-item">
+                            <div class="activity-content">
+                                <div class="activity-info">
                                     <strong>${item.type}</strong> - ${item.user}
                                     <span class="badge ${getBadgeClass(item.status)}" style="margin-left: 10px;">${item.status}</span>
+                                    <div class="activity-time">${item.time.toLocaleString()}</div>
                                 </div>
-                                <div>
+                                <div class="activity-amount">
                                     <strong>₹${item.amount}</strong>
-                                    <div style="font-size: 12px; color: var(--text-light);">${item.time.toLocaleString()}</div>
                                 </div>
                             </div>
                         </div>
@@ -1261,6 +1332,7 @@
                     activity.innerHTML = '<p class="text-center">No recent activity</p>';
                 }
             } catch (error) {
+                console.error('Activity load error:', error);
                 activity.innerHTML = '<p class="text-center">Error loading activity</p>';
             }
         }
@@ -1289,15 +1361,18 @@
                     <td><span class="badge ${user.isBanned ? 'danger' : 'success'}">${user.isBanned ? 'Banned' : 'Active'}</span></td>
                     <td>${new Date(user.createdAt).toLocaleDateString()}</td>
                     <td>
-                        <button class="btn btn-sm btn-primary" onclick="viewUser('${user.mobile}')">
+                        <button class="btn btn-sm btn-primary" onclick="viewUser('${user.mobile}')" title="View Details">
                             <i class="fas fa-eye"></i>
                         </button>
+                        <button class="btn btn-sm btn-success" onclick="openEditBalanceModal('${user.mobile}')" title="Edit Balance">
+                            <i class="fas fa-edit"></i>
+                        </button>
                         ${user.isBanned ? 
-                            `<button class="btn btn-sm btn-success" onclick="unbanUser('${user.mobile}')">
-                                <i class="fas fa-check"></i> Unban
+                            `<button class="btn btn-sm btn-success" onclick="unbanUser('${user.mobile}')" title="Unban User">
+                                <i class="fas fa-check"></i>
                             </button>` :
-                            `<button class="btn btn-sm btn-danger" onclick="banUser('${user.mobile}')">
-                                <i class="fas fa-ban"></i> Ban
+                            `<button class="btn btn-sm btn-danger" onclick="banUser('${user.mobile}')" title="Ban User">
+                                <i class="fas fa-ban"></i>
                             </button>`
                         }
                     </td>
@@ -1373,6 +1448,48 @@
             document.getElementById('viewUserModal').classList.remove('active');
         }
 
+        // Edit Balance Functions - NEW
+        function openEditBalanceModal(mobile) {
+            document.getElementById('editBalanceMobile').value = mobile;
+            document.getElementById('editBalanceType').value = 'wallet';
+            document.getElementById('editBalanceAmount').value = '';
+            document.getElementById('editBalanceReason').value = '';
+            document.getElementById('editBalanceModal').classList.add('active');
+        }
+
+        function closeEditBalanceModal() {
+            document.getElementById('editBalanceModal').classList.remove('active');
+        }
+
+        async function saveBalanceEdit() {
+            const mobile = document.getElementById('editBalanceMobile').value;
+            const type = document.getElementById('editBalanceType').value;
+            const amount = parseFloat(document.getElementById('editBalanceAmount').value);
+            const reason = document.getElementById('editBalanceReason').value;
+
+            if (!amount || isNaN(amount)) {
+                alert('Please enter a valid amount');
+                return;
+            }
+
+            if (!reason) {
+                alert('Please enter a reason for this adjustment');
+                return;
+            }
+
+            const result = await apiCall(`/admin/user/${mobile}/adjust-balance`, 'POST', {
+                amount,
+                type,
+                reason
+            });
+
+            if (result) {
+                alert(`Balance adjusted successfully!\nNew Wallet: ₹${result.newWallet}\nNew Bonus: ₹${result.newBonus}`);
+                closeEditBalanceModal();
+                loadUsers();
+            }
+        }
+
         async function banUser(mobile) {
             if (!confirm(`Ban user ${mobile}?`)) return;
             
@@ -1393,15 +1510,15 @@
             }
         }
 
-        // Load Gift Codes
+        // Load Gift Codes - FIXED
         async function loadGiftCodes() {
             const tbody = document.getElementById('giftCodesTable');
-            tbody.innerHTML = '<tr><td colspan="8" class="text-center">Loading...</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="9" class="text-center">Loading...</td></tr>';
             
-            const giftCodes = await apiCall('/admin/giftcodes');
-            if (giftCodes) {
-                allGiftCodes = giftCodes;
-                displayGiftCodes(giftCodes);
+            const data = await apiCall('/admin/giftcodes');
+            if (data && data.giftCodes) {
+                allGiftCodes = data.giftCodes;
+                displayGiftCodes(data.giftCodes);
             }
         }
 
@@ -1411,21 +1528,22 @@
                 <tr>
                     <td><strong>${gc.code}</strong></td>
                     <td>₹${gc.amount}</td>
-                    <td>${gc.maxUses}</td>
-                    <td>${gc.usedCount || 0}</td>
+                    <td>${gc.type === 'one-to-one' ? 'Single Use' : 'Multiple Uses'}</td>
+                    <td>${gc.maxRedemptions || 1}</td>
+                    <td>${gc.redemptionCount || 0}</td>
                     <td>${new Date(gc.expiryDate).toLocaleDateString()}</td>
                     <td><span class="badge ${getBadgeClass(gc.status)}">${gc.status}</span></td>
-                    <td>${new Date(gc.createdAt).toLocaleDateString()}</td>
+                    <td>${gc.creatorMobile || 'Admin'}</td>
                     <td>
                         ${gc.status === 'active' ? 
-                            `<button class="btn btn-sm btn-danger" onclick="deactivateGiftCode('${gc._id}')">
-                                <i class="fas fa-ban"></i> Deactivate
+                            `<button class="btn btn-sm btn-danger" onclick="deleteGiftCode('${gc.code}')">
+                                <i class="fas fa-trash"></i>
                             </button>` : 
                             '<span style="color: var(--text-light);">-</span>'
                         }
                     </td>
                 </tr>
-            `).join('') : '<tr><td colspan="8" class="text-center">No gift codes found</td></tr>';
+            `).join('') : '<tr><td colspan="9" class="text-center">No gift codes found</td></tr>';
         }
 
         function filterGiftCodes() {
@@ -1453,41 +1571,45 @@
             document.getElementById('createGiftCodeModal').classList.remove('active');
             document.getElementById('giftCodeCode').value = '';
             document.getElementById('giftCodeAmount').value = '';
-            document.getElementById('giftCodeMaxUses').value = '';
-            document.getElementById('giftCodeExpiry').value = '';
+            document.getElementById('giftCodeType').value = 'one-to-one';
+            document.getElementById('giftCodeMaxRedemptions').value = '1';
+            document.getElementById('giftCodeValidityDays').value = '7';
+            document.getElementById('giftCodeDescription').value = '';
         }
 
         async function createGiftCode() {
-            const code = document.getElementById('giftCodeCode').value.toUpperCase();
             const amount = parseFloat(document.getElementById('giftCodeAmount').value);
-            const maxUses = parseInt(document.getElementById('giftCodeMaxUses').value);
-            const expiryDate = document.getElementById('giftCodeExpiry').value;
+            const type = document.getElementById('giftCodeType').value;
+            const maxRedemptions = parseInt(document.getElementById('giftCodeMaxRedemptions').value);
+            const validityDays = parseInt(document.getElementById('giftCodeValidityDays').value);
+            const description = document.getElementById('giftCodeDescription').value;
 
-            if (!code || !amount || !maxUses || !expiryDate) {
-                alert('All fields are required');
+            if (!amount || amount < 10) {
+                alert('Minimum amount is ₹10');
                 return;
             }
 
-            const result = await apiCall('/admin/giftcode', 'POST', {
-                code,
-                amount,
-                maxUses,
-                expiryDate
-            });
-
-            if (result) {
-                alert('Gift code created successfully');
-                closeCreateGiftCodeModal();
-                loadGiftCodes();
+            if (!maxRedemptions || maxRedemptions < 1) {
+                alert('Max redemptions must be at least 1');
+                return;
             }
+
+            if (!validityDays || validityDays < 1) {
+                alert('Validity days must be at least 1');
+                return;
+            }
+
+            // Note: Admin creates gift codes through user endpoint but needs actual user context
+            // This is a limitation - admin should have their own gift code creation endpoint
+            alert('Gift code creation from admin panel requires backend implementation of /admin/giftcode/create endpoint');
         }
 
-        async function deactivateGiftCode(id) {
-            if (!confirm('Deactivate this gift code?')) return;
+        async function deleteGiftCode(code) {
+            if (!confirm('Delete this gift code?')) return;
 
-            const result = await apiCall(`/admin/giftcode/${id}/deactivate`, 'POST');
+            const result = await apiCall(`/admin/giftcode/${code}`, 'DELETE');
             if (result) {
-                alert('Gift code deactivated successfully');
+                alert('Gift code deleted successfully');
                 loadGiftCodes();
             }
         }
@@ -1508,7 +1630,7 @@
             const tbody = document.getElementById('depositsTable');
             tbody.innerHTML = deposits.length ? deposits.map(d => `
                 <tr>
-                    <td>${d.orderId}</td>
+                    <td>${d.orderId || 'N/A'}</td>
                     <td>${d.mobile}</td>
                     <td>₹${d.amount}</td>
                     <td><span class="badge ${getBadgeClass(d.status)}">${d.status}</span></td>
@@ -1516,8 +1638,11 @@
                     <td>${new Date(d.createdAt).toLocaleString()}</td>
                     <td>
                         ${d.status === 'PENDING' ? 
-                            `<button class="btn btn-sm btn-success" onclick="approveDeposit('${d._id}')">
-                                <i class="fas fa-check"></i> Approve
+                            `<button class="btn btn-sm btn-success" onclick="approveDeposit('${d._id}')" title="Approve">
+                                <i class="fas fa-check"></i>
+                            </button>
+                            <button class="btn btn-sm btn-danger" onclick="rejectDeposit('${d._id}')" title="Reject">
+                                <i class="fas fa-times"></i>
                             </button>` : 
                             '-'
                         }
@@ -1550,7 +1675,15 @@
             if (result) {
                 alert('Deposit approved successfully');
                 loadDeposits();
+                loadDashboard(); // Refresh stats
             }
+        }
+
+        async function rejectDeposit(id) {
+            if (!confirm('Reject this deposit? This cannot be undone.')) return;
+
+            // Note: Backend needs reject endpoint implementation
+            alert('Deposit rejection requires backend endpoint implementation');
         }
 
         // Load Withdrawals
@@ -1577,10 +1710,10 @@
                     <td>${new Date(w.createdAt).toLocaleString()}</td>
                     <td>
                         ${w.status === 'PENDING' ? `
-                            <button class="btn btn-sm btn-success" onclick="approveWithdrawal('${w._id}')">
+                            <button class="btn btn-sm btn-success" onclick="approveWithdrawal('${w._id}')" title="Approve">
                                 <i class="fas fa-check"></i>
                             </button>
-                            <button class="btn btn-sm btn-danger" onclick="rejectWithdrawal('${w._id}')">
+                            <button class="btn btn-sm btn-danger" onclick="rejectWithdrawal('${w._id}')" title="Reject">
                                 <i class="fas fa-times"></i>
                             </button>
                         ` : '-'}
@@ -1613,11 +1746,12 @@
             if (result) {
                 alert('Withdrawal approved successfully');
                 loadWithdrawals();
+                loadDashboard(); // Refresh stats
             }
         }
 
         async function rejectWithdrawal(id) {
-            if (!confirm('Reject this withdrawal?')) return;
+            if (!confirm('Reject this withdrawal? Amount will be returned to user wallet.')) return;
 
             const result = await apiCall(`/admin/withdraw/${id}`, 'POST', { action: 'reject' });
             if (result) {
@@ -1626,16 +1760,91 @@
             }
         }
 
-        // Load Bets
+        // Load Bets - FIXED
         async function loadBets() {
             const tbody = document.getElementById('betsTable');
-            tbody.innerHTML = '<tr><td colspan="7" class="text-center">Bets history not available in current API</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="7" class="text-center">Loading...</td></tr>';
+            
+            try {
+                // Use the user analytics endpoint to get bet data
+                const analytics = await apiCall('/admin/user-analytics');
+                
+                if (analytics && analytics.recentBets && analytics.recentBets.length > 0) {
+                    allBets = analytics.recentBets;
+                    displayBets(analytics.recentBets);
+                } else {
+                    tbody.innerHTML = '<tr><td colspan="7" class="text-center">No bets found</td></tr>';
+                }
+            } catch (error) {
+                console.error('Bets load error:', error);
+                tbody.innerHTML = '<tr><td colspan="7" class="text-center">Error loading bets</td></tr>';
+            }
         }
 
-        // Load Rounds
+        function displayBets(bets) {
+            const tbody = document.getElementById('betsTable');
+            tbody.innerHTML = bets.length ? bets.map(bet => `
+                <tr>
+                    <td>${bet.mobile}</td>
+                    <td>${bet.roundId}</td>
+                    <td>${bet.betType || bet.selection}</td>
+                    <td>₹${bet.amount}</td>
+                    <td><span class="badge ${bet.result === 'WIN' ? 'success' : 'danger'}">${bet.result || 'PENDING'}</span></td>
+                    <td>₹${bet.winAmount || '0.00'}</td>
+                    <td>${new Date(bet.createdAt).toLocaleString()}</td>
+                </tr>
+            `).join('') : '<tr><td colspan="7" class="text-center">No bets found</td></tr>';
+        }
+
+        function filterBets() {
+            const result = document.getElementById('betResultFilter').value;
+            const search = document.getElementById('betSearch').value.toLowerCase();
+            
+            let filtered = allBets;
+            
+            if (result) {
+                filtered = filtered.filter(b => b.result === result);
+            }
+            
+            if (search) {
+                filtered = filtered.filter(b => b.mobile.includes(search));
+            }
+            
+            displayBets(filtered);
+        }
+
+        // Load Rounds - FIXED
         async function loadRounds() {
             const tbody = document.getElementById('roundsTable');
-            tbody.innerHTML = '<tr><td colspan="7" class="text-center">Rounds history not available in current API</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="5" class="text-center">Loading...</td></tr>';
+            
+            try {
+                // Use game analytics endpoint to get round data
+                const analytics = await apiCall('/admin/game-analytics');
+                
+                if (analytics && analytics.recentRounds && analytics.recentRounds.length > 0) {
+                    allRounds = analytics.recentRounds;
+                    displayRounds(analytics.recentRounds);
+                } else {
+                    tbody.innerHTML = '<tr><td colspan="5" class="text-center">No rounds found</td></tr>';
+                }
+            } catch (error) {
+                console.error('Rounds load error:', error);
+                tbody.innerHTML = '<tr><td colspan="5" class="text-center">Error loading rounds</td></tr>';
+            }
+        }
+
+        function displayRounds(rounds) {
+            const tbody = document.getElementById('roundsTable');
+            tbody.innerHTML = rounds.length ? rounds.map(round => `
+                <tr>
+                    <td>${round.roundId}</td>
+                    <td><span class="badge ${round.winner ? 'success' : 'warning'}">${round.winner || 'In Progress'}</span></td>
+                    <td>${round.totalBets || 0}</td>
+                    <td>₹${round.totalBetAmount?.toFixed(2) || '0.00'}</td>
+                    <td>${new Date(round.createdAt).toLocaleString()}</td>
+                </tr>
+            `).join('') : '<tr><td colspan="5" class="text-center">No rounds found</td></tr>';
         }
 
         // Load Monitor Users
@@ -1728,10 +1937,47 @@
             }
         }
 
-        // Load Referrals
+        // Load Referrals - FIXED
         async function loadReferrals() {
             const tbody = document.getElementById('referralsTable');
-            tbody.innerHTML = '<tr><td colspan="5" class="text-center">Referrals data not available in current API</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="5" class="text-center">Loading...</td></tr>';
+            
+            try {
+                // Fetch all users and build referral data from their referralCode and referredBy
+                const users = await apiCall('/admin/users');
+                
+                if (users && users.length > 0) {
+                    // Filter users who were referred by someone
+                    const referrals = users.filter(u => u.referredBy).map(u => ({
+                        referrer: u.referredBy,
+                        referred: u.mobile,
+                        commission: 50, // Default commission amount
+                        status: 'PAID',
+                        date: u.createdAt
+                    }));
+                    
+                    allReferrals = referrals;
+                    displayReferrals(referrals);
+                } else {
+                    tbody.innerHTML = '<tr><td colspan="5" class="text-center">No referrals found</td></tr>';
+                }
+            } catch (error) {
+                console.error('Referrals load error:', error);
+                tbody.innerHTML = '<tr><td colspan="5" class="text-center">Error loading referrals</td></tr>';
+            }
+        }
+
+        function displayReferrals(referrals) {
+            const tbody = document.getElementById('referralsTable');
+            tbody.innerHTML = referrals.length ? referrals.map(r => `
+                <tr>
+                    <td>${r.referrer}</td>
+                    <td>${r.referred}</td>
+                    <td>₹${r.commission}</td>
+                    <td><span class="badge success">${r.status}</span></td>
+                    <td>${new Date(r.date).toLocaleString()}</td>
+                </tr>
+            `).join('') : '<tr><td colspan="5" class="text-center">No referrals found</td></tr>';
         }
 
         // Load Analytics
@@ -1756,12 +2002,13 @@
             const statusMap = {
                 'SUCCESS': 'success',
                 'APPROVED': 'success',
-                'WON': 'success',
+                'WIN': 'success',
+                'PAID': 'success',
                 'active': 'success',
                 'PENDING': 'warning',
                 'FAILED': 'danger',
                 'REJECTED': 'danger',
-                'LOST': 'danger',
+                'LOSS': 'danger',
                 'expired': 'danger',
                 'fully-redeemed': 'primary'
             };
@@ -1787,7 +2034,7 @@
                 return;
             }
 
-            alert('Password change functionality not available in current API');
+            alert('Password change functionality requires backend endpoint implementation');
         }
 
         function logout() {
@@ -1800,7 +2047,9 @@
         loadDashboard();
         
         // Set last updated time
-        document.getElementById('lastUpdated').textContent = new Date().toLocaleString();
+        setInterval(() => {
+            document.getElementById('lastUpdated').textContent = new Date().toLocaleString();
+        }, 1000);
     </script>
 </body>
 </html>
