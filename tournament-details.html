@@ -1,1 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tournament Details - BIGWIN</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            min-height: 100vh;
+            color: white;
+            padding-bottom: 30px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 20px 25px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .back-btn {
+            background: rgba(255, 255, 255, 0.15);
+            border: none;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        .page-title {
+            font-size: 20px;
+            font-weight: 700;
+            flex: 1;
+        }
+
+        .status-badge {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            padding: 6px 12px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .status-badge.live {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ff0000 100%);
+        }
+
+        .status-badge.completed {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+
+        .banner {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 64px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #667eea;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .info-box {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            border-radius: 12px;
+        }
+
+        .info-label {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 5px;
+        }
+
+        .info-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: white;
+        }
+
+        .prize-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .prize-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .prize-position {
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .prize-amount {
+            font-size: 18px;
+            font-weight: 700;
+            color: #ffd700;
+        }
+
+        .description {
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .rules {
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.8);
+            white-space: pre-line;
+        }
+
+        .register-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            padding: 18px;
+            border-radius: 16px;
+            color: white;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        .register-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .register-btn:disabled {
+            background: rgba(255, 255, 255, 0.2);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .participants-section {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .participant-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            margin-bottom: 8px;
+        }
+
+        .participant-info {
+            flex: 1;
+        }
+
+        .participant-name {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .participant-id {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .participant-slot {
+            background: rgba(102, 126, 234, 0.3);
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #1e1e2e, #2a2a40);
+            border-radius: 24px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .modal-header {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #667eea;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            color: white;
+            font-size: 15px;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #667eea;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .payment-options {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .payment-option {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            border-radius: 12px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .payment-option.selected {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.2);
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 25px;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .warning-box {
+            background: rgba(255, 193, 7, 0.2);
+            border: 1px solid rgba(255, 193, 7, 0.5);
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .warning-text {
+            font-size: 14px;
+            color: #ffc107;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 480px) {
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <button class="back-btn" onclick="window.location.href='tournaments.html'">←</button>
+            <h1 class="page-title" id="header-title">Loading...</h1>
+            <div id="header-badge"></div>
+        </div>
+
+        <div id="content-container">
+            <div class="loading">Loading tournament details...</div>
+        </div>
+    </div>
+
+    <!-- Registration Modal -->
+    <div id="registration-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">Register for Tournament</div>
+            
+            <div class="warning-box">
+                <div class="warning-text">
+                    ⚠️ Entry fee will be deducted immediately. Make sure you can participate at the scheduled time.
+                </div>
+            </div>
+
+            <form id="registration-form">
+                <div class="form-group">
+                    <label class="form-label">Team Name</label>
+                    <input type="text" class="form-input" id="team-name" required 
+                           placeholder="Enter your team name">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">In-Game Name (IGN)</label>
+                    <input type="text" class="form-input" id="in-game-name" required 
+                           placeholder="Your in-game username">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">In-Game ID</label>
+                    <input type="text" class="form-input" id="in-game-id" required 
+                           placeholder="Your in-game player ID">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Pay From</label>
+                    <div class="payment-options">
+                        <div class="payment-option selected" data-type="wallet">
+                            <div style="font-size: 24px; margin-bottom: 5px;">💰</div>
+                            <div style="font-weight: 600;">Wallet</div>
+                            <div id="wallet-balance" style="font-size: 12px; margin-top: 5px;">₹0.00</div>
+                        </div>
+                        <div class="payment-option" data-type="bonus">
+                            <div style="font-size: 24px; margin-bottom: 5px;">🎁</div>
+                            <div style="font-weight: 600;">Bonus</div>
+                            <div id="bonus-balance" style="font-size: 12px; margin-top: 5px;">₹0.00</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-buttons">
+                    <button type="button" class="modal-btn btn-secondary" onclick="closeRegistrationModal()">
+                        Cancel
+                    </button>
+                    <button type="submit" class="modal-btn btn-primary">
+                        Register
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:3000';
+        let currentTournament = null;
+        let selectedPayment = 'wallet';
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const tournamentId = urlParams.get('id');
+
+        if (!tournamentId) {
+            window.location.href = 'tournaments.html';
+        }
+
+        // Load tournament details
+        async function loadTournament() {
+            try {
+                const response = await fetch(`${API_URL}/tournaments/${tournamentId}`);
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || 'Failed to load tournament');
+                }
+
+                currentTournament = data.tournament;
+                displayTournament(currentTournament);
+                loadParticipants();
+            } catch (err) {
+                console.error('Error loading tournament:', err);
+                document.getElementById('content-container').innerHTML = `
+                    <div class="section">
+                        <div style="text-align: center; color: #ff6b6b;">
+                            ${err.message}
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        function displayTournament(t) {
+            document.getElementById('header-title').textContent = t.title;
+            
+            let badgeHTML = '';
+            if (t.status === 'ongoing') {
+                badgeHTML = '<div class="status-badge live">🔴 LIVE</div>';
+            } else if (t.status === 'completed') {
+                badgeHTML = '<div class="status-badge completed">✅ Completed</div>';
+            }
+            document.getElementById('header-badge').innerHTML = badgeHTML;
+
+            const startDate = new Date(t.startTime);
+            const regDeadline = new Date(t.registrationDeadline);
+
+            const html = `
+                <div class="banner">🏆</div>
+
+                <div class="section">
+                    <div class="section-title">Tournament Info</div>
+                    <div class="info-grid">
+                        <div class="info-box">
+                            <div class="info-label">Game</div>
+                            <div class="info-value">${t.game.toUpperCase()}</div>
+                        </div>
+                        <div class="info-box">
+                            <div class="info-label">Type</div>
+                            <div class="info-value">${t.type.toUpperCase()}</div>
+                        </div>
+                        <div class="info-box">
+                            <div class="info-label">Entry Fee</div>
+                            <div class="info-value">₹${t.entryFee.toFixed(2)}</div>
+                        </div>
+                        <div class="info-box">
+                            <div class="info-label">Prize Pool</div>
+                            <div class="info-value" style="color: #ffd700;">₹${t.prizePool.toFixed(2)}</div>
+                        </div>
+                        <div class="info-box">
+                            <div class="info-label">Total Slots</div>
+                            <div class="info-value">${t.totalSlots}</div>
+                        </div>
+                        <div class="info-box">
+                            <div class="info-label">Available</div>
+                            <div class="info-value">${t.totalSlots - t.currentParticipants}</div>
+                        </div>
+                        <div class="info-box">
+                            <div class="info-label">Start Time</div>
+                            <div class="info-value" style="font-size: 14px;">${startDate.toLocaleString('en-IN')}</div>
+                        </div>
+                        <div class="info-box">
+                            <div class="info-label">Registration Ends</div>
+                            <div class="info-value" style="font-size: 14px;">${regDeadline.toLocaleString('en-IN')}</div>
+                        </div>
+                        ${t.map ? `
+                        <div class="info-box">
+                            <div class="info-label">Map</div>
+                            <div class="info-value">${t.map}</div>
+                        </div>
+                        ` : ''}
+                        ${t.perspective ? `
+                        <div class="info-box">
+                            <div class="info-label">Perspective</div>
+                            <div class="info-value">${t.perspective.toUpperCase()}</div>
+                        </div>
+                        ` : ''}
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-title">Description</div>
+                    <div class="description">${t.description}</div>
+                </div>
+
+                ${t.prizes && t.prizes.length > 0 ? `
+                <div class="section">
+                    <div class="section-title">Prize Distribution</div>
+                    <ul class="prize-list">
+                        ${t.prizes.map(p => `
+                            <li class="prize-item">
+                                <span class="prize-position">${getPositionLabel(p.position)}</span>
+                                <span class="prize-amount">₹${p.amount.toFixed(2)}</span>
+                            </li>
+                        `).join('')}
+                    </ul>
+                </div>
+                ` : ''}
+
+                ${t.rules ? `
+                <div class="section">
+                    <div class="section-title">Rules</div>
+                    <div class="rules">${t.rules}</div>
+                </div>
+                ` : ''}
+
+                <div class="section" id="participants-section">
+                    <div class="section-title">Participants (<span id="participant-count">0</span>/${t.totalSlots})</div>
+                    <div class="participants-section" id="participants-list">
+                        <div class="loading">Loading participants...</div>
+                    </div>
+                </div>
+
+                ${t.status === 'registration_open' && t.currentParticipants < t.totalSlots ? `
+                    <button class="register-btn" onclick="openRegistrationModal()">
+                        Register Now - ₹${t.entryFee.toFixed(2)}
+                    </button>
+                ` : t.currentParticipants >= t.totalSlots ? `
+                    <button class="register-btn" disabled>
+                        Tournament Full
+                    </button>
+                ` : `
+                    <button class="register-btn" disabled>
+                        Registration Closed
+                    </button>
+                `}
+            `;
+
+            document.getElementById('content-container').innerHTML = html;
+        }
+
+        function getPositionLabel(pos) {
+            if (pos === 1) return '🥇 1st Place';
+            if (pos === 2) return '🥈 2nd Place';
+            if (pos === 3) return '🥉 3rd Place';
+            return `#${pos} Place`;
+        }
+
+        async function loadParticipants() {
+            try {
+                const response = await fetch(`${API_URL}/tournaments/${tournamentId}/participants`);
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || 'Failed to load participants');
+                }
+
+                document.getElementById('participant-count').textContent = data.participants.length;
+
+                if (data.participants.length === 0) {
+                    document.getElementById('participants-list').innerHTML = `
+                        <div style="text-align: center; padding: 20px; color: rgba(255, 255, 255, 0.5);">
+                            No participants yet
+                        </div>
+                    `;
+                    return;
+                }
+
+                const html = data.participants.map(p => `
+                    <div class="participant-item">
+                        <div class="participant-info">
+                            <div class="participant-name">${p.teamName}</div>
+                            <div class="participant-id">${p.inGameName} • ${p.inGameId}</div>
+                        </div>
+                        <div class="participant-slot">#${p.slotNumber}</div>
+                    </div>
+                `).join('');
+
+                document.getElementById('participants-list').innerHTML = html;
+            } catch (err) {
+                console.error('Error loading participants:', err);
+            }
+        }
+
+        function openRegistrationModal() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                alert('Please login to register');
+                window.location.href = 'index.html';
+                return;
+            }
+
+            loadUserBalance();
+            document.getElementById('registration-modal').classList.add('active');
+        }
+
+        function closeRegistrationModal() {
+            document.getElementById('registration-modal').classList.remove('active');
+            document.getElementById('registration-form').reset();
+        }
+
+        async function loadUserBalance() {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch(`${API_URL}/user`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                const data = await response.json();
+
+                if (response.ok && data.user) {
+                    document.getElementById('wallet-balance').textContent = `₹${data.user.wallet.toFixed(2)}`;
+                    document.getElementById('bonus-balance').textContent = `₹${data.user.bonus.toFixed(2)}`;
+                }
+            } catch (err) {
+                console.error('Error loading balance:', err);
+            }
+        }
+
+        // Payment option selection
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('.payment-option')) {
+                document.querySelectorAll('.payment-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                e.target.closest('.payment-option').classList.add('selected');
+                selectedPayment = e.target.closest('.payment-option').dataset.type;
+            }
+        });
+
+        // Handle registration
+        document.getElementById('registration-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const teamName = document.getElementById('team-name').value.trim();
+            const inGameName = document.getElementById('in-game-name').value.trim();
+            const inGameId = document.getElementById('in-game-id').value.trim();
+
+            if (!teamName || !inGameName || !inGameId) {
+                alert('Please fill all fields');
+                return;
+            }
+
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch(`${API_URL}/tournaments/${tournamentId}/register`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        teamName,
+                        inGameName,
+                        inGameId,
+                        useBonus: selectedPayment === 'bonus'
+                    })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || 'Registration failed');
+                }
+
+                alert('✅ Successfully registered for tournament!\n\nSlot #' + data.slotNumber);
+                closeRegistrationModal();
+                loadTournament();
+            } catch (err) {
+                console.error('Error registering:', err);
+                alert('❌ ' + err.message);
+            }
+        });
+
+        // Initial load
+        loadTournament();
+    </script>
+</body>
+</html>
