@@ -760,7 +760,7 @@
             try {
                 console.log('Loading user data with token:', token ? 'Present' : 'Missing');
                 
-                const response = await fetch(`${API_URL}/user`, {
+                const response = await fetch(`${API_URL}/profile`, {
                     method: 'GET',
                     headers: {
                         'Authorization': `Bearer ${token}`,
@@ -776,23 +776,19 @@
                     throw new Error(data.error || 'Failed to load user data');
                 }
 
-                console.log('User data loaded successfully:', data.user ? 'Yes' : 'No');
+                console.log('User data loaded successfully');
 
-                // Update UI with safety checks
-                if (data.user) {
-                    document.getElementById('user-mobile').textContent = data.user.mobile || 'N/A';
-                    document.getElementById('user-code').textContent = `CODE: ${data.user.referralCode || '----'}`;
-                    document.getElementById('wallet-balance').textContent = `₹${(data.user.wallet || 0).toFixed(2)}`;
-                    document.getElementById('bonus-balance').textContent = `₹${(data.user.bonus || 0).toFixed(2)}`;
-                } else {
-                    throw new Error('User data not found in response');
-                }
+                // /profile returns data directly (not wrapped in .user)
+                document.getElementById('user-mobile').textContent = data.mobile || 'N/A';
+                document.getElementById('user-code').textContent = `CODE: ${data.referralCode || '----'}`;
+                document.getElementById('wallet-balance').textContent = `₹${(data.wallet || 0).toFixed(2)}`;
+                document.getElementById('bonus-balance').textContent = `₹${(data.bonus || 0).toFixed(2)}`;
 
             } catch (err) {
                 console.error('Error loading user data:', err);
                 
                 // Show error in UI
-                document.getElementById('user-mobile').textContent = 'Error loading';
+                document.getElementById('user-mobile').textContent = 'Error';
                 document.getElementById('user-code').textContent = 'CODE: ERROR';
                 
                 // If authentication error, redirect to login
