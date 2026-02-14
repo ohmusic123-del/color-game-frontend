@@ -1460,7 +1460,7 @@
             try {
                 const response = await fetch(`${API_URL}/admin/dashboard-stats`, {
                     headers: {
-                        'Authorization': `Bearer ${adminToken}`
+                        'Authorization': adminToken  // Token already includes 'Bearer '
                     }
                 });
                 
@@ -1474,7 +1474,7 @@
                 
                 // Also get tournaments count
                 const tournamentsRes = await fetch(`${API_URL}/admin/tournaments?status=registration_open`, {
-                    headers: { 'Authorization': `Bearer ${adminToken}` }
+                    headers: { 'Authorization': adminToken }
                 });
                 const tournamentsData = await tournamentsRes.json();
                 if (tournamentsRes.ok) {
@@ -1489,13 +1489,13 @@
             try {
                 // Get pending deposits count
                 const depositsRes = await fetch(`${API_URL}/admin/deposits/pending/count`, {
-                    headers: { 'Authorization': `Bearer ${adminToken}` }
+                    headers: { 'Authorization': adminToken }
                 });
                 const depositsData = await depositsRes.json();
                 
                 // Get pending withdrawals count
                 const withdrawalsRes = await fetch(`${API_URL}/admin/withdrawals/pending/count`, {
-                    headers: { 'Authorization': `Bearer ${adminToken}` }
+                    headers: { 'Authorization': adminToken }
                 });
                 const withdrawalsData = await withdrawalsRes.json();
                 
@@ -1522,7 +1522,7 @@
                 
                 const response = await fetch(`${API_URL}/admin/users/list`, {
                     headers: {
-                        'Authorization': `Bearer ${adminToken}`
+                        'Authorization': adminToken
                     }
                 });
                 
@@ -1573,7 +1573,7 @@
             try {
                 const response = await fetch(`${API_URL}/admin/users/search?query=${searchTerm}`, {
                     headers: {
-                        'Authorization': `Bearer ${adminToken}`
+                        'Authorization': adminToken
                     }
                 });
                 
@@ -1628,7 +1628,7 @@
                 const response = await fetch(`${API_URL}/admin/user/${currentActionMobile}/adjust-balance`, {
                     method: 'POST',
                     headers: {
-                        'Authorization': `Bearer ${adminToken}`,
+                        'Authorization': adminToken,
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({ amount: finalAmount })
@@ -1661,7 +1661,7 @@
                 const response = await fetch(`${API_URL}/admin/user/${currentActionMobile}/add-bonus`, {
                     method: 'POST',
                     headers: {
-                        'Authorization': `Bearer ${adminToken}`,
+                        'Authorization': adminToken,
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({ amount })
@@ -1698,7 +1698,7 @@
                 const response = await fetch(`${API_URL}/admin/user/${currentActionMobile}/ban`, {
                     method: 'POST',
                     headers: {
-                        'Authorization': `Bearer ${adminToken}`,
+                        'Authorization': adminToken,
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({ reason })
@@ -1730,7 +1730,7 @@
                 
                 const response = await fetch(url, {
                     headers: {
-                        'Authorization': `Bearer ${adminToken}`
+                        'Authorization': adminToken
                     }
                 });
                 
@@ -1786,7 +1786,7 @@
                 const response = await fetch(`${API_URL}/admin/deposits/${depositId}/approve`, {
                     method: 'POST',
                     headers: {
-                        'Authorization': `Bearer ${adminToken}`,
+                        'Authorization': adminToken,
                         'Content-Type': 'application/json'
                     }
                 });
@@ -1815,7 +1815,7 @@
                 const response = await fetch(`${API_URL}/admin/deposits/${depositId}/reject`, {
                     method: 'POST',
                     headers: {
-                        'Authorization': `Bearer ${adminToken}`,
+                        'Authorization': adminToken,
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({ reason })
@@ -1847,7 +1847,7 @@
                 
                 const response = await fetch(url, {
                     headers: {
-                        'Authorization': `Bearer ${adminToken}`
+                        'Authorization': adminToken
                     }
                 });
                 
@@ -1903,7 +1903,7 @@
                 const response = await fetch(`${API_URL}/admin/withdrawals/${withdrawalId}/approve`, {
                     method: 'POST',
                     headers: {
-                        'Authorization': `Bearer ${adminToken}`,
+                        'Authorization': adminToken,
                         'Content-Type': 'application/json'
                     }
                 });
@@ -1932,7 +1932,7 @@
                 const response = await fetch(`${API_URL}/admin/withdrawals/${withdrawalId}/reject`, {
                     method: 'POST',
                     headers: {
-                        'Authorization': `Bearer ${adminToken}`,
+                        'Authorization': adminToken,
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({ reason })
@@ -1961,7 +1961,7 @@
                 
                 const response = await fetch(`${API_URL}/admin/giftcodes`, {
                     headers: {
-                        'Authorization': `Bearer ${adminToken}`
+                        'Authorization': adminToken
                     }
                 });
                 
@@ -2016,7 +2016,7 @@
                 const response = await fetch(`${API_URL}/giftcode/create`, {
                     method: 'POST',
                     headers: {
-                        'Authorization': `Bearer ${adminToken}`,
+                        'Authorization': adminToken,
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
@@ -2055,7 +2055,7 @@
                 const response = await fetch(`${API_URL}/admin/giftcode/${code}`, {
                     method: 'DELETE',
                     headers: {
-                        'Authorization': `Bearer ${adminToken}`
+                        'Authorization': adminToken
                     }
                 });
                 
@@ -2081,7 +2081,7 @@
                 
                 const response = await fetch(`${API_URL}/admin/game-analytics`, {
                     headers: {
-                        'Authorization': `Bearer ${adminToken}`
+                        'Authorization': adminToken
                     }
                 });
                 
@@ -2125,7 +2125,7 @@
                 
                 const response = await fetch(`${API_URL}/admin/live-activity`, {
                     headers: {
-                        'Authorization': `Bearer ${adminToken}`
+                        'Authorization': adminToken
                     }
                 });
                 
@@ -2173,7 +2173,7 @@
                 
                 const response = await fetch(`${API_URL}/admin/monitor-users`, {
                     headers: {
-                        'Authorization': `Bearer ${adminToken}`
+                        'Authorization': adminToken
                     }
                 });
                 
@@ -2232,7 +2232,7 @@
                 const response = await fetch(`${API_URL}/admin/monitor-user`, {
                     method: 'POST',
                     headers: {
-                        'Authorization': `Bearer ${adminToken}`,
+                        'Authorization': adminToken,
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({ mobile, reason })
@@ -2262,7 +2262,7 @@
                 const response = await fetch(`${API_URL}/admin/monitor-user/${id}/toggle`, {
                     method: 'POST',
                     headers: {
-                        'Authorization': `Bearer ${adminToken}`
+                        'Authorization': adminToken
                     }
                 });
                 
@@ -2286,7 +2286,7 @@
                 const response = await fetch(`${API_URL}/admin/monitor-user/${id}`, {
                     method: 'DELETE',
                     headers: {
-                        'Authorization': `Bearer ${adminToken}`
+                        'Authorization': adminToken
                     }
                 });
                 
@@ -2324,7 +2324,6 @@
         function logout() {
             if (confirm('Are you sure you want to logout?')) {
                 localStorage.removeItem('adminToken');
-
                 window.location.href = 'admin-login.html';
             }
         }
@@ -2349,7 +2348,7 @@
                 
                 const response = await fetch(url, {
                     headers: {
-                        'Authorization': `Bearer ${adminToken}`
+                        'Authorization': adminToken
                     }
                 });
                 
@@ -2480,7 +2479,7 @@
                 const response = await fetch(`${API_URL}/admin/tournaments`, {
                     method: 'POST',
                     headers: {
-                        'Authorization': `Bearer ${adminToken}`,
+                        'Authorization': adminToken,
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify(tournamentData)
@@ -2531,7 +2530,7 @@
                 
                 const response = await fetch(`${API_URL}/admin/tournaments/${tournamentId}/participants`, {
                     headers: {
-                        'Authorization': `Bearer ${adminToken}`
+                        'Authorization': adminToken
                     }
                 });
                 
@@ -2575,7 +2574,7 @@
                 
                 const response = await fetch(`${API_URL}/admin/tournaments/${tournamentId}/participants`, {
                     headers: {
-                        'Authorization': `Bearer ${adminToken}`
+                        'Authorization': adminToken
                     }
                 });
                 
@@ -2649,7 +2648,7 @@
                 const response = await fetch(`${API_URL}/admin/tournaments/${currentTournamentId}/publish-results`, {
                     method: 'POST',
                     headers: {
-                        'Authorization': `Bearer ${adminToken}`,
+                        'Authorization': adminToken,
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({ results })
@@ -2681,7 +2680,7 @@
                 const response = await fetch(`${API_URL}/admin/tournaments/${tournamentId}/cancel`, {
                     method: 'POST',
                     headers: {
-                        'Authorization': `Bearer ${adminToken}`,
+                        'Authorization': adminToken,
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({ reason })
