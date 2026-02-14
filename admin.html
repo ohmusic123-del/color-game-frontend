@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BigWin77 - Admin Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>BigWin77 - Enhanced Admin Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -14,8 +14,8 @@
         }
 
         :root {
-            --primary: #4F46E5;
-            --primary-dark: #4338CA;
+            --primary: #667eea;
+            --primary-dark: #5568d3;
             --secondary: #10B981;
             --danger: #EF4444;
             --warning: #F59E0B;
@@ -25,97 +25,177 @@
             --text: #374151;
             --text-light: #6B7280;
             --success: #10B981;
+            --sidebar-width: 280px;
         }
 
         body {
             font-family: 'Inter', sans-serif;
             background: var(--light);
             color: var(--text);
+            overflow-x: hidden;
         }
 
-        /* Sidebar */
+        /* ========== SIDEBAR ========== */
         .sidebar {
             position: fixed;
             left: 0;
             top: 0;
-            width: 260px;
+            width: var(--sidebar-width);
             height: 100vh;
-            background: white;
-            border-right: 1px solid var(--border);
+            background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
             overflow-y: auto;
             transition: all 0.3s;
             z-index: 1000;
+            box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
         }
 
         .sidebar-header {
-            padding: 24px 20px;
-            border-bottom: 1px solid var(--border);
+            padding: 25px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .sidebar-logo {
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--primary);
+            font-size: 28px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
+        }
+
+        .sidebar-logo i {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .sidebar-menu {
             padding: 20px 0;
         }
 
+        .menu-section {
+            padding: 15px 20px 10px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
         .menu-item {
-            padding: 12px 20px;
+            padding: 14px 20px;
             display: flex;
             align-items: center;
             gap: 12px;
-            color: var(--text);
+            color: rgba(255, 255, 255, 0.7);
             text-decoration: none;
             transition: all 0.2s;
             cursor: pointer;
             border-left: 3px solid transparent;
+            font-size: 15px;
+            font-weight: 500;
         }
 
         .menu-item:hover {
-            background: var(--light);
-            color: var(--primary);
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            border-left-color: var(--primary);
         }
 
         .menu-item.active {
-            background: #EEF2FF;
-            color: var(--primary);
+            background: rgba(102, 126, 234, 0.15);
+            color: white;
             border-left-color: var(--primary);
-            font-weight: 500;
         }
 
         .menu-item i {
             width: 20px;
             text-align: center;
+            font-size: 18px;
         }
 
-        /* Main Content */
+        .menu-badge {
+            margin-left: auto;
+            background: var(--danger);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        /* ========== MAIN CONTENT ========== */
         .main-content {
-            margin-left: 260px;
-            padding: 24px;
+            margin-left: var(--sidebar-width);
             min-height: 100vh;
+            padding: 0;
         }
 
         .top-bar {
             background: white;
-            padding: 16px 24px;
-            border-radius: 12px;
-            margin-bottom: 24px;
+            padding: 20px 30px;
+            border-bottom: 1px solid var(--border);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
         }
 
         .page-title {
-            font-size: 24px;
-            font-weight: 600;
+            font-size: 28px;
+            font-weight: 800;
             color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .page-title i {
+            color: var(--primary);
+        }
+
+        .top-bar-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .refresh-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+
+        .refresh-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
         }
 
         .user-info {
@@ -125,121 +205,204 @@
         }
 
         .user-avatar {
-            width: 40px;
-            height: 40px;
+            width: 45px;
+            height: 45px;
             border-radius: 50%;
-            background: var(--primary);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: 600;
+            font-weight: 700;
+            font-size: 18px;
         }
 
-        /* Stats Grid */
+        .logout-btn {
+            background: var(--danger);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: #dc2626;
+            transform: translateY(-2px);
+        }
+
+        /* ========== CONTENT AREA ========== */
+        .content-area {
+            padding: 30px;
+        }
+
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        /* ========== STATS GRID ========== */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-            margin-bottom: 24px;
+            gap: 25px;
+            margin-bottom: 30px;
         }
 
         .stat-card {
             background: white;
-            padding: 24px;
-            border-radius: 12px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            transition: transform 0.2s;
+            padding: 25px;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
         }
 
         .stat-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--primary), var(--primary-dark));
+        }
+
+        .stat-card.success::before {
+            background: linear-gradient(to bottom, #22c55e, #16a34a);
+        }
+
+        .stat-card.warning::before {
+            background: linear-gradient(to bottom, #f59e0b, #d97706);
+        }
+
+        .stat-card.danger::before {
+            background: linear-gradient(to bottom, #ef4444, #dc2626);
         }
 
         .stat-header {
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 16px;
+            align-items: center;
+            margin-bottom: 15px;
         }
 
         .stat-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-        }
-
-        .stat-icon.primary {
-            background: #EEF2FF;
-            color: var(--primary);
-        }
-
-        .stat-icon.success {
-            background: #D1FAE5;
-            color: var(--success);
-        }
-
-        .stat-icon.warning {
-            background: #FEF3C7;
-            color: var(--warning);
-        }
-
-        .stat-icon.danger {
-            background: #FEE2E2;
-            color: var(--danger);
-        }
-
-        .stat-value {
-            font-size: 32px;
-            font-weight: 700;
-            color: var(--dark);
-            margin-bottom: 4px;
+            font-size: 36px;
+            opacity: 0.8;
         }
 
         .stat-label {
+            color: var(--text-light);
             font-size: 14px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .stat-value {
+            font-size: 36px;
+            font-weight: 900;
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+
+        .stat-change {
+            font-size: 13px;
             color: var(--text-light);
         }
 
-        /* Content Section */
-        .content-section {
-            display: none;
-        }
-
-        .content-section.active {
-            display: block;
-        }
-
-        /* Card */
+        /* ========== CARDS ========== */
         .card {
             background: white;
-            border-radius: 12px;
-            padding: 24px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            margin-bottom: 24px;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            margin-bottom: 25px;
+            overflow: hidden;
         }
 
         .card-header {
+            padding: 20px 25px;
+            border-bottom: 1px solid var(--border);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 16px;
-            border-bottom: 1px solid var(--border);
         }
 
         .card-title {
-            font-size: 18px;
-            font-weight: 600;
+            font-size: 20px;
+            font-weight: 700;
             color: var(--dark);
         }
 
-        /* Table */
+        .card-body {
+            padding: 25px;
+        }
+
+        /* ========== BUTTONS ========== */
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #059669;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+
+        .btn-warning {
+            background: var(--warning);
+            color: white;
+        }
+
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+
+        /* ========== TABLE ========== */
         .table-container {
             overflow-x: auto;
         }
@@ -251,16 +414,17 @@
 
         th {
             background: var(--light);
-            padding: 12px;
+            padding: 15px;
             text-align: left;
-            font-weight: 600;
+            font-weight: 700;
             font-size: 13px;
             color: var(--text);
-            border-bottom: 2px solid var(--border);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         td {
-            padding: 12px;
+            padding: 15px;
             border-bottom: 1px solid var(--border);
             font-size: 14px;
         }
@@ -269,91 +433,37 @@
             background: var(--light);
         }
 
-        /* Buttons */
-        .btn {
-            padding: 8px 16px;
-            border: none;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .btn-primary {
-            background: var(--primary);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: var(--primary-dark);
-        }
-
-        .btn-success {
-            background: var(--success);
-            color: white;
-        }
-
-        .btn-danger {
-            background: var(--danger);
-            color: white;
-        }
-
-        .btn-sm {
-            padding: 6px 12px;
-            font-size: 13px;
-        }
-
-        /* Badge */
+        /* ========== BADGES ========== */
         .badge {
-            padding: 4px 12px;
-            border-radius: 12px;
+            padding: 6px 12px;
+            border-radius: 8px;
             font-size: 12px;
-            font-weight: 600;
+            font-weight: 700;
+            text-transform: uppercase;
             display: inline-block;
         }
 
-        .badge.success {
-            background: #D1FAE5;
-            color: var(--success);
+        .badge-success {
+            background: rgba(16, 185, 129, 0.15);
+            color: #10B981;
         }
 
-        .badge.danger {
-            background: #FEE2E2;
-            color: var(--danger);
+        .badge-warning {
+            background: rgba(245, 158, 11, 0.15);
+            color: #F59E0B;
         }
 
-        .badge.warning {
-            background: #FEF3C7;
-            color: var(--warning);
+        .badge-danger {
+            background: rgba(239, 68, 68, 0.15);
+            color: #EF4444;
         }
 
-        .badge.primary {
-            background: #EEF2FF;
-            color: var(--primary);
+        .badge-primary {
+            background: rgba(102, 126, 234, 0.15);
+            color: #667eea;
         }
 
-        /* Filter Bar */
-        .filter-bar {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-
-        .filter-bar input,
-        .filter-bar select {
-            padding: 10px 14px;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            font-size: 14px;
-            min-width: 200px;
-        }
-
-        /* Modal */
+        /* ========== MODALS ========== */
         .modal {
             display: none;
             position: fixed;
@@ -361,27 +471,29 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.6);
             z-index: 2000;
-            align-items: center;
-            justify-content: center;
+            backdrop-filter: blur(5px);
         }
 
         .modal.active {
             display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .modal-content {
             background: white;
-            border-radius: 12px;
+            border-radius: 20px;
+            max-width: 600px;
             width: 90%;
-            max-width: 500px;
             max-height: 90vh;
             overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
         }
 
         .modal-header {
-            padding: 20px 24px;
+            padding: 25px;
             border-bottom: 1px solid var(--border);
             display: flex;
             justify-content: space-between;
@@ -389,106 +501,169 @@
         }
 
         .modal-title {
-            font-size: 18px;
-            font-weight: 600;
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: var(--text-light);
+            transition: all 0.3s;
+        }
+
+        .modal-close:hover {
+            color: var(--danger);
         }
 
         .modal-body {
-            padding: 24px;
+            padding: 25px;
         }
 
         .modal-footer {
-            padding: 16px 24px;
+            padding: 20px 25px;
             border-top: 1px solid var(--border);
             display: flex;
             gap: 12px;
             justify-content: flex-end;
         }
 
-        .input-group {
-            margin-bottom: 16px;
+        /* ========== FORMS ========== */
+        .form-group {
+            margin-bottom: 20px;
         }
 
-        .input-group label {
+        .form-label {
             display: block;
-            margin-bottom: 6px;
-            font-weight: 500;
+            margin-bottom: 8px;
+            font-weight: 600;
             font-size: 14px;
+            color: var(--text);
         }
 
-        .input-group input,
-        .input-group select,
-        .input-group textarea {
+        .form-control {
             width: 100%;
-            padding: 10px 14px;
+            padding: 12px 15px;
             border: 1px solid var(--border);
-            border-radius: 8px;
+            border-radius: 10px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        select.form-control {
+            cursor: pointer;
+        }
+
+        textarea.form-control {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        /* ========== SEARCH BAR ========== */
+        .search-bar {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 12px 15px 12px 45px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
             font-size: 14px;
         }
 
-        .text-center {
-            text-align: center;
-        }
-
-        .close-btn {
-            background: none;
-            border: none;
-            font-size: 24px;
-            cursor: pointer;
+        .search-bar i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
             color: var(--text-light);
         }
 
-        .close-btn:hover {
-            color: var(--danger);
-        }
-
-        .logout-btn {
-            background: var(--danger);
-            color: white;
-            padding: 8px 16px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 500;
-        }
-
-        .logout-btn:hover {
-            opacity: 0.9;
-        }
-
-        .last-updated {
-            font-size: 12px;
-            color: var(--text-light);
-            margin-top: 16px;
-        }
-
-        .activity-item {
-            padding: 12px 0;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .activity-item:last-child {
-            border-bottom: none;
-        }
-
-        .activity-content {
+        /* ========== FILTERS ========== */
+        .filters {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
         }
 
-        .activity-info {
-            flex: 1;
-        }
-
-        .activity-amount {
-            text-align: right;
-        }
-
-        .activity-time {
-            font-size: 12px;
+        /* ========== LOADING ========== */
+        .loading {
+            text-align: center;
+            padding: 40px;
             color: var(--text-light);
-            margin-top: 4px;
+        }
+
+        .loading i {
+            font-size: 48px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* ========== EMPTY STATE ========== */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-light);
+        }
+
+        .empty-state i {
+            font-size: 64px;
+            opacity: 0.3;
+            margin-bottom: 20px;
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 1024px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.mobile-open {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ========== CUSTOM SCROLLBAR ========== */
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--light);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
         }
     </style>
 </head>
@@ -501,55 +676,52 @@
                 BigWin77 Admin
             </div>
         </div>
+        
         <div class="sidebar-menu">
+            <div class="menu-section">Main</div>
             <div class="menu-item active" data-section="dashboard">
                 <i class="fas fa-home"></i>
                 <span>Dashboard</span>
             </div>
+            
+            <div class="menu-section">Management</div>
             <div class="menu-item" data-section="users">
                 <i class="fas fa-users"></i>
                 <span>Users</span>
+            </div>
+            <div class="menu-item" data-section="deposits">
+                <i class="fas fa-money-bill-wave"></i>
+                <span>Deposits</span>
+                <span class="menu-badge" id="pending-deposits-badge">0</span>
+            </div>
+            <div class="menu-item" data-section="withdrawals">
+                <i class="fas fa-hand-holding-usd"></i>
+                <span>Withdrawals</span>
+                <span class="menu-badge" id="pending-withdrawals-badge">0</span>
             </div>
             <div class="menu-item" data-section="gift-codes">
                 <i class="fas fa-gift"></i>
                 <span>Gift Codes</span>
             </div>
-            <div class="menu-item" data-section="deposits">
-                <i class="fas fa-download"></i>
-                <span>Deposits</span>
-            </div>
-            <div class="menu-item" data-section="withdrawals">
-                <i class="fas fa-upload"></i>
-                <span>Withdrawals</span>
-            </div>
-            <div class="menu-item" data-section="bets">
-                <i class="fas fa-dice"></i>
-                <span>Bets History</span>
-            </div>
-            <div class="menu-item" data-section="rounds">
-                <i class="fas fa-sync"></i>
-                <span>Game Rounds</span>
-            </div>
             <div class="menu-item" data-section="tournaments">
-    <i class="fas fa-trophy"></i>
-    <span>Tournaments</span>
-</div>
-
-            <div class="menu-item" data-section="monitor-users">
-                <i class="fas fa-user-shield"></i>
-                <span>Monitor Users</span>
+                <i class="fas fa-trophy"></i>
+                <span>Tournaments</span>
             </div>
-            <div class="menu-item" data-section="referrals">
-                <i class="fas fa-share-nodes"></i>
-                <span>Referrals</span>
-            </div>
+            
+            <div class="menu-section">Analytics</div>
             <div class="menu-item" data-section="analytics">
                 <i class="fas fa-chart-line"></i>
                 <span>Analytics</span>
             </div>
-            <div class="menu-item" data-section="settings">
-                <i class="fas fa-cog"></i>
-                <span>Settings</span>
+            <div class="menu-item" data-section="live-activity">
+                <i class="fas fa-activity"></i>
+                <span>Live Activity</span>
+            </div>
+            
+            <div class="menu-section">Monitoring</div>
+            <div class="menu-item" data-section="monitor-users">
+                <i class="fas fa-user-shield"></i>
+                <span>Monitor Users</span>
             </div>
         </div>
     </div>
@@ -558,578 +730,621 @@
     <div class="main-content">
         <!-- Top Bar -->
         <div class="top-bar">
-            <div>
-                <h1 class="page-title" id="pageTitle">Dashboard</h1>
+            <div class="page-title">
+                <i class="fas fa-home"></i>
+                <span id="page-title-text">Dashboard</span>
             </div>
-            <div class="user-info">
-                <div class="user-avatar" id="userAvatar">A</div>
-                <div>
-                    <div style="font-weight: 600;" id="adminName">Admin</div>
-                    <button class="logout-btn" onclick="logout()">
-                        <i class="fas fa-sign-out-alt"></i> Logout
-                    </button>
+            <div class="top-bar-right">
+                <button class="refresh-btn" onclick="refreshCurrentSection()">
+                    <i class="fas fa-sync-alt"></i>
+                    Refresh
+                </button>
+                <div class="user-info">
+                    <div class="user-avatar">A</div>
                 </div>
-            </div>
-        </div>
-
-        <!-- Dashboard Section -->
-        <div id="dashboard" class="content-section active">
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-header">
-                        <div class="stat-icon primary">
-                            <i class="fas fa-users"></i>
-                        </div>
-                    </div>
-                    <div class="stat-value" id="totalUsers">0</div>
-                    <div class="stat-label">Total Users</div>
-                </div>
-
-                <div class="stat-card">
-                    <div class="stat-header">
-                        <div class="stat-icon success">
-                            <i class="fas fa-rupee-sign"></i>
-                        </div>
-                    </div>
-                    <div class="stat-value" id="totalRevenue">₹0</div>
-                    <div class="stat-label">Total Revenue</div>
-                </div>
-
-                <div class="stat-card">
-                    <div class="stat-header">
-                        <div class="stat-icon warning">
-                            <i class="fas fa-clock"></i>
-                        </div>
-                    </div>
-                    <div class="stat-value" id="pendingWithdrawals">0</div>
-                    <div class="stat-label">Pending Withdrawals</div>
-                </div>
-
-                <div class="stat-card">
-                    <div class="stat-header">
-                        <div class="stat-icon danger">
-                            <i class="fas fa-gift"></i>
-                        </div>
-                    </div>
-                    <div class="stat-value" id="activeGiftCodes">0</div>
-                    <div class="stat-label">Active Gift Codes</div>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">Recent Activity</h3>
-                    <button class="btn btn-sm btn-primary" onclick="loadRecentActivity()">
-                        <i class="fas fa-sync"></i> Refresh
-                    </button>
-                </div>
-                <div id="recentActivity">
-                    <p class="text-center">Loading...</p>
-                </div>
-                <div class="last-updated">
-                    Last updated: <span id="lastUpdated">--</span>
-                </div>
+                <button class="logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Logout
+                </button>
             </div>
         </div>
 
-        <!-- Users Section -->
-        <div id="users" class="content-section">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">Users Management</h3>
-                    <button class="btn btn-primary" onclick="loadUsers()">
-                        <i class="fas fa-sync"></i> Refresh
-                    </button>
-                </div>
-                <div class="filter-bar">
-                    <input type="text" id="userSearch" placeholder="Search by mobile..." onkeyup="filterUsers()">
-                    <select id="userStatusFilter" onchange="filterUsers()">
-                        <option value="">All Status</option>
-                        <option value="active">Active</option>
-                        <option value="banned">Banned</option>
-                    </select>
-                </div>
-                <div class="table-container">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Mobile</th>
-                                <th>Wallet</th>
-                                <th>Bonus</th>
-                                <th>Total Deposit</th>
-                                <th>Total Withdraw</th>
-                                <th>Status</th>
-                                <th>Joined</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="usersTable">
-                            <tr><td colspan="8" class="text-center">Loading...</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <!-- Gift Codes Section -->
-        <div id="gift-codes" class="content-section">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">Gift Codes</h3>
-                    <div style="display: flex; gap: 12px;">
-                        <button class="btn btn-primary" onclick="openCreateGiftCodeModal()">
-                            <i class="fas fa-plus"></i> Create Gift Code
-                        </button>
-                        <button class="btn btn-primary" onclick="loadGiftCodes()">
-                            <i class="fas fa-sync"></i> Refresh
-                        </button>
-                    </div>
-                </div>
-                <div class="filter-bar">
-                    <input type="text" id="giftCodeSearch" placeholder="Search by code..." onkeyup="filterGiftCodes()">
-                    <select id="giftCodeStatusFilter" onchange="filterGiftCodes()">
-                        <option value="">All Status</option>
-                        <option value="active">Active</option>
-                        <option value="expired">Expired</option>
-                        <option value="fully-redeemed">Fully Redeemed</option>
-                    </select>
-                </div>
-                <div class="table-container">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Code</th>
-                                <th>Amount</th>
-                                <th>Type</th>
-                                <th>Max Redemptions</th>
-                                <th>Redeemed</th>
-                                <th>Expires</th>
-                                <th>Status</th>
-                                <th>Created By</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="giftCodesTable">
-                            <tr><td colspan="9" class="text-center">Loading...</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <!-- Deposits Section -->
-        <div id="deposits" class="content-section">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">Deposits</h3>
-                    <button class="btn btn-primary" onclick="loadDeposits()">
-                        <i class="fas fa-sync"></i> Refresh
-                    </button>
-                </div>
-                <div class="filter-bar">
-                    <input type="text" id="depositSearch" placeholder="Search by mobile..." onkeyup="filterDeposits()">
-                    <select id="depositStatusFilter" onchange="filterDeposits()">
-                        <option value="">All Status</option>
-                        <option value="SUCCESS">Success</option>
-                        <option value="PENDING">Pending</option>
-                        <option value="FAILED">Failed</option>
-                    </select>
-                </div>
-                <div class="table-container">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Order ID</th>
-                                <th>Mobile</th>
-                                <th>Amount</th>
-                                <th>Status</th>
-                                <th>Method</th>
-                                <th>Date</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="depositsTable">
-                            <tr><td colspan="7" class="text-center">Loading...</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <!-- Withdrawals Section -->
-        <div id="withdrawals" class="content-section">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">Withdrawals</h3>
-                    <button class="btn btn-primary" onclick="loadWithdrawals()">
-                        <i class="fas fa-sync"></i> Refresh
-                    </button>
-                </div>
-                <div class="filter-bar">
-                    <input type="text" id="withdrawalSearch" placeholder="Search by mobile..." onkeyup="filterWithdrawals()">
-                    <select id="withdrawalStatusFilter" onchange="filterWithdrawals()">
-                        <option value="">All Status</option>
-                        <option value="APPROVED">Approved</option>
-                        <option value="PENDING">Pending</option>
-                        <option value="REJECTED">Rejected</option>
-                    </select>
-                </div>
-                <div class="table-container">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Mobile</th>
-                                <th>Amount</th>
-                                <th>Account</th>
-                                <th>IFSC</th>
-                                <th>Status</th>
-                                <th>Date</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="withdrawalsTable">
-                            <tr><td colspan="7" class="text-center">Loading...</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <!-- Bets Section -->
-        <div id="bets" class="content-section">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">Bets History</h3>
-                    <button class="btn btn-primary" onclick="loadBets()">
-                        <i class="fas fa-sync"></i> Refresh
-                    </button>
-                </div>
-                <div class="filter-bar">
-                    <input type="text" id="betSearch" placeholder="Search by mobile..." onkeyup="filterBets()">
-                    <select id="betResultFilter" onchange="filterBets()">
-                        <option value="">All Results</option>
-                        <option value="WIN">Win</option>
-                        <option value="LOSS">Loss</option>
-                    </select>
-                </div>
-                <div class="table-container">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Mobile</th>
-                                <th>Round</th>
-                                <th>Bet Type</th>
-                                <th>Amount</th>
-                                <th>Result</th>
-                                <th>Win Amount</th>
-                                <th>Date</th>
-                            </tr>
-                        </thead>
-                        <tbody id="betsTable">
-                            <tr><td colspan="7" class="text-center">Loading...</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <!-- Rounds Section -->
-        <div id="rounds" class="content-section">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">Game Rounds</h3>
-                    <button class="btn btn-primary" onclick="loadRounds()">
-                        <i class="fas fa-sync"></i> Refresh
-                    </button>
-                </div>
-                <div class="table-container">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Round ID</th>
-                                <th>Winner</th>
-                                <th>Total Bets</th>
-                                <th>Total Amount</th>
-                                <th>Date</th>
-                            </tr>
-                        </thead>
-                        <tbody id="roundsTable">
-                            <tr><td colspan="5" class="text-center">Loading...</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <!-- Monitor Users Section -->
-        <div id="monitor-users" class="content-section">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">Monitor Users</h3>
-                    <div style="display: flex; gap: 12px;">
-                        <button class="btn btn-primary" onclick="openCreateMonitorModal()">
-                            <i class="fas fa-plus"></i> Create Monitor
-                        </button>
-                        <button class="btn btn-primary" onclick="loadMonitorUsers()">
-                            <i class="fas fa-sync"></i> Refresh
-                        </button>
-                    </div>
-                </div>
-                <div class="table-container">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Username</th>
-                                <th>Display Name</th>
-                                <th>Total Logins</th>
-                                <th>Last Login</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="monitorUsersTable">
-                            <tr><td colspan="6" class="text-center">Loading...</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <!-- Referrals Section -->
-        <div id="referrals" class="content-section">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">Referral System</h3>
-                    <button class="btn btn-primary" onclick="loadReferrals()">
-                        <i class="fas fa-sync"></i> Refresh
-                    </button>
-                </div>
-                <div class="table-container">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Referrer</th>
-                                <th>Referred User</th>
-                                <th>Commission</th>
-                                <th>Status</th>
-                                <th>Date</th>
-                            </tr>
-                        </thead>
-                        <tbody id="referralsTable">
-                            <tr><td colspan="5" class="text-center">Loading...</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <!-- Analytics Section -->
-        <div id="analytics" class="content-section">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">Analytics</h3>
-                    <button class="btn btn-primary" onclick="loadAnalytics()">
-                        <i class="fas fa-sync"></i> Refresh
-                    </button>
-                </div>
+        <!-- Content Area -->
+        <div class="content-area">
+            <!-- Dashboard Section -->
+            <div class="section active" id="dashboard-section">
                 <div class="stats-grid">
                     <div class="stat-card">
-                        <div class="stat-label">Total Bets</div>
-                        <div class="stat-value" id="totalBetsCount">0</div>
+                        <div class="stat-header">
+                            <div class="stat-label">Total Users</div>
+                            <div class="stat-icon">👥</div>
+                        </div>
+                        <div class="stat-value" id="total-users">0</div>
+                        <div class="stat-change">Registered users</div>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-label">Total Bet Amount</div>
-                        <div class="stat-value" id="totalBetsAmount">₹0</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-label">Total Deposits</div>
-                        <div class="stat-value" id="totalDepositsAmount">₹0</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-label">Total Withdrawals</div>
-                        <div class="stat-value" id="totalWithdrawalsAmount">₹0</div>
-                    </div>
-                </div>
-                <div id="analyticsData"></div>
-            </div>
-        </div>
 
-        <!-- Settings Section -->
-        <div id="settings" class="content-section">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">Settings</h3>
+                    <div class="stat-card success">
+                        <div class="stat-header">
+                            <div class="stat-label">Total Revenue</div>
+                            <div class="stat-icon">💰</div>
+                        </div>
+                        <div class="stat-value">₹<span id="total-revenue">0.00</span></div>
+                        <div class="stat-change">All time revenue</div>
+                    </div>
+
+                    <div class="stat-card warning">
+                        <div class="stat-header">
+                            <div class="stat-label">Pending Withdrawals</div>
+                            <div class="stat-icon">⏳</div>
+                        </div>
+                        <div class="stat-value" id="pending-withdrawals">0</div>
+                        <div class="stat-change">Awaiting approval</div>
+                    </div>
+
+                    <div class="stat-card danger">
+                        <div class="stat-header">
+                            <div class="stat-label">Active Tournaments</div>
+                            <div class="stat-icon">🏆</div>
+                        </div>
+                        <div class="stat-value" id="active-tournaments">0</div>
+                        <div class="stat-change">Live & upcoming</div>
+                    </div>
                 </div>
-                <div style="max-width: 500px;">
-                    <h4 style="margin-bottom: 20px;">Account Settings</h4>
-                    <div class="input-group">
-                        <label>Current Username</label>
-                        <input type="text" id="currentUsername" value="admin" disabled>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Quick Actions</h3>
                     </div>
-                    <div class="input-group">
-                        <label>New Password</label>
-                        <input type="password" id="newPassword" placeholder="Enter new password">
+                    <div class="card-body">
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                            <button class="btn btn-primary" onclick="switchSection('users')">
+                                <i class="fas fa-users"></i>
+                                Manage Users
+                            </button>
+                            <button class="btn btn-success" onclick="switchSection('deposits')">
+                                <i class="fas fa-check"></i>
+                                Approve Deposits
+                            </button>
+                            <button class="btn btn-warning" onclick="switchSection('withdrawals')">
+                                <i class="fas fa-hand-holding-usd"></i>
+                                Process Withdrawals
+                            </button>
+                            <button class="btn btn-primary" onclick="switchSection('tournaments')">
+                                <i class="fas fa-trophy"></i>
+                                Manage Tournaments
+                            </button>
+                        </div>
                     </div>
-                    <div class="input-group">
-                        <label>Confirm Password</label>
-                        <input type="password" id="confirmPassword" placeholder="Confirm new password">
+                </div>
+            </div>
+
+            <!-- Users Section -->
+            <div class="section" id="users-section">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">User Management</h3>
+                        <div style="display: flex; gap: 10px;">
+                            <button class="btn btn-primary" onclick="loadAllUsers()">
+                                <i class="fas fa-sync"></i>
+                                Refresh
+                            </button>
+                        </div>
                     </div>
-                    <button class="btn btn-primary" onclick="updatePassword()">
-                        <i class="fas fa-save"></i> Update Password
-                    </button>
+                    <div class="card-body">
+                        <div class="search-bar">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="user-search" placeholder="Search by mobile number..." onkeyup="searchUsers()">
+                        </div>
+                        
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Mobile</th>
+                                        <th>User Code</th>
+                                        <th>Wallet</th>
+                                        <th>Bonus</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="users-table-body">
+                                    <tr><td colspan="6" class="loading"><i class="fas fa-spinner fa-spin"></i> Loading...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Deposits Section -->
+            <div class="section" id="deposits-section">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Deposit Management</h3>
+                        <button class="btn btn-primary" onclick="loadDeposits()">
+                            <i class="fas fa-sync"></i>
+                            Refresh
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div class="filters">
+                            <select class="form-control" style="width: auto;" id="deposit-status-filter" onchange="loadDeposits()">
+                                <option value="">All Status</option>
+                                <option value="pending" selected>Pending</option>
+                                <option value="completed">Completed</option>
+                                <option value="failed">Failed</option>
+                            </select>
+                        </div>
+                        
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Mobile</th>
+                                        <th>Amount</th>
+                                        <th>Method</th>
+                                        <th>Status</th>
+                                        <th>Date</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="deposits-table-body">
+                                    <tr><td colspan="6" class="loading"><i class="fas fa-spinner fa-spin"></i> Loading...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Withdrawals Section -->
+            <div class="section" id="withdrawals-section">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Withdrawal Management</h3>
+                        <button class="btn btn-primary" onclick="loadWithdrawals()">
+                            <i class="fas fa-sync"></i>
+                            Refresh
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div class="filters">
+                            <select class="form-control" style="width: auto;" id="withdrawal-status-filter" onchange="loadWithdrawals()">
+                                <option value="">All Status</option>
+                                <option value="pending" selected>Pending</option>
+                                <option value="completed">Completed</option>
+                                <option value="failed">Failed</option>
+                            </select>
+                        </div>
+                        
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Mobile</th>
+                                        <th>Amount</th>
+                                        <th>UPI ID</th>
+                                        <th>Status</th>
+                                        <th>Date</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="withdrawals-table-body">
+                                    <tr><td colspan="6" class="loading"><i class="fas fa-spinner fa-spin"></i> Loading...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gift Codes Section -->
+            <div class="section" id="gift-codes-section">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Gift Codes</h3>
+                        <button class="btn btn-primary" onclick="showCreateGiftCodeModal()">
+                            <i class="fas fa-plus"></i>
+                            Create Gift Code
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Code</th>
+                                        <th>Amount</th>
+                                        <th>Used Count</th>
+                                        <th>Max Uses</th>
+                                        <th>Expires</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="giftcodes-table-body">
+                                    <tr><td colspan="6" class="loading"><i class="fas fa-spinner fa-spin"></i> Loading...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tournaments Section -->
+            <div class="section" id="tournaments-section">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Tournament Management</h3>
+                        <button class="btn btn-primary" onclick="showCreateTournamentModal()">
+                            <i class="fas fa-plus"></i>
+                            Create Tournament
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div class="filters">
+                            <select class="form-control" style="width: auto;" id="tournament-status-filter" onchange="loadTournaments()">
+                                <option value="">All Status</option>
+                                <option value="upcoming">Upcoming</option>
+                                <option value="registration_open">Registration Open</option>
+                                <option value="registration_closed">Registration Closed</option>
+                                <option value="ongoing">Ongoing</option>
+                                <option value="completed">Completed</option>
+                                <option value="cancelled">Cancelled</option>
+                            </select>
+                            <select class="form-control" style="width: auto;" id="tournament-game-filter" onchange="loadTournaments()">
+                                <option value="">All Games</option>
+                                <option value="freefire">Free Fire</option>
+                                <option value="pubg">PUBG</option>
+                                <option value="bgmi">BGMI</option>
+                                <option value="cod">Call of Duty</option>
+                                <option value="valorant">Valorant</option>
+                            </select>
+                        </div>
+                        
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Title</th>
+                                        <th>Game</th>
+                                        <th>Type</th>
+                                        <th>Slots</th>
+                                        <th>Entry Fee</th>
+                                        <th>Prize Pool</th>
+                                        <th>Status</th>
+                                        <th>Start Time</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tournaments-table-body">
+                                    <tr><td colspan="9" class="loading"><i class="fas fa-spinner fa-spin"></i> Loading...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Analytics Section -->
+            <div class="section" id="analytics-section">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Game Analytics</h3>
+                        <button class="btn btn-primary" onclick="loadAnalytics()">
+                            <i class="fas fa-sync"></i>
+                            Refresh
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div id="analytics-content">
+                            <div class="loading"><i class="fas fa-spinner fa-spin"></i> Loading analytics...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Live Activity Section -->
+            <div class="section" id="live-activity-section">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Live Activity</h3>
+                        <button class="btn btn-primary" onclick="loadLiveActivity()">
+                            <i class="fas fa-sync"></i>
+                            Refresh
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div id="live-activity-content">
+                            <div class="loading"><i class="fas fa-spinner fa-spin"></i> Loading activity...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Monitor Users Section -->
+            <div class="section" id="monitor-users-section">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Monitor Users</h3>
+                        <button class="btn btn-primary" onclick="showAddMonitorModal()">
+                            <i class="fas fa-plus"></i>
+                            Add Monitor
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Mobile</th>
+                                        <th>Reason</th>
+                                        <th>Enabled</th>
+                                        <th>Created</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="monitor-users-table-body">
+                                    <tr><td colspan="5" class="loading"><i class="fas fa-spinner fa-spin"></i> Loading...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-<!-- Tournaments Section -->
-<div class="section" id="tournaments-section" style="display: none;">
-    <div class="section-header">
-        <h2>Tournament Management</h2>
-        <a href="admin-tournaments.html" class="btn btn-primary">
-            <i class="fas fa-plus"></i> Open Tournament Manager
-        </a>
-    </div>
-    
-    <div class="card" style="margin-top: 20px;">
-        <div class="card-body text-center" style="padding: 40px;">
-            <i class="fas fa-trophy" style="font-size: 48px; color: var(--primary); margin-bottom: 20px;"></i>
-            <h3 style="margin-bottom: 10px;">Tournament System</h3>
-            <p style="color: var(--text-light); margin-bottom: 20px;">
-                Manage Free Fire, PUBG, BGMI and other game tournaments
-            </p>
-            <a href="admin-tournaments.html" class="btn btn-primary" style="display: inline-block;">
-                Go to Tournament Manager
-            </a>
+
+    <!-- Modals -->
+    <!-- User Actions Modal -->
+    <div class="modal" id="user-actions-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">User Actions - <span id="user-action-mobile"></span></h3>
+                <button class="modal-close" onclick="closeModal('user-actions-modal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Adjust Balance</label>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="number" class="form-control" id="adjust-amount" placeholder="Amount">
+                        <select class="form-control" id="adjust-type">
+                            <option value="add">Add</option>
+                            <option value="subtract">Subtract</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Add Bonus</label>
+                    <input type="number" class="form-control" id="bonus-amount" placeholder="Bonus amount">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Ban User</label>
+                    <input type="text" class="form-control" id="ban-reason" placeholder="Reason for ban">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success" onclick="adjustBalance()">Adjust Balance</button>
+                <button class="btn btn-primary" onclick="addBonus()">Add Bonus</button>
+                <button class="btn btn-danger" onclick="banUser()">Ban User</button>
+            </div>
         </div>
     </div>
-</div>
 
     <!-- Create Gift Code Modal -->
-    <div id="createGiftCodeModal" class="modal">
+    <div class="modal" id="create-giftcode-modal">
         <div class="modal-content">
             <div class="modal-header">
                 <h3 class="modal-title">Create Gift Code</h3>
-                <button class="close-btn" onclick="closeCreateGiftCodeModal()">
-                    <i class="fas fa-times"></i>
-                </button>
+                <button class="modal-close" onclick="closeModal('create-giftcode-modal')">&times;</button>
             </div>
             <div class="modal-body">
-                <div class="input-group">
-                    <label>Code (auto-generated)</label>
-                    <input type="text" id="giftCodeCode" placeholder="Leave empty for auto-generation">
+                <div class="form-group">
+                    <label class="form-label">Code (leave empty for auto-generate)</label>
+                    <input type="text" class="form-control" id="giftcode-code" placeholder="AUTO">
                 </div>
-                <div class="input-group">
-                    <label>Amount (₹)</label>
-                    <input type="number" id="giftCodeAmount" placeholder="Enter amount" min="10" required>
+                <div class="form-group">
+                    <label class="form-label">Amount</label>
+                    <input type="number" class="form-control" id="giftcode-amount" placeholder="100" required>
                 </div>
-                <div class="input-group">
-                    <label>Type</label>
-                    <select id="giftCodeType" required>
-                        <option value="one-to-one">One-to-One (Single Use)</option>
-                        <option value="one-to-many">One-to-Many (Multiple Uses)</option>
-                    </select>
+                <div class="form-group">
+                    <label class="form-label">Max Uses</label>
+                    <input type="number" class="form-control" id="giftcode-max-uses" placeholder="10" required>
                 </div>
-                <div class="input-group">
-                    <label>Max Redemptions</label>
-                    <input type="number" id="giftCodeMaxRedemptions" placeholder="Enter max redemptions" min="1" value="1" required>
-                </div>
-                <div class="input-group">
-                    <label>Validity Days</label>
-                    <input type="number" id="giftCodeValidityDays" placeholder="Enter validity in days" min="1" value="7" required>
-                </div>
-                <div class="input-group">
-                    <label>Description (optional)</label>
-                    <textarea id="giftCodeDescription" placeholder="Enter description" rows="3"></textarea>
+                <div class="form-group">
+                    <label class="form-label">Expiry Days</label>
+                    <input type="number" class="form-control" id="giftcode-expiry-days" placeholder="7" required>
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn" onclick="closeCreateGiftCodeModal()">Cancel</button>
                 <button class="btn btn-primary" onclick="createGiftCode()">Create</button>
+                <button class="btn btn-danger" onclick="closeModal('create-giftcode-modal')">Cancel</button>
             </div>
         </div>
     </div>
 
-    <!-- Create Monitor User Modal -->
-    <div id="createMonitorModal" class="modal">
+    <!-- Add Monitor User Modal -->
+    <div class="modal" id="add-monitor-modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title">Create Monitor User</h3>
-                <button class="close-btn" onclick="closeCreateMonitorModal()">
-                    <i class="fas fa-times"></i>
-                </button>
+                <h3 class="modal-title">Add User to Monitor</h3>
+                <button class="modal-close" onclick="closeModal('add-monitor-modal')">&times;</button>
             </div>
             <div class="modal-body">
-                <div class="input-group">
-                    <label>Username</label>
-                    <input type="text" id="monitorUsername" placeholder="Enter username">
+                <div class="form-group">
+                    <label class="form-label">Mobile Number</label>
+                    <input type="text" class="form-control" id="monitor-mobile" placeholder="1234567890" required>
                 </div>
-                <div class="input-group">
-                    <label>Password</label>
-                    <input type="password" id="monitorPassword" placeholder="Enter password">
-                </div>
-                <div class="input-group">
-                    <label>Display Name</label>
-                    <input type="text" id="monitorDisplayName" placeholder="Enter display name">
+                <div class="form-group">
+                    <label class="form-label">Reason for Monitoring</label>
+                    <textarea class="form-control" id="monitor-reason" placeholder="Suspicious activity..." required></textarea>
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn" onclick="closeCreateMonitorModal()">Cancel</button>
-                <button class="btn btn-primary" onclick="createMonitorUser()">Create</button>
+                <button class="btn btn-primary" onclick="addMonitorUser()">Add Monitor</button>
+                <button class="btn btn-danger" onclick="closeModal('add-monitor-modal')">Cancel</button>
             </div>
         </div>
     </div>
 
-    <!-- View User Modal -->
-    <div id="viewUserModal" class="modal">
-        <div class="modal-content">
+    <!-- Create Tournament Modal -->
+    <div class="modal" id="create-tournament-modal">
+        <div class="modal-content" style="max-width: 800px;">
             <div class="modal-header">
-                <h3 class="modal-title">User Details</h3>
-                <button class="close-btn" onclick="closeViewUserModal()">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="modal-body" id="userDetails">
-                <!-- Details will be loaded here -->
-            </div>
-            <div class="modal-footer">
-                <button class="btn" onclick="closeViewUserModal()">Close</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Edit Balance Modal -->
-    <div id="editBalanceModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title">Edit User Balance</h3>
-                <button class="close-btn" onclick="closeEditBalanceModal()">
-                    <i class="fas fa-times"></i>
-                </button>
+                <h3 class="modal-title">Create Tournament</h3>
+                <button class="modal-close" onclick="closeModal('create-tournament-modal')">&times;</button>
             </div>
             <div class="modal-body">
-                <div class="input-group">
-                    <label>User Mobile</label>
-                    <input type="text" id="editBalanceMobile" disabled>
+                <div class="form-group">
+                    <label class="form-label">Title</label>
+                    <input type="text" class="form-control" id="tournament-title" placeholder="Free Fire Championship" required>
                 </div>
-                <div class="input-group">
-                    <label>Balance Type</label>
-                    <select id="editBalanceType">
-                        <option value="wallet">Wallet Balance</option>
-                        <option value="bonus">Bonus Balance</option>
-                    </select>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div class="form-group">
+                        <label class="form-label">Game</label>
+                        <select class="form-control" id="tournament-game" required>
+                            <option value="">Select Game</option>
+                            <option value="freefire">Free Fire</option>
+                            <option value="pubg">PUBG</option>
+                            <option value="bgmi">BGMI</option>
+                            <option value="cod">Call of Duty</option>
+                            <option value="valorant">Valorant</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Type</label>
+                        <select class="form-control" id="tournament-type" required>
+                            <option value="">Select Type</option>
+                            <option value="solo">Solo</option>
+                            <option value="duo">Duo</option>
+                            <option value="squad">Squad</option>
+                        </select>
+                    </div>
                 </div>
-                <div class="input-group">
-                    <label>Amount (₹) - Use negative to deduct</label>
-                    <input type="number" id="editBalanceAmount" placeholder="e.g., 100 or -50" step="0.01">
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
+                    <div class="form-group">
+                        <label class="form-label">Total Slots</label>
+                        <input type="number" class="form-control" id="tournament-slots" placeholder="100" min="2" max="1000" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Entry Fee</label>
+                        <input type="number" class="form-control" id="tournament-entry-fee" placeholder="50" min="0" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Prize Pool</label>
+                        <input type="number" class="form-control" id="tournament-prize-pool" placeholder="4000" min="0" required>
+                    </div>
                 </div>
-                <div class="input-group">
-                    <label>Reason</label>
-                    <input type="text" id="editBalanceReason" placeholder="Enter reason for adjustment">
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div class="form-group">
+                        <label class="form-label">Start Time</label>
+                        <input type="datetime-local" class="form-control" id="tournament-start-time" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">End Time</label>
+                        <input type="datetime-local" class="form-control" id="tournament-end-time" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Registration Deadline</label>
+                    <input type="datetime-local" class="form-control" id="tournament-reg-deadline" required>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div class="form-group">
+                        <label class="form-label">Room ID</label>
+                        <input type="text" class="form-control" id="tournament-room-id" placeholder="123456">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Room Password</label>
+                        <input type="text" class="form-control" id="tournament-room-password" placeholder="pass123">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Description</label>
+                    <textarea class="form-control" id="tournament-description" placeholder="Tournament description..." rows="3"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Rules</label>
+                    <textarea class="form-control" id="tournament-rules" placeholder="Tournament rules..." rows="3"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Prize Distribution</label>
+                    <div id="prize-distribution">
+                        <div style="display: grid; grid-template-columns: auto 1fr auto; gap: 10px; margin-bottom: 10px;">
+                            <input type="number" class="form-control" placeholder="1" value="1" readonly style="width: 80px;">
+                            <input type="number" class="form-control" placeholder="Prize amount" id="prize-1">
+                            <button class="btn btn-sm btn-success" onclick="addPrizeRow()"><i class="fas fa-plus"></i></button>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn" onclick="closeEditBalanceModal()">Cancel</button>
-                <button class="btn btn-primary" onclick="saveBalanceEdit()">Save Changes</button>
+                <button class="btn btn-primary" onclick="createTournament()">Create Tournament</button>
+                <button class="btn btn-danger" onclick="closeModal('create-tournament-modal')">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- View Participants Modal -->
+    <div class="modal" id="participants-modal">
+        <div class="modal-content" style="max-width: 900px;">
+            <div class="modal-header">
+                <h3 class="modal-title">Tournament Participants - <span id="participants-tournament-title"></span></h3>
+                <button class="modal-close" onclick="closeModal('participants-modal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Slot</th>
+                                <th>Team Name</th>
+                                <th>IGN</th>
+                                <th>IGN ID</th>
+                                <th>Status</th>
+                                <th>Entry Fee</th>
+                            </tr>
+                        </thead>
+                        <tbody id="participants-table-body">
+                            <tr><td colspan="6" class="loading"><i class="fas fa-spinner fa-spin"></i> Loading...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-danger" onclick="closeModal('participants-modal')">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Publish Results Modal -->
+    <div class="modal" id="results-modal">
+        <div class="modal-content" style="max-width: 900px;">
+            <div class="modal-header">
+                <h3 class="modal-title">Publish Results - <span id="results-tournament-title"></span></h3>
+                <button class="modal-close" onclick="closeModal('results-modal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="results-participants-list">
+                    <div class="loading"><i class="fas fa-spinner fa-spin"></i> Loading participants...</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success" onclick="publishResults()">Publish Results</button>
+                <button class="btn btn-danger" onclick="closeModal('results-modal')">Cancel</button>
             </div>
         </div>
     </div>
@@ -1137,85 +1352,72 @@
     <script>
         // API Configuration
         const API_URL = 'https://color-game-backend1.onrender.com';
-        let token = localStorage.getItem('adminToken');
-        let allUsers = [];
-        let allGiftCodes = [];
-        let allDeposits = [];
-        let allWithdrawals = [];
-        let allBets = [];
-        let allRounds = [];
-        let allReferrals = [];
-
+        
         // Check authentication
-        if (!token) {
+        const adminToken = localStorage.getItem('adminToken');
+        if (!adminToken) {
             window.location.href = 'admin-login.html';
         }
 
-        // Check token expiry
-        const loginTime = localStorage.getItem('adminLoginTime');
-        if (loginTime) {
-            const elapsed = Date.now() - parseInt(loginTime);
-            const twentyFourHours = 24 * 60 * 60 * 1000;
+        // Current user mobile for actions
+        let currentActionMobile = null;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Admin panel initializing...');
             
-            if (elapsed >= twentyFourHours) {
-                console.log('Token expired');
-                localStorage.removeItem('adminToken');
-                localStorage.removeItem('adminLoginTime');
-                window.location.href = 'admin-login.html';
-            }
-        }
-
-        // Set admin name
-        document.getElementById('adminName').textContent = 'Admin';
-        document.getElementById('userAvatar').textContent = 'A';
-        document.getElementById('currentUsername').value = 'admin';
-
-        // Navigation
-        document.querySelectorAll('.menu-item').forEach(item => {
-            item.addEventListener('click', function() {
-                const section = this.dataset.section;
-                
-                // Update active menu item
-                document.querySelectorAll('.menu-item').forEach(i => i.classList.remove('active'));
-                this.classList.add('active');
-                
-                // Update active section
-                document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
-                document.getElementById(section).classList.add('active');
-                
-                // Update page title
-                const titles = {
-                    'dashboard': 'Dashboard',
-                    'users': 'Users Management',
-                    'gift-codes': 'Gift Codes',
-                    'deposits': 'Deposits',
-                    'withdrawals': 'Withdrawals',
-                    'bets': 'Bets History',
-                    'rounds': 'Game Rounds',
-                    'monitor-users': 'Monitor Users',
-                    'referrals': 'Referral System',
-                    'analytics': 'Analytics',
-                    'settings': 'Settings',
-                    'tournaments':'tournaments'
-                };
-                document.getElementById('pageTitle').textContent = titles[section] || 'Dashboard';
-                
-                // Load section data
-                loadSectionData(section);
-            });
+            // Load dashboard stats
+            loadDashboardStats();
+            loadPendingCounts();
+            
+            // Setup menu navigation
+            setupMenuNavigation();
+            
+            // Auto-refresh pending counts every 30 seconds
+            setInterval(loadPendingCounts, 30000);
         });
 
-        // Load section data
-        function loadSectionData(section) {
-            switch(section) {
-                case 'dashboard':
-                    loadDashboard();
-                    break;
+        // Menu Navigation
+        function setupMenuNavigation() {
+            document.querySelectorAll('.menu-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    const section = this.getAttribute('data-section');
+                    switchSection(section);
+                    
+                    // Update active menu item
+                    document.querySelectorAll('.menu-item').forEach(i => i.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+        }
+
+        function switchSection(sectionName) {
+            console.log('Switching to section:', sectionName);
+            
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            
+            // Show target section
+            document.getElementById(sectionName + '-section').classList.add('active');
+            
+            // Update page title
+            const titles = {
+                'dashboard': 'Dashboard',
+                'users': 'User Management',
+                'deposits': 'Deposit Management',
+                'withdrawals': 'Withdrawal Management',
+                'gift-codes': 'Gift Codes',
+                'tournaments': 'Tournaments',
+                'analytics': 'Analytics',
+                'live-activity': 'Live Activity',
+                'monitor-users': 'Monitor Users'
+            };
+            document.getElementById('page-title-text').textContent = titles[sectionName] || sectionName;
+            
+            // Load section data
+            switch(sectionName) {
                 case 'users':
-                    loadUsers();
-                    break;
-                case 'gift-codes':
-                    loadGiftCodes();
+                    loadAllUsers();
                     break;
                 case 'deposits':
                     loadDeposits();
@@ -1223,960 +1425,1280 @@
                 case 'withdrawals':
                     loadWithdrawals();
                     break;
-                case 'bets':
-                    loadBets();
+                case 'gift-codes':
+                    loadGiftCodes();
                     break;
-                case 'rounds':
-                    loadRounds();
-                    break;
-                case 'monitor-users':
-                    loadMonitorUsers();
-                    break;
-                case 'referrals':
-                    loadReferrals();
+                case 'tournaments':
+                    loadTournaments();
                     break;
                 case 'analytics':
                     loadAnalytics();
                     break;
-                     case  'tournaments':
-                    loadTournaments();
+                case 'live-activity':
+                    loadLiveActivity();
+                    break;
+                case 'monitor-users':
+                    loadMonitorUsers();
                     break;
             }
         }
 
-        // API Helper - Token already has "Bearer " prefix
-        async function apiCall(endpoint, method = 'GET', body = null) {
-            const options = {
-                method,
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': token  // Token already has "Bearer " prefix
+        function refreshCurrentSection() {
+            const activeSection = document.querySelector('.menu-item.active');
+            if (activeSection) {
+                const section = activeSection.getAttribute('data-section');
+                if (section === 'dashboard') {
+                    loadDashboardStats();
+                } else {
+                    switchSection(section);
                 }
-            };
-            
-            if (body) {
-                options.body = JSON.stringify(body);
             }
-            
+        }
+
+        // Dashboard Stats
+        async function loadDashboardStats() {
             try {
-                const response = await fetch(`${API_URL}${endpoint}`, options);
+                const response = await fetch(`${API_URL}/admin/dashboard-stats`, {
+                    headers: {
+                        'Authorization': `Bearer ${adminToken}`
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    document.getElementById('total-users').textContent = data.totalUsers || 0;
+                    document.getElementById('total-revenue').textContent = (data.totalRevenue || 0).toFixed(2);
+                    document.getElementById('pending-withdrawals').textContent = data.pendingWithdrawals || 0;
+                }
+                
+                // Also get tournaments count
+                const tournamentsRes = await fetch(`${API_URL}/admin/tournaments?status=registration_open`, {
+                    headers: { 'Authorization': `Bearer ${adminToken}` }
+                });
+                const tournamentsData = await tournamentsRes.json();
+                if (tournamentsRes.ok) {
+                    document.getElementById('active-tournaments').textContent = (tournamentsData.tournaments || []).length;
+                }
+            } catch (err) {
+                console.error('Error loading dashboard stats:', err);
+            }
+        }
+
+        async function loadPendingCounts() {
+            try {
+                // Get pending deposits count
+                const depositsRes = await fetch(`${API_URL}/admin/deposits/pending/count`, {
+                    headers: { 'Authorization': `Bearer ${adminToken}` }
+                });
+                const depositsData = await depositsRes.json();
+                
+                // Get pending withdrawals count
+                const withdrawalsRes = await fetch(`${API_URL}/admin/withdrawals/pending/count`, {
+                    headers: { 'Authorization': `Bearer ${adminToken}` }
+                });
+                const withdrawalsData = await withdrawalsRes.json();
+                
+                // Update badges
+                const depositCount = depositsData.count || 0;
+                const withdrawalCount = withdrawalsData.count || 0;
+                
+                document.getElementById('pending-deposits-badge').textContent = depositCount;
+                document.getElementById('pending-withdrawals-badge').textContent = withdrawalCount;
+                
+                // Show/hide badges
+                document.getElementById('pending-deposits-badge').style.display = depositCount > 0 ? 'block' : 'none';
+                document.getElementById('pending-withdrawals-badge').style.display = withdrawalCount > 0 ? 'block' : 'none';
+            } catch (err) {
+                console.error('Error loading pending counts:', err);
+            }
+        }
+
+        // Users Management
+        async function loadAllUsers() {
+            try {
+                const tbody = document.getElementById('users-table-body');
+                tbody.innerHTML = '<tr><td colspan="6" class="loading"><i class="fas fa-spinner fa-spin"></i> Loading...</td></tr>';
+                
+                const response = await fetch(`${API_URL}/admin/users/list`, {
+                    headers: {
+                        'Authorization': `Bearer ${adminToken}`
+                    }
+                });
+                
+                const data = await response.json();
                 
                 if (!response.ok) {
-                    if (response.status === 401) {
-                        console.error('Authentication failed - redirecting to login');
-                        localStorage.removeItem('adminToken');
-                        localStorage.removeItem('adminLoginTime');
-                        window.location.href = 'admin-login.html';
-                        return null;
-                    }
-                    
-                    let data;
-                    try {
-                        data = await response.json();
-                    } catch (e) {
-                        throw new Error(`Request failed with status ${response.status}`);
-                    }
-                    throw new Error(data.error || 'Request failed');
+                    throw new Error(data.error || 'Failed to load users');
                 }
                 
-                return await response.json();
-            } catch (error) {
-                console.error('API Error:', error);
-                alert('Error: ' + error.message);
-                return null;
+                if (data.users.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="6" class="empty-state">No users found</td></tr>';
+                    return;
+                }
+                
+                tbody.innerHTML = data.users.map(user => `
+                    <tr>
+                        <td><strong>${user.mobile}</strong></td>
+                        <td>${user.userCode || 'N/A'}</td>
+                        <td>₹${(user.wallet || 0).toFixed(2)}</td>
+                        <td>₹${(user.bonus || 0).toFixed(2)}</td>
+                        <td>
+                            <span class="badge ${user.banned ? 'badge-danger' : 'badge-success'}">
+                                ${user.banned ? 'Banned' : 'Active'}
+                            </span>
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-primary" onclick="showUserActions('${user.mobile}')">
+                                <i class="fas fa-cog"></i> Actions
+                            </button>
+                        </td>
+                    </tr>
+                `).join('');
+            } catch (err) {
+                console.error('Error loading users:', err);
+                document.getElementById('users-table-body').innerHTML = 
+                    `<tr><td colspan="6" style="color: var(--danger); text-align: center;">Error: ${err.message}</td></tr>`;
             }
         }
 
-        // Load Dashboard
-        async function loadDashboard() {
-            try {
-                const stats = await apiCall('/admin/dashboard-stats');
-                if (stats) {
-                    document.getElementById('totalUsers').textContent = stats.totalUsers || 0;
-                    document.getElementById('totalRevenue').textContent = `₹${(stats.totalDeposits || 0).toFixed(2)}`;
-                    document.getElementById('pendingWithdrawals').textContent = stats.pendingWithdraws || 0;
-                }
-
-                const giftCodesData = await apiCall('/admin/giftcodes');
-                if (giftCodesData && giftCodesData.giftCodes) {
-                    const active = giftCodesData.giftCodes.filter(g => g.status === 'active').length;
-                    document.getElementById('activeGiftCodes').textContent = active;
-                }
-
-                // Load recent activity
-                loadRecentActivity();
-            } catch (error) {
-                console.error('Dashboard load error:', error);
+        async function searchUsers() {
+            const searchTerm = document.getElementById('user-search').value.trim();
+            
+            if (searchTerm.length < 3) {
+                loadAllUsers();
+                return;
             }
-        }
-
-        // Load Recent Activity - FIXED
-        async function loadRecentActivity() {
-            const activity = document.getElementById('recentActivity');
-            activity.innerHTML = '<p class="text-center">Loading recent activity...</p>';
             
             try {
-                const deposits = await apiCall('/admin/deposits');
-                const withdrawals = await apiCall('/admin/withdraws');
+                const response = await fetch(`${API_URL}/admin/users/search?query=${searchTerm}`, {
+                    headers: {
+                        'Authorization': `Bearer ${adminToken}`
+                    }
+                });
                 
-                let recentItems = [];
+                const data = await response.json();
+                const tbody = document.getElementById('users-table-body');
                 
-                if (deposits && Array.isArray(deposits) && deposits.length > 0) {
-                    recentItems = recentItems.concat(deposits.slice(0, 5).map(d => ({
-                        type: 'Deposit',
-                        user: d.mobile,
-                        amount: d.amount,
-                        status: d.status,
-                        time: new Date(d.createdAt)
-                    })));
-                }
-                
-                if (withdrawals && Array.isArray(withdrawals) && withdrawals.length > 0) {
-                    recentItems = recentItems.concat(withdrawals.slice(0, 5).map(w => ({
-                        type: 'Withdrawal',
-                        user: w.mobile,
-                        amount: w.amount,
-                        status: w.status,
-                        time: new Date(w.createdAt)
-                    })));
-                }
-                
-                recentItems.sort((a, b) => b.time - a.time);
-                recentItems = recentItems.slice(0, 10);
-                
-                if (recentItems.length > 0) {
-                    activity.innerHTML = recentItems.map(item => `
-                        <div class="activity-item">
-                            <div class="activity-content">
-                                <div class="activity-info">
-                                    <strong>${item.type}</strong> - ${item.user}
-                                    <span class="badge ${getBadgeClass(item.status)}" style="margin-left: 10px;">${item.status}</span>
-                                    <div class="activity-time">${item.time.toLocaleString()}</div>
-                                </div>
-                                <div class="activity-amount">
-                                    <strong>₹${item.amount}</strong>
-                                </div>
-                            </div>
-                        </div>
+                if (data.users && data.users.length > 0) {
+                    tbody.innerHTML = data.users.map(user => `
+                        <tr>
+                            <td><strong>${user.mobile}</strong></td>
+                            <td>${user.userCode || 'N/A'}</td>
+                            <td>₹${(user.wallet || 0).toFixed(2)}</td>
+                            <td>₹${(user.bonus || 0).toFixed(2)}</td>
+                            <td>
+                                <span class="badge ${user.banned ? 'badge-danger' : 'badge-success'}">
+                                    ${user.banned ? 'Banned' : 'Active'}
+                                </span>
+                            </td>
+                            <td>
+                                <button class="btn btn-sm btn-primary" onclick="showUserActions('${user.mobile}')">
+                                    <i class="fas fa-cog"></i> Actions
+                                </button>
+                            </td>
+                        </tr>
                     `).join('');
                 } else {
-                    activity.innerHTML = '<p class="text-center">No recent activity</p>';
+                    tbody.innerHTML = '<tr><td colspan="6" class="empty-state">No users found</td></tr>';
                 }
-            } catch (error) {
-                console.error('Activity load error:', error);
-                activity.innerHTML = '<p class="text-center">Error loading activity</p>';
+            } catch (err) {
+                console.error('Error searching users:', err);
             }
         }
 
-        // Load Users
-        async function loadUsers() {
-            const tbody = document.getElementById('usersTable');
-            tbody.innerHTML = '<tr><td colspan="8" class="text-center">Loading...</td></tr>';
+        function showUserActions(mobile) {
+            currentActionMobile = mobile;
+            document.getElementById('user-action-mobile').textContent = mobile;
+            openModal('user-actions-modal');
+        }
+
+        async function adjustBalance() {
+            const amount = parseFloat(document.getElementById('adjust-amount').value);
+            const type = document.getElementById('adjust-type').value;
             
-            const users = await apiCall('/admin/users');
-            if (users) {
-                allUsers = users;
-                displayUsers(users);
-            }
-        }
-
-        function displayUsers(users) {
-            const tbody = document.getElementById('usersTable');
-            tbody.innerHTML = users.length ? users.map(user => `
-                <tr>
-                    <td>${user.mobile}</td>
-                    <td>₹${user.wallet?.toFixed(2) || '0.00'}</td>
-                    <td>₹${user.bonus?.toFixed(2) || '0.00'}</td>
-                    <td>₹${user.totalDeposit?.toFixed(2) || '0.00'}</td>
-                    <td>₹${user.totalWithdraw?.toFixed(2) || '0.00'}</td>
-                    <td><span class="badge ${user.isBanned ? 'danger' : 'success'}">${user.isBanned ? 'Banned' : 'Active'}</span></td>
-                    <td>${new Date(user.createdAt).toLocaleDateString()}</td>
-                    <td>
-                        <button class="btn btn-sm btn-primary" onclick="viewUser('${user.mobile}')" title="View Details">
-                            <i class="fas fa-eye"></i>
-                        </button>
-                        <button class="btn btn-sm btn-success" onclick="openEditBalanceModal('${user.mobile}')" title="Edit Balance">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        ${user.isBanned ? 
-                            `<button class="btn btn-sm btn-success" onclick="unbanUser('${user.mobile}')" title="Unban User">
-                                <i class="fas fa-check"></i>
-                            </button>` :
-                            `<button class="btn btn-sm btn-danger" onclick="banUser('${user.mobile}')" title="Ban User">
-                                <i class="fas fa-ban"></i>
-                            </button>`
-                        }
-                    </td>
-                </tr>
-            `).join('') : '<tr><td colspan="8" class="text-center">No users found</td></tr>';
-        }
-
-        function filterUsers() {
-            const status = document.getElementById('userStatusFilter').value;
-            const search = document.getElementById('userSearch').value.toLowerCase();
-            
-            let filtered = allUsers;
-            
-            if (status) {
-                filtered = filtered.filter(u => {
-                    if (status === 'active') return !u.isBanned;
-                    if (status === 'banned') return u.isBanned;
-                    return true;
-                });
-            }
-            
-            if (search) {
-                filtered = filtered.filter(u => u.mobile.includes(search));
-            }
-            
-            displayUsers(filtered);
-        }
-
-        async function viewUser(mobile) {
-            const user = allUsers.find(u => u.mobile === mobile);
-            if (!user) return;
-
-            const details = document.getElementById('userDetails');
-            details.innerHTML = `
-                <div class="input-group">
-                    <label>Mobile</label>
-                    <input type="text" value="${user.mobile}" disabled>
-                </div>
-                <div class="input-group">
-                    <label>Wallet Balance</label>
-                    <input type="text" value="₹${user.wallet?.toFixed(2) || '0.00'}" disabled>
-                </div>
-                <div class="input-group">
-                    <label>Bonus Balance</label>
-                    <input type="text" value="₹${user.bonus?.toFixed(2) || '0.00'}" disabled>
-                </div>
-                <div class="input-group">
-                    <label>Total Deposits</label>
-                    <input type="text" value="₹${user.totalDeposit?.toFixed(2) || '0.00'}" disabled>
-                </div>
-                <div class="input-group">
-                    <label>Total Withdrawals</label>
-                    <input type="text" value="₹${user.totalWithdraw?.toFixed(2) || '0.00'}" disabled>
-                </div>
-                <div class="input-group">
-                    <label>Referral Code</label>
-                    <input type="text" value="${user.referralCode || 'N/A'}" disabled>
-                </div>
-                <div class="input-group">
-                    <label>Status</label>
-                    <input type="text" value="${user.isBanned ? 'Banned' : 'Active'}" disabled>
-                </div>
-                <div class="input-group">
-                    <label>Registered</label>
-                    <input type="text" value="${new Date(user.createdAt).toLocaleString()}" disabled>
-                </div>
-            `;
-
-            document.getElementById('viewUserModal').classList.add('active');
-        }
-
-        function closeViewUserModal() {
-            document.getElementById('viewUserModal').classList.remove('active');
-        }
-
-        // Edit Balance Functions - NEW
-        function openEditBalanceModal(mobile) {
-            document.getElementById('editBalanceMobile').value = mobile;
-            document.getElementById('editBalanceType').value = 'wallet';
-            document.getElementById('editBalanceAmount').value = '';
-            document.getElementById('editBalanceReason').value = '';
-            document.getElementById('editBalanceModal').classList.add('active');
-        }
-
-        function closeEditBalanceModal() {
-            document.getElementById('editBalanceModal').classList.remove('active');
-        }
-
-        async function saveBalanceEdit() {
-            const mobile = document.getElementById('editBalanceMobile').value;
-            const type = document.getElementById('editBalanceType').value;
-            const amount = parseFloat(document.getElementById('editBalanceAmount').value);
-            const reason = document.getElementById('editBalanceReason').value;
-
-            if (!amount || isNaN(amount)) {
+            if (!amount || amount <= 0) {
                 alert('Please enter a valid amount');
                 return;
             }
+            
+            const finalAmount = type === 'subtract' ? -amount : amount;
+            
+            try {
+                const response = await fetch(`${API_URL}/admin/user/${currentActionMobile}/adjust-balance`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${adminToken}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ amount: finalAmount })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    alert(`Balance ${type === 'add' ? 'added' : 'subtracted'} successfully!`);
+                    closeModal('user-actions-modal');
+                    loadAllUsers();
+                } else {
+                    alert('Error: ' + (data.error || 'Failed to adjust balance'));
+                }
+            } catch (err) {
+                console.error('Error adjusting balance:', err);
+                alert('Error: ' + err.message);
+            }
+        }
 
-            if (!reason) {
-                alert('Please enter a reason for this adjustment');
+        async function addBonus() {
+            const amount = parseFloat(document.getElementById('bonus-amount').value);
+            
+            if (!amount || amount <= 0) {
+                alert('Please enter a valid bonus amount');
                 return;
             }
-
-            const result = await apiCall(`/admin/user/${mobile}/adjust-balance`, 'POST', {
-                amount,
-                type,
-                reason
-            });
-
-            if (result) {
-                alert(`Balance adjusted successfully!\nNew Wallet: ₹${result.newWallet}\nNew Bonus: ₹${result.newBonus}`);
-                closeEditBalanceModal();
-                loadUsers();
-            }
-        }
-
-        async function banUser(mobile) {
-            if (!confirm(`Ban user ${mobile}?`)) return;
             
-            const result = await apiCall(`/admin/user/${mobile}/ban`, 'POST');
-            if (result) {
-                alert('User banned successfully');
-                loadUsers();
+            try {
+                const response = await fetch(`${API_URL}/admin/user/${currentActionMobile}/add-bonus`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${adminToken}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ amount })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    alert('Bonus added successfully!');
+                    closeModal('user-actions-modal');
+                    loadAllUsers();
+                } else {
+                    alert('Error: ' + (data.error || 'Failed to add bonus'));
+                }
+            } catch (err) {
+                console.error('Error adding bonus:', err);
+                alert('Error: ' + err.message);
             }
         }
 
-        async function unbanUser(mobile) {
-            if (!confirm(`Unban user ${mobile}?`)) return;
+        async function banUser() {
+            const reason = document.getElementById('ban-reason').value.trim();
             
-            const result = await apiCall(`/admin/user/${mobile}/unban`, 'POST');
-            if (result) {
-                alert('User unbanned successfully');
-                loadUsers();
+            if (!reason) {
+                alert('Please enter a reason for ban');
+                return;
+            }
+            
+            if (!confirm(`Are you sure you want to ban ${currentActionMobile}?`)) {
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_URL}/admin/user/${currentActionMobile}/ban`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${adminToken}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ reason })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    alert('User banned successfully!');
+                    closeModal('user-actions-modal');
+                    loadAllUsers();
+                } else {
+                    alert('Error: ' + (data.error || 'Failed to ban user'));
+                }
+            } catch (err) {
+                console.error('Error banning user:', err);
+                alert('Error: ' + err.message);
             }
         }
 
-        // Load Gift Codes - FIXED
+        // Deposits Management
+        async function loadDeposits() {
+            try {
+                const tbody = document.getElementById('deposits-table-body');
+                tbody.innerHTML = '<tr><td colspan="6" class="loading"><i class="fas fa-spinner fa-spin"></i> Loading...</td></tr>';
+                
+                const status = document.getElementById('deposit-status-filter').value;
+                const url = status ? `${API_URL}/admin/deposits?status=${status}` : `${API_URL}/admin/deposits`;
+                
+                const response = await fetch(url, {
+                    headers: {
+                        'Authorization': `Bearer ${adminToken}`
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(data.error || 'Failed to load deposits');
+                }
+                
+                if (data.deposits.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="6" class="empty-state">No deposits found</td></tr>';
+                    return;
+                }
+                
+                tbody.innerHTML = data.deposits.map(d => `
+                    <tr>
+                        <td><strong>${d.userId?.mobile || 'N/A'}</strong></td>
+                        <td>₹${d.amount.toFixed(2)}</td>
+                        <td>${d.method || 'N/A'}</td>
+                        <td>
+                            <span class="badge badge-${d.status === 'completed' ? 'success' : d.status === 'pending' ? 'warning' : 'danger'}">
+                                ${d.status.toUpperCase()}
+                            </span>
+                        </td>
+                        <td>${new Date(d.createdAt).toLocaleString()}</td>
+                        <td>
+                            ${d.status === 'pending' ? `
+                                <button class="btn btn-sm btn-success" onclick="approveDeposit('${d._id}')">
+                                    <i class="fas fa-check"></i>
+                                </button>
+                                <button class="btn btn-sm btn-danger" onclick="rejectDeposit('${d._id}')">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            ` : `
+                                <span class="badge badge-${d.status === 'completed' ? 'success' : 'danger'}">
+                                    ${d.status.toUpperCase()}
+                                </span>
+                            `}
+                        </td>
+                    </tr>
+                `).join('');
+            } catch (err) {
+                console.error('Error loading deposits:', err);
+                document.getElementById('deposits-table-body').innerHTML = 
+                    `<tr><td colspan="6" style="color: var(--danger); text-align: center;">Error: ${err.message}</td></tr>`;
+            }
+        }
+
+        async function approveDeposit(depositId) {
+            if (!confirm('Approve this deposit?')) return;
+            
+            try {
+                const response = await fetch(`${API_URL}/admin/deposits/${depositId}/approve`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${adminToken}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    alert('✅ Deposit approved successfully!');
+                    loadDeposits();
+                    loadPendingCounts();
+                    loadDashboardStats();
+                } else {
+                    alert('❌ Error: ' + (data.error || 'Failed to approve deposit'));
+                }
+            } catch (err) {
+                console.error('Error approving deposit:', err);
+                alert('❌ Error: ' + err.message);
+            }
+        }
+
+        async function rejectDeposit(depositId) {
+            const reason = prompt('Enter rejection reason:');
+            if (!reason) return;
+            
+            try {
+                const response = await fetch(`${API_URL}/admin/deposits/${depositId}/reject`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${adminToken}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ reason })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    alert('✅ Deposit rejected successfully!');
+                    loadDeposits();
+                    loadPendingCounts();
+                } else {
+                    alert('❌ Error: ' + (data.error || 'Failed to reject deposit'));
+                }
+            } catch (err) {
+                console.error('Error rejecting deposit:', err);
+                alert('❌ Error: ' + err.message);
+            }
+        }
+
+        // Withdrawals Management
+        async function loadWithdrawals() {
+            try {
+                const tbody = document.getElementById('withdrawals-table-body');
+                tbody.innerHTML = '<tr><td colspan="6" class="loading"><i class="fas fa-spinner fa-spin"></i> Loading...</td></tr>';
+                
+                const status = document.getElementById('withdrawal-status-filter').value;
+                const url = status ? `${API_URL}/admin/withdraws?status=${status}` : `${API_URL}/admin/withdraws`;
+                
+                const response = await fetch(url, {
+                    headers: {
+                        'Authorization': `Bearer ${adminToken}`
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(data.error || 'Failed to load withdrawals');
+                }
+                
+                if (data.withdraws.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="6" class="empty-state">No withdrawals found</td></tr>';
+                    return;
+                }
+                
+                tbody.innerHTML = data.withdraws.map(w => `
+                    <tr>
+                        <td><strong>${w.userId?.mobile || 'N/A'}</strong></td>
+                        <td>₹${w.amount.toFixed(2)}</td>
+                        <td>${w.upiId || 'N/A'}</td>
+                        <td>
+                            <span class="badge badge-${w.status === 'completed' ? 'success' : w.status === 'pending' ? 'warning' : 'danger'}">
+                                ${w.status.toUpperCase()}
+                            </span>
+                        </td>
+                        <td>${new Date(w.createdAt).toLocaleString()}</td>
+                        <td>
+                            ${w.status === 'pending' ? `
+                                <button class="btn btn-sm btn-success" onclick="approveWithdrawal('${w._id}')">
+                                    <i class="fas fa-check"></i>
+                                </button>
+                                <button class="btn btn-sm btn-danger" onclick="rejectWithdrawal('${w._id}')">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            ` : `
+                                <span class="badge badge-${w.status === 'completed' ? 'success' : 'danger'}">
+                                    ${w.status.toUpperCase()}
+                                </span>
+                            `}
+                        </td>
+                    </tr>
+                `).join('');
+            } catch (err) {
+                console.error('Error loading withdrawals:', err);
+                document.getElementById('withdrawals-table-body').innerHTML = 
+                    `<tr><td colspan="6" style="color: var(--danger); text-align: center;">Error: ${err.message}</td></tr>`;
+            }
+        }
+
+        async function approveWithdrawal(withdrawalId) {
+            if (!confirm('Approve this withdrawal?\n\n⚠️ Make sure to process the payment manually!')) return;
+            
+            try {
+                const response = await fetch(`${API_URL}/admin/withdrawals/${withdrawalId}/approve`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${adminToken}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    alert('✅ Withdrawal approved!\n\n⚠️ REMINDER: Process the payment manually to the user.');
+                    loadWithdrawals();
+                    loadPendingCounts();
+                    loadDashboardStats();
+                } else {
+                    alert('❌ Error: ' + (data.error || 'Failed to approve withdrawal'));
+                }
+            } catch (err) {
+                console.error('Error approving withdrawal:', err);
+                alert('❌ Error: ' + err.message);
+            }
+        }
+
+        async function rejectWithdrawal(withdrawalId) {
+            const reason = prompt('Enter rejection reason:');
+            if (!reason) return;
+            
+            try {
+                const response = await fetch(`${API_URL}/admin/withdrawals/${withdrawalId}/reject`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${adminToken}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ reason })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    alert('✅ Withdrawal rejected and amount refunded to user wallet!');
+                    loadWithdrawals();
+                    loadPendingCounts();
+                } else {
+                    alert('❌ Error: ' + (data.error || 'Failed to reject withdrawal'));
+                }
+            } catch (err) {
+                console.error('Error rejecting withdrawal:', err);
+                alert('❌ Error: ' + err.message);
+            }
+        }
+
+        // Gift Codes Management
         async function loadGiftCodes() {
-            const tbody = document.getElementById('giftCodesTable');
-            tbody.innerHTML = '<tr><td colspan="9" class="text-center">Loading...</td></tr>';
-            
-            const data = await apiCall('/admin/giftcodes');
-            if (data && data.giftCodes) {
-                allGiftCodes = data.giftCodes;
-                displayGiftCodes(data.giftCodes);
-            }
-        }
-
-        function displayGiftCodes(codes) {
-            const tbody = document.getElementById('giftCodesTable');
-            tbody.innerHTML = codes.length ? codes.map(gc => `
-                <tr>
-                    <td><strong>${gc.code}</strong></td>
-                    <td>₹${gc.amount}</td>
-                    <td>${gc.type === 'one-to-one' ? 'Single Use' : 'Multiple Uses'}</td>
-                    <td>${gc.maxRedemptions || 1}</td>
-                    <td>${gc.redemptionCount || 0}</td>
-                    <td>${new Date(gc.expiryDate).toLocaleDateString()}</td>
-                    <td><span class="badge ${getBadgeClass(gc.status)}">${gc.status}</span></td>
-                    <td>${gc.creatorMobile || 'Admin'}</td>
-                    <td>
-                        ${gc.status === 'active' ? 
-                            `<button class="btn btn-sm btn-danger" onclick="deleteGiftCode('${gc.code}')">
+            try {
+                const tbody = document.getElementById('giftcodes-table-body');
+                tbody.innerHTML = '<tr><td colspan="6" class="loading"><i class="fas fa-spinner fa-spin"></i> Loading...</td></tr>';
+                
+                const response = await fetch(`${API_URL}/admin/giftcodes`, {
+                    headers: {
+                        'Authorization': `Bearer ${adminToken}`
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(data.error || 'Failed to load gift codes');
+                }
+                
+                if (data.giftCodes.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="6" class="empty-state">No gift codes found</td></tr>';
+                    return;
+                }
+                
+                tbody.innerHTML = data.giftCodes.map(gc => `
+                    <tr>
+                        <td><strong>${gc.code}</strong></td>
+                        <td>₹${gc.amount.toFixed(2)}</td>
+                        <td>${gc.usedCount || 0}</td>
+                        <td>${gc.maxUses}</td>
+                        <td>${new Date(gc.expiresAt).toLocaleDateString()}</td>
+                        <td>
+                            <button class="btn btn-sm btn-danger" onclick="deleteGiftCode('${gc.code}')">
                                 <i class="fas fa-trash"></i>
-                            </button>` : 
-                            '<span style="color: var(--text-light);">-</span>'
-                        }
-                    </td>
-                </tr>
-            `).join('') : '<tr><td colspan="9" class="text-center">No gift codes found</td></tr>';
-        }
-
-        function filterGiftCodes() {
-            const status = document.getElementById('giftCodeStatusFilter').value;
-            const search = document.getElementById('giftCodeSearch').value.toLowerCase();
-            
-            let filtered = allGiftCodes;
-            
-            if (status) {
-                filtered = filtered.filter(g => g.status === status);
+                            </button>
+                        </td>
+                    </tr>
+                `).join('');
+            } catch (err) {
+                console.error('Error loading gift codes:', err);
+                document.getElementById('giftcodes-table-body').innerHTML = 
+                    `<tr><td colspan="6" style="color: var(--danger); text-align: center;">Error: ${err.message}</td></tr>`;
             }
-            
-            if (search) {
-                filtered = filtered.filter(g => g.code.toLowerCase().includes(search));
-            }
-            
-            displayGiftCodes(filtered);
         }
 
-        function openCreateGiftCodeModal() {
-            document.getElementById('createGiftCodeModal').classList.add('active');
-        }
-
-        function closeCreateGiftCodeModal() {
-            document.getElementById('createGiftCodeModal').classList.remove('active');
-            document.getElementById('giftCodeCode').value = '';
-            document.getElementById('giftCodeAmount').value = '';
-            document.getElementById('giftCodeType').value = 'one-to-one';
-            document.getElementById('giftCodeMaxRedemptions').value = '1';
-            document.getElementById('giftCodeValidityDays').value = '7';
-            document.getElementById('giftCodeDescription').value = '';
+        function showCreateGiftCodeModal() {
+            openModal('create-giftcode-modal');
         }
 
         async function createGiftCode() {
-            const amount = parseFloat(document.getElementById('giftCodeAmount').value);
-            const type = document.getElementById('giftCodeType').value;
-            const maxRedemptions = parseInt(document.getElementById('giftCodeMaxRedemptions').value);
-            const validityDays = parseInt(document.getElementById('giftCodeValidityDays').value);
-            const description = document.getElementById('giftCodeDescription').value;
-
-            if (!amount || amount < 10) {
-                alert('Minimum amount is ₹10');
+            const code = document.getElementById('giftcode-code').value.trim() || undefined;
+            const amount = parseFloat(document.getElementById('giftcode-amount').value);
+            const maxUses = parseInt(document.getElementById('giftcode-max-uses').value);
+            const expiryDays = parseInt(document.getElementById('giftcode-expiry-days').value);
+            
+            if (!amount || !maxUses || !expiryDays) {
+                alert('Please fill in all required fields');
                 return;
             }
-
-            if (!maxRedemptions || maxRedemptions < 1) {
-                alert('Max redemptions must be at least 1');
-                return;
+            
+            try {
+                const response = await fetch(`${API_URL}/giftcode/create`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${adminToken}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        code,
+                        amount,
+                        maxUses,
+                        expiryDays
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    alert(`✅ Gift code created: ${data.giftCode.code}`);
+                    closeModal('create-giftcode-modal');
+                    loadGiftCodes();
+                    
+                    // Clear form
+                    document.getElementById('giftcode-code').value = '';
+                    document.getElementById('giftcode-amount').value = '';
+                    document.getElementById('giftcode-max-uses').value = '';
+                    document.getElementById('giftcode-expiry-days').value = '';
+                } else {
+                    alert('❌ Error: ' + (data.error || 'Failed to create gift code'));
+                }
+            } catch (err) {
+                console.error('Error creating gift code:', err);
+                alert('❌ Error: ' + err.message);
             }
-
-            if (!validityDays || validityDays < 1) {
-                alert('Validity days must be at least 1');
-                return;
-            }
-
-            // Note: Admin creates gift codes through user endpoint but needs actual user context
-            // This is a limitation - admin should have their own gift code creation endpoint
-            alert('Gift code creation from admin panel requires backend implementation of /admin/giftcode/create endpoint');
         }
 
         async function deleteGiftCode(code) {
-            if (!confirm('Delete this gift code?')) return;
-
-            const result = await apiCall(`/admin/giftcode/${code}`, 'DELETE');
-            if (result) {
-                alert('Gift code deleted successfully');
-                loadGiftCodes();
-            }
-        }
-
-        // Load Deposits
-        async function loadDeposits() {
-            const tbody = document.getElementById('depositsTable');
-            tbody.innerHTML = '<tr><td colspan="7" class="text-center">Loading...</td></tr>';
-            
-            const deposits = await apiCall('/admin/deposits');
-            if (deposits) {
-                allDeposits = deposits;
-                displayDeposits(deposits);
-            }
-        }
-
-        function displayDeposits(deposits) {
-            const tbody = document.getElementById('depositsTable');
-            tbody.innerHTML = deposits.length ? deposits.map(d => `
-                <tr>
-                    <td>${d.orderId || 'N/A'}</td>
-                    <td>${d.mobile}</td>
-                    <td>₹${d.amount}</td>
-                    <td><span class="badge ${getBadgeClass(d.status)}">${d.status}</span></td>
-                    <td>${d.method || 'UPI'}</td>
-                    <td>${new Date(d.createdAt).toLocaleString()}</td>
-                    <td>
-                        ${d.status === 'PENDING' ? 
-                            `<button class="btn btn-sm btn-success" onclick="approveDeposit('${d._id}')" title="Approve">
-                                <i class="fas fa-check"></i>
-                            </button>
-                            <button class="btn btn-sm btn-danger" onclick="rejectDeposit('${d._id}')" title="Reject">
-                                <i class="fas fa-times"></i>
-                            </button>` : 
-                            '-'
-                        }
-                    </td>
-                </tr>
-            `).join('') : '<tr><td colspan="7" class="text-center">No deposits found</td></tr>';
-        }
-
-        function filterDeposits() {
-            const status = document.getElementById('depositStatusFilter').value;
-            const search = document.getElementById('depositSearch').value.toLowerCase();
-            
-            let filtered = allDeposits;
-            
-            if (status) {
-                filtered = filtered.filter(d => d.status === status);
-            }
-            
-            if (search) {
-                filtered = filtered.filter(d => d.mobile.includes(search));
-            }
-            
-            displayDeposits(filtered);
-        }
-
-        async function approveDeposit(id) {
-            if (!confirm('Approve this deposit?')) return;
-
-            const result = await apiCall(`/admin/deposit/${id}`, 'POST');
-            if (result) {
-                alert('Deposit approved successfully');
-                loadDeposits();
-                loadDashboard(); // Refresh stats
-            }
-        }
-
-        async function rejectDeposit(id) {
-            if (!confirm('Reject this deposit? This cannot be undone.')) return;
-
-            // Note: Backend needs reject endpoint implementation
-            alert('Deposit rejection requires backend endpoint implementation');
-        }
-
-        // Load Withdrawals
-        async function loadWithdrawals() {
-            const tbody = document.getElementById('withdrawalsTable');
-            tbody.innerHTML = '<tr><td colspan="7" class="text-center">Loading...</td></tr>';
-            
-            const withdrawals = await apiCall('/admin/withdraws');
-            if (withdrawals) {
-                allWithdrawals = withdrawals;
-                displayWithdrawals(withdrawals);
-            }
-        }
-
-        function displayWithdrawals(withdrawals) {
-            const tbody = document.getElementById('withdrawalsTable');
-            tbody.innerHTML = withdrawals.length ? withdrawals.map(w => `
-                <tr>
-                    <td>${w.mobile}</td>
-                    <td>₹${w.amount}</td>
-                    <td>${w.accountNumber}</td>
-                    <td>${w.ifscCode}</td>
-                    <td><span class="badge ${getBadgeClass(w.status)}">${w.status}</span></td>
-                    <td>${new Date(w.createdAt).toLocaleString()}</td>
-                    <td>
-                        ${w.status === 'PENDING' ? `
-                            <button class="btn btn-sm btn-success" onclick="approveWithdrawal('${w._id}')" title="Approve">
-                                <i class="fas fa-check"></i>
-                            </button>
-                            <button class="btn btn-sm btn-danger" onclick="rejectWithdrawal('${w._id}')" title="Reject">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        ` : '-'}
-                    </td>
-                </tr>
-            `).join('') : '<tr><td colspan="7" class="text-center">No withdrawals found</td></tr>';
-        }
-
-        function filterWithdrawals() {
-            const status = document.getElementById('withdrawalStatusFilter').value;
-            const search = document.getElementById('withdrawalSearch').value.toLowerCase();
-            
-            let filtered = allWithdrawals;
-            
-            if (status) {
-                filtered = filtered.filter(w => w.status === status);
-            }
-            
-            if (search) {
-                filtered = filtered.filter(w => w.mobile.includes(search));
-            }
-            
-            displayWithdrawals(filtered);
-        }
-
-       // ========== DEPOSIT APPROVAL FUNCTIONS ==========
-
-async function approveDeposit(depositId) {
-    if (!confirm('Are you sure you want to approve this deposit?')) return;
-    
-    try {
-        const token = localStorage.getItem('adminToken');
-        const response = await fetch(`${API_URL}/admin/deposits/${depositId}/approve`, {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            }
-        });
-        
-        const data = await response.json();
-        
-        if (!response.ok) {
-            throw new Error(data.error || 'Failed to approve deposit');
-        }
-        
-        alert('✅ Deposit approved successfully!\nWallet credited: ₹' + data.newBalance);
-        loadDeposits(); // Reload deposits table
-    } catch (err) {
-        console.error('Error approving deposit:', err);
-        alert('❌ Error: ' + err.message);
-    }
-}
-
-async function rejectDeposit(depositId) {
-    const reason = prompt('Enter rejection reason:');
-    if (!reason) return;
-    
-    try {
-        const token = localStorage.getItem('adminToken');
-        const response = await fetch(`${API_URL}/admin/deposits/${depositId}/reject`, {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ reason })
-        });
-        
-        const data = await response.json();
-        
-        if (!response.ok) {
-            throw new Error(data.error || 'Failed to reject deposit');
-        }
-        
-        alert('✅ Deposit rejected successfully!');
-        loadDeposits(); // Reload deposits table
-    } catch (err) {
-        console.error('Error rejecting deposit:', err);
-        alert('❌ Error: ' + err.message);
-    }
-}
-
-// ========== WITHDRAWAL APPROVAL FUNCTIONS ==========
-
-async function approveWithdrawal(withdrawalId) {
-    if (!confirm('Are you sure you want to approve this withdrawal?\n\n⚠️ Make sure to process the payment manually!')) return;
-    
-    try {
-        const token = localStorage.getItem('adminToken');
-        const response = await fetch(`${API_URL}/admin/withdrawals/${withdrawalId}/approve`, {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            }
-        });
-        
-        const data = await response.json();
-        
-        if (!response.ok) {
-            throw new Error(data.error || 'Failed to approve withdrawal');
-        }
-        
-        alert('✅ Withdrawal approved successfully!\n\n⚠️ REMINDER: Process the payment manually to the user.');
-        loadWithdrawals(); // Reload withdrawals table
-    } catch (err) {
-        console.error('Error approving withdrawal:', err);
-        alert('❌ Error: ' + err.message);
-    }
-}
-
-async function rejectWithdrawal(withdrawalId) {
-    const reason = prompt('Enter rejection reason:');
-    if (!reason) return;
-    
-    try {
-        const token = localStorage.getItem('adminToken');
-        const response = await fetch(`${API_URL}/admin/withdrawals/${withdrawalId}/reject`, {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ reason })
-        });
-        
-        const data = await response.json();
-        
-        if (!response.ok) {
-            throw new Error(data.error || 'Failed to reject withdrawal');
-        }
-        
-        alert('✅ Withdrawal rejected successfully!\nAmount refunded: ₹' + data.refundedAmount + '\nNew wallet balance: ₹' + data.newBalance);
-        loadWithdrawals(); // Reload withdrawals table
-    } catch (err) {
-        console.error('Error rejecting withdrawal:', err);
-        alert('❌ Error: ' + err.message);
-    }
-}
-
-
-        // Load Bets - FIXED
-        async function loadBets() {
-            const tbody = document.getElementById('betsTable');
-            tbody.innerHTML = '<tr><td colspan="7" class="text-center">Loading...</td></tr>';
+            if (!confirm(`Delete gift code ${code}?`)) return;
             
             try {
-                // Use the user analytics endpoint to get bet data
-                const analytics = await apiCall('/admin/user-analytics');
+                const response = await fetch(`${API_URL}/admin/giftcode/${code}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${adminToken}`
+                    }
+                });
                 
-                if (analytics && analytics.recentBets && analytics.recentBets.length > 0) {
-                    allBets = analytics.recentBets;
-                    displayBets(analytics.recentBets);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    alert('✅ Gift code deleted successfully!');
+                    loadGiftCodes();
                 } else {
-                    tbody.innerHTML = '<tr><td colspan="7" class="text-center">No bets found</td></tr>';
+                    alert('❌ Error: ' + (data.error || 'Failed to delete gift code'));
                 }
-            } catch (error) {
-                console.error('Bets load error:', error);
-                tbody.innerHTML = '<tr><td colspan="7" class="text-center">Error loading bets</td></tr>';
+            } catch (err) {
+                console.error('Error deleting gift code:', err);
+                alert('❌ Error: ' + err.message);
             }
         }
 
-        function displayBets(bets) {
-            const tbody = document.getElementById('betsTable');
-            tbody.innerHTML = bets.length ? bets.map(bet => `
-                <tr>
-                    <td>${bet.mobile}</td>
-                    <td>${bet.roundId}</td>
-                    <td>${bet.betType || bet.selection}</td>
-                    <td>₹${bet.amount}</td>
-                    <td><span class="badge ${bet.result === 'WIN' ? 'success' : 'danger'}">${bet.result || 'PENDING'}</span></td>
-                    <td>₹${bet.winAmount || '0.00'}</td>
-                    <td>${new Date(bet.createdAt).toLocaleString()}</td>
-                </tr>
-            `).join('') : '<tr><td colspan="7" class="text-center">No bets found</td></tr>';
-        }
-
-        function filterBets() {
-            const result = document.getElementById('betResultFilter').value;
-            const search = document.getElementById('betSearch').value.toLowerCase();
-            
-            let filtered = allBets;
-            
-            if (result) {
-                filtered = filtered.filter(b => b.result === result);
-            }
-            
-            if (search) {
-                filtered = filtered.filter(b => b.mobile.includes(search));
-            }
-            
-            displayBets(filtered);
-        }
-
-        // Load Rounds - FIXED
-        async function loadRounds() {
-            const tbody = document.getElementById('roundsTable');
-            tbody.innerHTML = '<tr><td colspan="5" class="text-center">Loading...</td></tr>';
-            
+        // Analytics
+        async function loadAnalytics() {
             try {
-                // Use game analytics endpoint to get round data
-                const analytics = await apiCall('/admin/game-analytics');
+                const container = document.getElementById('analytics-content');
+                container.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i> Loading analytics...</div>';
                 
-                if (analytics && analytics.recentRounds && analytics.recentRounds.length > 0) {
-                    allRounds = analytics.recentRounds;
-                    displayRounds(analytics.recentRounds);
+                const response = await fetch(`${API_URL}/admin/game-analytics`, {
+                    headers: {
+                        'Authorization': `Bearer ${adminToken}`
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    container.innerHTML = `
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-label">Total Bets</div>
+                                <div class="stat-value">${data.totalBets || 0}</div>
+                            </div>
+                            <div class="stat-card success">
+                                <div class="stat-label">Total Wagered</div>
+                                <div class="stat-value">₹${(data.totalWagered || 0).toFixed(2)}</div>
+                            </div>
+                            <div class="stat-card warning">
+                                <div class="stat-label">Total Won</div>
+                                <div class="stat-value">₹${(data.totalWon || 0).toFixed(2)}</div>
+                            </div>
+                            <div class="stat-card danger">
+                                <div class="stat-label">House Profit</div>
+                                <div class="stat-value">₹${((data.totalWagered || 0) - (data.totalWon || 0)).toFixed(2)}</div>
+                            </div>
+                        </div>
+                    `;
                 } else {
-                    tbody.innerHTML = '<tr><td colspan="5" class="text-center">No rounds found</td></tr>';
+                    container.innerHTML = '<div style="color: var(--danger);">Error loading analytics</div>';
                 }
-            } catch (error) {
-                console.error('Rounds load error:', error);
-                tbody.innerHTML = '<tr><td colspan="5" class="text-center">Error loading rounds</td></tr>';
+            } catch (err) {
+                console.error('Error loading analytics:', err);
+                document.getElementById('analytics-content').innerHTML = '<div style="color: var(--danger);">Error loading analytics</div>';
             }
         }
 
-        function displayRounds(rounds) {
-            const tbody = document.getElementById('roundsTable');
-            tbody.innerHTML = rounds.length ? rounds.map(round => `
-                <tr>
-                    <td>${round.roundId}</td>
-                    <td><span class="badge ${round.winner ? 'success' : 'warning'}">${round.winner || 'In Progress'}</span></td>
-                    <td>${round.totalBets || 0}</td>
-                    <td>₹${round.totalBetAmount?.toFixed(2) || '0.00'}</td>
-                    <td>${new Date(round.createdAt).toLocaleString()}</td>
-                </tr>
-            `).join('') : '<tr><td colspan="5" class="text-center">No rounds found</td></tr>';
+        // Live Activity
+        async function loadLiveActivity() {
+            try {
+                const container = document.getElementById('live-activity-content');
+                container.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i> Loading activity...</div>';
+                
+                const response = await fetch(`${API_URL}/admin/live-activity`, {
+                    headers: {
+                        'Authorization': `Bearer ${adminToken}`
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok && data.activities && data.activities.length > 0) {
+                    container.innerHTML = `
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Time</th>
+                                        <th>User</th>
+                                        <th>Action</th>
+                                        <th>Details</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${data.activities.map(a => `
+                                        <tr>
+                                            <td>${new Date(a.timestamp).toLocaleTimeString()}</td>
+                                            <td>${a.userId || 'N/A'}</td>
+                                            <td><span class="badge badge-primary">${a.action}</span></td>
+                                            <td>${a.details || 'N/A'}</td>
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+                    `;
+                } else {
+                    container.innerHTML = '<div class="empty-state"><i class="fas fa-inbox"></i><br>No recent activity</div>';
+                }
+            } catch (err) {
+                console.error('Error loading live activity:', err);
+                document.getElementById('live-activity-content').innerHTML = '<div style="color: var(--danger);">Error loading activity</div>';
+            }
         }
 
-        // Load Monitor Users
+        // Monitor Users
         async function loadMonitorUsers() {
-            const tbody = document.getElementById('monitorUsersTable');
-            tbody.innerHTML = '<tr><td colspan="6" class="text-center">Loading...</td></tr>';
+            try {
+                const tbody = document.getElementById('monitor-users-table-body');
+                tbody.innerHTML = '<tr><td colspan="5" class="loading"><i class="fas fa-spinner fa-spin"></i> Loading...</td></tr>';
+                
+                const response = await fetch(`${API_URL}/admin/monitor-users`, {
+                    headers: {
+                        'Authorization': `Bearer ${adminToken}`
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(data.error || 'Failed to load monitor users');
+                }
+                
+                if (data.monitoredUsers.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="5" class="empty-state">No monitored users</td></tr>';
+                    return;
+                }
+                
+                tbody.innerHTML = data.monitoredUsers.map(mu => `
+                    <tr>
+                        <td><strong>${mu.mobile}</strong></td>
+                        <td>${mu.reason}</td>
+                        <td>
+                            <span class="badge badge-${mu.enabled ? 'success' : 'danger'}">
+                                ${mu.enabled ? 'Active' : 'Inactive'}
+                            </span>
+                        </td>
+                        <td>${new Date(mu.createdAt).toLocaleDateString()}</td>
+                        <td>
+                            <button class="btn btn-sm btn-warning" onclick="toggleMonitor('${mu._id}', ${!mu.enabled})">
+                                <i class="fas fa-toggle-${mu.enabled ? 'on' : 'off'}"></i>
+                            </button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteMonitor('${mu._id}')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `).join('');
+            } catch (err) {
+                console.error('Error loading monitor users:', err);
+                document.getElementById('monitor-users-table-body').innerHTML = 
+                    `<tr><td colspan="5" style="color: var(--danger); text-align: center;">Error: ${err.message}</td></tr>`;
+            }
+        }
+
+        function showAddMonitorModal() {
+            openModal('add-monitor-modal');
+        }
+
+        async function addMonitorUser() {
+            const mobile = document.getElementById('monitor-mobile').value.trim();
+            const reason = document.getElementById('monitor-reason').value.trim();
             
-            const monitors = await apiCall('/admin/monitor-users');
-            if (monitors) {
-                displayMonitorUsers(monitors);
-            }
-        }
-
-        function displayMonitorUsers(monitors) {
-            const tbody = document.getElementById('monitorUsersTable');
-            tbody.innerHTML = monitors.length ? monitors.map(m => `
-                <tr>
-                    <td>${m.username}</td>
-                    <td>${m.displayName}</td>
-                    <td>${m.totalLogins || 0}</td>
-                    <td>${m.lastLogin ? new Date(m.lastLogin).toLocaleString() : 'Never'}</td>
-                    <td><span class="badge ${m.active ? 'success' : 'danger'}">${m.active ? 'Active' : 'Inactive'}</span></td>
-                    <td>
-                        <button class="btn btn-sm ${m.active ? 'btn-danger' : 'btn-success'}" 
-                                onclick="toggleMonitor('${m._id}', ${!m.active})">
-                            ${m.active ? '<i class="fas fa-ban"></i> Disable' : '<i class="fas fa-check"></i> Enable'}
-                        </button>
-                        <button class="btn btn-sm btn-danger" onclick="deleteMonitor('${m._id}')">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </td>
-                </tr>
-            `).join('') : '<tr><td colspan="6" class="text-center">No monitor users found</td></tr>';
-        }
-
-        function openCreateMonitorModal() {
-            document.getElementById('createMonitorModal').classList.add('active');
-        }
-
-        function closeCreateMonitorModal() {
-            document.getElementById('createMonitorModal').classList.remove('active');
-            document.getElementById('monitorUsername').value = '';
-            document.getElementById('monitorPassword').value = '';
-            document.getElementById('monitorDisplayName').value = '';
-        }
-
-        async function createMonitorUser() {
-            const username = document.getElementById('monitorUsername').value;
-            const password = document.getElementById('monitorPassword').value;
-            const displayName = document.getElementById('monitorDisplayName').value;
-
-            if (!username || !password) {
-                alert('Username and password required');
+            if (!mobile || !reason) {
+                alert('Please fill in all fields');
                 return;
             }
-
-            if (password.length < 6) {
-                alert('Password must be at least 6 characters');
-                return;
-            }
-
-            const result = await apiCall('/admin/monitor-user', 'POST', {
-                username,
-                password,
-                displayName: displayName || username
-            });
-
-            if (result) {
-                alert('Monitor user created successfully');
-                closeCreateMonitorModal();
-                loadMonitorUsers();
+            
+            try {
+                const response = await fetch(`${API_URL}/admin/monitor-user`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${adminToken}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ mobile, reason })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    alert('✅ User added to monitoring!');
+                    closeModal('add-monitor-modal');
+                    loadMonitorUsers();
+                    
+                    // Clear form
+                    document.getElementById('monitor-mobile').value = '';
+                    document.getElementById('monitor-reason').value = '';
+                } else {
+                    alert('❌ Error: ' + (data.error || 'Failed to add monitor'));
+                }
+            } catch (err) {
+                console.error('Error adding monitor user:', err);
+                alert('❌ Error: ' + err.message);
             }
         }
 
-        async function toggleMonitor(id, active) {
-            const result = await apiCall(`/admin/monitor-user/${id}/toggle`, 'POST', { active });
-            if (result) {
-                alert(`Monitor user ${active ? 'enabled' : 'disabled'} successfully`);
-                loadMonitorUsers();
+        async function toggleMonitor(id, enabled) {
+            try {
+                const response = await fetch(`${API_URL}/admin/monitor-user/${id}/toggle`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${adminToken}`
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    loadMonitorUsers();
+                } else {
+                    alert('Error: ' + (data.error || 'Failed to toggle monitor'));
+                }
+            } catch (err) {
+                console.error('Error toggling monitor:', err);
+                alert('Error: ' + err.message);
             }
         }
 
         async function deleteMonitor(id) {
-            if (!confirm('Delete this monitor user?')) return;
-
-            const result = await apiCall(`/admin/monitor-user/${id}`, 'DELETE');
-            if (result) {
-                alert('Monitor user deleted successfully');
-                loadMonitorUsers();
-            }
-        }
-
-        // Load Referrals - FIXED
-        async function loadReferrals() {
-            const tbody = document.getElementById('referralsTable');
-            tbody.innerHTML = '<tr><td colspan="5" class="text-center">Loading...</td></tr>';
+            if (!confirm('Remove this user from monitoring?')) return;
             
             try {
-                // Fetch all users and build referral data from their referralCode and referredBy
-                const users = await apiCall('/admin/users');
+                const response = await fetch(`${API_URL}/admin/monitor-user/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${adminToken}`
+                    }
+                });
                 
-                if (users && users.length > 0) {
-                    // Filter users who were referred by someone
-                    const referrals = users.filter(u => u.referredBy).map(u => ({
-                        referrer: u.referredBy,
-                        referred: u.mobile,
-                        commission: 50, // Default commission amount
-                        status: 'PAID',
-                        date: u.createdAt
-                    }));
-                    
-                    allReferrals = referrals;
-                    displayReferrals(referrals);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    alert('✅ Monitor removed successfully!');
+                    loadMonitorUsers();
                 } else {
-                    tbody.innerHTML = '<tr><td colspan="5" class="text-center">No referrals found</td></tr>';
+                    alert('❌ Error: ' + (data.error || 'Failed to delete monitor'));
                 }
-            } catch (error) {
-                console.error('Referrals load error:', error);
-                tbody.innerHTML = '<tr><td colspan="5" class="text-center">Error loading referrals</td></tr>';
+            } catch (err) {
+                console.error('Error deleting monitor:', err);
+                alert('❌ Error: ' + err.message);
             }
         }
 
-        function displayReferrals(referrals) {
-            const tbody = document.getElementById('referralsTable');
-            tbody.innerHTML = referrals.length ? referrals.map(r => `
-                <tr>
-                    <td>${r.referrer}</td>
-                    <td>${r.referred}</td>
-                    <td>₹${r.commission}</td>
-                    <td><span class="badge success">${r.status}</span></td>
-                    <td>${new Date(r.date).toLocaleString()}</td>
-                </tr>
-            `).join('') : '<tr><td colspan="5" class="text-center">No referrals found</td></tr>';
+        // Modal Functions
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
         }
 
-        // Load Analytics
-        async function loadAnalytics() {
-            try {
-                const stats = await apiCall('/admin/stats');
-                if (stats) {
-                    document.getElementById('totalBetsCount').textContent = stats.totalBets || 0;
-                    document.getElementById('totalBetsAmount').textContent = `₹${(stats.totalBetAmount || 0).toFixed(2)}`;
-                    document.getElementById('totalDepositsAmount').textContent = `₹${(stats.totalDeposits || 0).toFixed(2)}`;
-                    document.getElementById('totalWithdrawalsAmount').textContent = `₹${(stats.totalWithdrawals || 0).toFixed(2)}`;
-                }
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
 
-                document.getElementById('analyticsData').innerHTML = '<p class="text-center">Analytics data loaded successfully</p>';
-            } catch (error) {
-                document.getElementById('analyticsData').innerHTML = '<p class="text-center">Error loading analytics</p>';
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.classList.remove('active');
             }
         }
 
-        // Helper Functions
-        function getBadgeClass(status) {
-            const statusMap = {
-                'SUCCESS': 'success',
-                'APPROVED': 'success',
-                'WIN': 'success',
-                'PAID': 'success',
-                'active': 'success',
-                'PENDING': 'warning',
-                'FAILED': 'danger',
-                'REJECTED': 'danger',
-                'LOSS': 'danger',
-                'expired': 'danger',
-                'fully-redeemed': 'primary'
-            };
-            return statusMap[status] || 'primary';
-        }
-
-        async function updatePassword() {
-            const newPassword = document.getElementById('newPassword').value;
-            const confirmPassword = document.getElementById('confirmPassword').value;
-
-            if (!newPassword || !confirmPassword) {
-                alert('Please fill in all fields');
-                return;
-            }
-
-            if (newPassword !== confirmPassword) {
-                alert('Passwords do not match');
-                return;
-            }
-
-            if (newPassword.length < 6) {
-                alert('Password must be at least 6 characters');
-                return;
-            }
-
-            alert('Password change functionality requires backend endpoint implementation');
-        }
-
+        // Logout
         function logout() {
-            localStorage.removeItem('adminToken');
-            localStorage.removeItem('adminLoginTime');
-            window.location.href = 'admin-login.html';
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('adminToken');
+                window.location.href = 'admin-login.html';
+            }
         }
 
-        // Load initial data
-        loadDashboard();
+        // ========== TOURNAMENT MANAGEMENT ==========
         
-        // Set last updated time
-        setInterval(() => {
-            document.getElementById('lastUpdated').textContent = new Date().toLocaleString();
-        }, 1000);
+        let currentTournamentId = null;
+        let prizeRowCount = 1;
+
+        // Load Tournaments
+        async function loadTournaments() {
+            try {
+                const tbody = document.getElementById('tournaments-table-body');
+                tbody.innerHTML = '<tr><td colspan="9" class="loading"><i class="fas fa-spinner fa-spin"></i> Loading...</td></tr>';
+                
+                const status = document.getElementById('tournament-status-filter').value;
+                const game = document.getElementById('tournament-game-filter').value;
+                
+                let url = `${API_URL}/admin/tournaments?`;
+                if (status) url += `status=${status}&`;
+                if (game) url += `game=${game}&`;
+                
+                const response = await fetch(url, {
+                    headers: {
+                        'Authorization': `Bearer ${adminToken}`
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(data.error || 'Failed to load tournaments');
+                }
+                
+                if (data.tournaments.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="9" class="empty-state">No tournaments found</td></tr>';
+                    return;
+                }
+                
+                tbody.innerHTML = data.tournaments.map(t => {
+                    const slotsUsed = t.currentParticipants || 0;
+                    const slotsTotal = t.totalSlots;
+                    const statusColor = {
+                        'upcoming': 'primary',
+                        'registration_open': 'success',
+                        'registration_closed': 'warning',
+                        'ongoing': 'warning',
+                        'completed': 'success',
+                        'cancelled': 'danger'
+                    }[t.status] || 'primary';
+                    
+                    return `
+                        <tr>
+                            <td><strong>${t.title}</strong></td>
+                            <td><span class="badge badge-primary">${t.game.toUpperCase()}</span></td>
+                            <td>${t.type.toUpperCase()}</td>
+                            <td>${slotsUsed}/${slotsTotal}</td>
+                            <td>₹${t.entryFee.toFixed(0)}</td>
+                            <td>₹${t.prizePool.toFixed(0)}</td>
+                            <td><span class="badge badge-${statusColor}">${t.status.replace('_', ' ').toUpperCase()}</span></td>
+                            <td>${new Date(t.startTime).toLocaleString('en-IN', { dateStyle: 'short', timeStyle: 'short' })}</td>
+                            <td>
+                                <button class="btn btn-sm btn-primary" onclick="viewParticipants('${t._id}', '${t.title}')" title="Participants">
+                                    <i class="fas fa-users"></i>
+                                </button>
+                                ${t.status === 'ongoing' || t.status === 'registration_closed' ? `
+                                    <button class="btn btn-sm btn-success" onclick="showPublishResults('${t._id}', '${t.title}')" title="Publish Results">
+                                        <i class="fas fa-trophy"></i>
+                                    </button>
+                                ` : ''}
+                                ${t.status !== 'completed' && t.status !== 'cancelled' ? `
+                                    <button class="btn btn-sm btn-danger" onclick="cancelTournament('${t._id}')" title="Cancel">
+                                        <i class="fas fa-ban"></i>
+                                    </button>
+                                ` : ''}
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+            } catch (err) {
+                console.error('Error loading tournaments:', err);
+                document.getElementById('tournaments-table-body').innerHTML = 
+                    `<tr><td colspan="9" style="color: var(--danger); text-align: center;">Error: ${err.message}</td></tr>`;
+            }
+        }
+
+        // Show Create Tournament Modal
+        function showCreateTournamentModal() {
+            // Set default times
+            const now = new Date();
+            const tomorrow = new Date(now.getTime() + 24 * 60 * 60 * 1000);
+            const dayAfter = new Date(now.getTime() + 48 * 60 * 60 * 1000);
+            
+            document.getElementById('tournament-start-time').value = tomorrow.toISOString().slice(0, 16);
+            document.getElementById('tournament-end-time').value = dayAfter.toISOString().slice(0, 16);
+            document.getElementById('tournament-reg-deadline').value = tomorrow.toISOString().slice(0, 16);
+            
+            openModal('create-tournament-modal');
+        }
+
+        // Add Prize Row
+        function addPrizeRow() {
+            prizeRowCount++;
+            const container = document.getElementById('prize-distribution');
+            const newRow = document.createElement('div');
+            newRow.style.cssText = 'display: grid; grid-template-columns: auto 1fr auto; gap: 10px; margin-bottom: 10px;';
+            newRow.innerHTML = `
+                <input type="number" class="form-control" value="${prizeRowCount}" readonly style="width: 80px;">
+                <input type="number" class="form-control" placeholder="Prize amount" id="prize-${prizeRowCount}">
+                <button class="btn btn-sm btn-danger" onclick="this.parentElement.remove()"><i class="fas fa-minus"></i></button>
+            `;
+            container.appendChild(newRow);
+        }
+
+        // Create Tournament
+        async function createTournament() {
+            try {
+                // Collect prize distribution
+                const prizeDistribution = [];
+                for (let i = 1; i <= prizeRowCount; i++) {
+                    const input = document.getElementById(`prize-${i}`);
+                    if (input && input.value) {
+                        prizeDistribution.push({
+                            position: i,
+                            amount: parseFloat(input.value)
+                        });
+                    }
+                }
+                
+                const tournamentData = {
+                    title: document.getElementById('tournament-title').value,
+                    game: document.getElementById('tournament-game').value,
+                    type: document.getElementById('tournament-type').value,
+                    totalSlots: parseInt(document.getElementById('tournament-slots').value),
+                    entryFee: parseFloat(document.getElementById('tournament-entry-fee').value),
+                    prizePool: parseFloat(document.getElementById('tournament-prize-pool').value),
+                    startTime: document.getElementById('tournament-start-time').value,
+                    endTime: document.getElementById('tournament-end-time').value,
+                    registrationDeadline: document.getElementById('tournament-reg-deadline').value,
+                    roomId: document.getElementById('tournament-room-id').value,
+                    roomPassword: document.getElementById('tournament-room-password').value,
+                    description: document.getElementById('tournament-description').value,
+                    rules: document.getElementById('tournament-rules').value,
+                    prizeDistribution: prizeDistribution
+                };
+                
+                // Validation
+                if (!tournamentData.title || !tournamentData.game || !tournamentData.type) {
+                    alert('Please fill in all required fields');
+                    return;
+                }
+                
+                const response = await fetch(`${API_URL}/admin/tournaments`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${adminToken}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(tournamentData)
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    alert('✅ Tournament created successfully!');
+                    closeModal('create-tournament-modal');
+                    loadTournaments();
+                    
+                    // Reset form
+                    document.getElementById('tournament-title').value = '';
+                    document.getElementById('tournament-game').value = '';
+                    document.getElementById('tournament-type').value = '';
+                    document.getElementById('tournament-slots').value = '';
+                    document.getElementById('tournament-entry-fee').value = '';
+                    document.getElementById('tournament-prize-pool').value = '';
+                    document.getElementById('tournament-description').value = '';
+                    document.getElementById('tournament-rules').value = '';
+                    prizeRowCount = 1;
+                    document.getElementById('prize-distribution').innerHTML = `
+                        <div style="display: grid; grid-template-columns: auto 1fr auto; gap: 10px; margin-bottom: 10px;">
+                            <input type="number" class="form-control" placeholder="1" value="1" readonly style="width: 80px;">
+                            <input type="number" class="form-control" placeholder="Prize amount" id="prize-1">
+                            <button class="btn btn-sm btn-success" onclick="addPrizeRow()"><i class="fas fa-plus"></i></button>
+                        </div>
+                    `;
+                } else {
+                    alert('❌ Error: ' + (data.error || 'Failed to create tournament'));
+                }
+            } catch (err) {
+                console.error('Error creating tournament:', err);
+                alert('❌ Error: ' + err.message);
+            }
+        }
+
+        // View Participants
+        async function viewParticipants(tournamentId, title) {
+            try {
+                currentTournamentId = tournamentId;
+                document.getElementById('participants-tournament-title').textContent = title;
+                openModal('participants-modal');
+                
+                const tbody = document.getElementById('participants-table-body');
+                tbody.innerHTML = '<tr><td colspan="6" class="loading"><i class="fas fa-spinner fa-spin"></i> Loading...</td></tr>';
+                
+                const response = await fetch(`${API_URL}/admin/tournaments/${tournamentId}/participants`, {
+                    headers: {
+                        'Authorization': `Bearer ${adminToken}`
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(data.error || 'Failed to load participants');
+                }
+                
+                if (data.participants.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="6" class="empty-state">No participants yet</td></tr>';
+                    return;
+                }
+                
+                tbody.innerHTML = data.participants.map(p => `
+                    <tr>
+                        <td>${p.slotNumber || 'N/A'}</td>
+                        <td>${p.teamName || 'N/A'}</td>
+                        <td>${p.inGameName || 'N/A'}</td>
+                        <td>${p.inGameId || 'N/A'}</td>
+                        <td><span class="badge badge-${p.status === 'registered' ? 'success' : p.status === 'checked_in' ? 'primary' : 'warning'}">${p.status.toUpperCase()}</span></td>
+                        <td>₹${p.entryFeePaid ? p.entryFeePaid.toFixed(0) : 0}</td>
+                    </tr>
+                `).join('');
+            } catch (err) {
+                console.error('Error loading participants:', err);
+                document.getElementById('participants-table-body').innerHTML = 
+                    `<tr><td colspan="6" style="color: var(--danger); text-align: center;">Error: ${err.message}</td></tr>`;
+            }
+        }
+
+        // Show Publish Results
+        async function showPublishResults(tournamentId, title) {
+            try {
+                currentTournamentId = tournamentId;
+                document.getElementById('results-tournament-title').textContent = title;
+                openModal('results-modal');
+                
+                const container = document.getElementById('results-participants-list');
+                container.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i> Loading participants...</div>';
+                
+                const response = await fetch(`${API_URL}/admin/tournaments/${tournamentId}/participants`, {
+                    headers: {
+                        'Authorization': `Bearer ${adminToken}`
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(data.error || 'Failed to load participants');
+                }
+                
+                if (data.participants.length === 0) {
+                    container.innerHTML = '<div class="empty-state">No participants to publish results for</div>';
+                    return;
+                }
+                
+                container.innerHTML = `
+                    <div style="max-height: 400px; overflow-y: auto;">
+                        ${data.participants.map((p, index) => `
+                            <div style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 15px; padding: 15px; border-bottom: 1px solid var(--border);">
+                                <div>
+                                    <strong>${p.teamName || 'N/A'}</strong><br>
+                                    <small style="color: var(--text-light);">${p.inGameName || 'N/A'}</small>
+                                </div>
+                                <div class="form-group" style="margin: 0;">
+                                    <label class="form-label" style="font-size: 12px;">Position</label>
+                                    <input type="number" class="form-control" id="position-${p._id}" placeholder="1" min="1">
+                                </div>
+                                <div class="form-group" style="margin: 0;">
+                                    <label class="form-label" style="font-size: 12px;">Prize (₹)</label>
+                                    <input type="number" class="form-control" id="prize-amount-${p._id}" placeholder="0" min="0">
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            } catch (err) {
+                console.error('Error loading participants for results:', err);
+                document.getElementById('results-participants-list').innerHTML = 
+                    `<div style="color: var(--danger);">Error: ${err.message}</div>`;
+            }
+        }
+
+        // Publish Results
+        async function publishResults() {
+            if (!confirm('Publish tournament results? Prizes will be credited to winners immediately.')) return;
+            
+            try {
+                // Get results from inputs
+                const inputs = document.querySelectorAll('[id^="position-"]');
+                const results = [];
+                
+                inputs.forEach(input => {
+                    const participantId = input.id.replace('position-', '');
+                    const position = parseInt(input.value);
+                    const prizeInput = document.getElementById(`prize-amount-${participantId}`);
+                    const prize = prizeInput ? parseFloat(prizeInput.value) : 0;
+                    
+                    if (position > 0) {
+                        results.push({
+                            participantId,
+                            position,
+                            prize
+                        });
+                    }
+                });
+                
+                if (results.length === 0) {
+                    alert('Please enter at least one result');
+                    return;
+                }
+                
+                const response = await fetch(`${API_URL}/admin/tournaments/${currentTournamentId}/publish-results`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${adminToken}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ results })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    alert('✅ Results published successfully! Prizes credited to winners.');
+                    closeModal('results-modal');
+                    loadTournaments();
+                } else {
+                    alert('❌ Error: ' + (data.error || 'Failed to publish results'));
+                }
+            } catch (err) {
+                console.error('Error publishing results:', err);
+                alert('❌ Error: ' + err.message);
+            }
+        }
+
+        // Cancel Tournament
+        async function cancelTournament(tournamentId) {
+            const reason = prompt('Enter cancellation reason:');
+            if (!reason) return;
+            
+            if (!confirm('Cancel this tournament? All participants will be refunded.')) return;
+            
+            try {
+                const response = await fetch(`${API_URL}/admin/tournaments/${tournamentId}/cancel`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${adminToken}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ reason })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    alert('✅ Tournament cancelled successfully! All participants refunded.');
+                    loadTournaments();
+                } else {
+                    alert('❌ Error: ' + (data.error || 'Failed to cancel tournament'));
+                }
+            } catch (err) {
+                console.error('Error cancelling tournament:', err);
+                alert('❌ Error: ' + err.message);
+            }
+        }
     </script>
 </body>
 </html>
