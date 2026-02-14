@@ -1215,12 +1215,13 @@
                     
                     <div class="form-group">
                         <label class="form-label">Type</label>
-                        <select class="form-control" id="tournament-type" required>
-                            <option value="">Select Type</option>
-                            <option value="solo">Solo</option>
-                            <option value="duo">Duo</option>
-                            <option value="squad">Squad</option>
-                        </select>
+                       <select class="form-control" id="tournament-type" required onchange="handleTournamentTypeChange()">
+    <option value="">Select Type</option>
+    <option value="solo">Solo</option>
+    <option value="duo">Duo</option>
+    <option value="squad">Squad</option>
+    <option value="kill_based">Kill Based (Pay Per Kill)</option>
+</select>
                     </div>
                 </div>
                 
