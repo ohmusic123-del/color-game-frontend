@@ -431,7 +431,8 @@
                     throw new Error(data.error || 'Failed to load tournaments');
                 }
 
-                if (data.tournaments.length === 0) {
+            const tournaments = Array.isArray(data) ? data : (data.tournaments || []);
+if (tournaments.length > 0) {
                     container.innerHTML = `
                         <div class="empty-state">
                             <div class="empty-icon">🏆</div>
