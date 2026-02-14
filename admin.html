@@ -1298,7 +1298,48 @@
             </div>
         </div>
     </div>
-
+<!-- Kill-Based Settings (Hidden by default) -->
+<div id="kill-based-settings" style="display: none;">
+    <hr style="margin: 20px 0;">
+    <h4 style="color: var(--primary); margin-bottom: 15px;">
+        <i class="fas fa-crosshairs"></i> Kill-Based Rewards
+    </h4>
+    
+    <div class="form-group">
+        <label class="form-label">
+            Amount Per Kill
+            <small style="color: var(--text-light);">(₹ paid for each kill)</small>
+        </label>
+        <input type="number" class="form-control" id="per-kill-amount" placeholder="10" min="1">
+    </div>
+    
+    <div class="form-group">
+        <label class="form-label">
+            Kill Milestones (Bonuses)
+            <small style="color: var(--text-light);">(Extra rewards for reaching kill counts)</small>
+        </label>
+        <div id="kill-milestones">
+            <div style="display: grid; grid-template-columns: auto 1fr auto; gap: 10px; margin-bottom: 10px;">
+                <input type="number" class="form-control" placeholder="Kills" id="milestone-kills-1" style="width: 100px;">
+                <input type="number" class="form-control" placeholder="Bonus ₹" id="milestone-bonus-1">
+                <button class="btn btn-sm btn-success" onclick="addKillMilestone()">
+                    <i class="fas fa-plus"></i>
+                </button>
+            </div>
+        </div>
+        <small style="color: var(--text-light); font-size: 12px;">
+            Example: 10 kills = ₹50 bonus, 20 kills = ₹150 bonus
+        </small>
+    </div>
+    
+    <div class="form-group">
+        <label class="form-label">
+            Maximum Payout Per Player
+            <small style="color: var(--text-light);">(Optional cap on total earnings)</small>
+        </label>
+        <input type="number" class="form-control" id="max-payout" placeholder="1000">
+    </div>
+</div>
     <!-- View Participants Modal -->
     <div class="modal" id="participants-modal">
         <div class="modal-content" style="max-width: 900px;">
@@ -2447,39 +2488,65 @@
             `;
             container.appendChild(newRow);
         }
-
-        // Create Tournament
-        async function createTournament() {
-            try {
-                // Collect prize distribution
-                const prizeDistribution = [];
-                for (let i = 1; i <= prizeRowCount; i++) {
-                    const input = document.getElementById(`prize-${i}`);
-                    if (input && input.value) {
-                        prizeDistribution.push({
-                            position: i,
-                            amount: parseFloat(input.value)
-                        });
-                    }
+//createTournament
+async function createTournament() {
+    try {
+        const type = document.getElementById('tournament-type').value;
+        let prizeDistribution = [];
+        let killRewards = null;
+        
+        // Collect data based on tournament type
+        if (type === 'kill_based') {
+            // Collect kill-based settings
+            const perKill = parseFloat(document.getElementById('per-kill-amount').value) || 0;
+            const bonusKills = [];
+            
+            for (let i = 1; i <= milestoneCount; i++) {
+                const killsInput = document.getElementById(`milestone-kills-${i}`);
+                const bonusInput = document.getElementById(`milestone-bonus-${i}`);
+                if (killsInput && killsInput.value && bonusInput && bonusInput.value) {
+                    bonusKills.push({
+                        kills: parseInt(killsInput.value),
+                        bonus: parseFloat(bonusInput.value)
+                    });
                 }
-                
-                const tournamentData = {
-                    title: document.getElementById('tournament-title').value,
-                    game: document.getElementById('tournament-game').value,
-                    type: document.getElementById('tournament-type').value,
-                    totalSlots: parseInt(document.getElementById('tournament-slots').value),
-                    entryFee: parseFloat(document.getElementById('tournament-entry-fee').value),
-                    prizePool: parseFloat(document.getElementById('tournament-prize-pool').value),
-                    startTime: document.getElementById('tournament-start-time').value,
-                    endTime: document.getElementById('tournament-end-time').value,
-                    registrationDeadline: document.getElementById('tournament-reg-deadline').value,
-                    roomId: document.getElementById('tournament-room-id').value,
-                    roomPassword: document.getElementById('tournament-room-password').value,
-                    description: document.getElementById('tournament-description').value,
-                    rules: document.getElementById('tournament-rules').value,
-                    prizeDistribution: prizeDistribution
-                };
-                
+            }
+            
+            killRewards = {
+                perKill: perKill,
+                bonusKills: bonusKills,
+                maxPayout: parseFloat(document.getElementById('max-payout').value) || null
+            };
+        } else {
+            // Collect normal prize distribution
+            for (let i = 1; i <= prizeRowCount; i++) {
+                const input = document.getElementById(`prize-${i}`);
+                if (input && input.value) {
+                    prizeDistribution.push({
+                        position: i,
+                        amount: parseFloat(input.value)
+                    });
+                }
+            }
+        }
+        
+        const tournamentData = {
+            title: document.getElementById('tournament-title').value,
+            game: document.getElementById('tournament-game').value,
+            type: type,
+            totalSlots: parseInt(document.getElementById('tournament-slots').value),
+            entryFee: parseFloat(document.getElementById('tournament-entry-fee').value),
+            prizePool: parseFloat(document.getElementById('tournament-prize-pool').value),
+            startTime: document.getElementById('tournament-start-time').value,
+            endTime: document.getElementById('tournament-end-time').value,
+            registrationDeadline: document.getElementById('tournament-reg-deadline').value,
+            roomId: document.getElementById('tournament-room-id').value,
+            roomPassword: document.getElementById('tournament-room-password').value,
+            description: document.getElementById('tournament-description').value,
+            rules: document.getElementById('tournament-rules').value,
+            prizeDistribution: type === 'kill_based' ? [] : prizeDistribution,
+            killRewards: killRewards
+        };
                 // Validation
                 if (!tournamentData.title || !tournamentData.game || !tournamentData.type) {
                     alert('Please fill in all required fields');
@@ -2709,6 +2776,41 @@
                 alert('❌ Error: ' + err.message);
             }
         }
+        // Handle tournament type change
+function handleTournamentTypeChange() {
+    const type = document.getElementById('tournament-type').value;
+    const killSettings = document.getElementById('kill-based-settings');
+    const prizeDistribution = document.getElementById('prize-distribution').parentElement.parentElement;
+    
+    if (type === 'kill_based') {
+        // Show kill-based settings
+        killSettings.style.display = 'block';
+        // Hide normal prize distribution
+        prizeDistribution.style.display = 'none';
+    } else {
+        // Hide kill-based settings
+        killSettings.style.display = 'none';
+        // Show normal prize distribution
+        prizeDistribution.style.display = 'block';
+    }
+}
+
+// Add kill milestone row
+let milestoneCount = 1;
+function addKillMilestone() {
+    milestoneCount++;
+    const container = document.getElementById('kill-milestones');
+    const newRow = document.createElement('div');
+    newRow.style.cssText = 'display: grid; grid-template-columns: auto 1fr auto; gap: 10px; margin-bottom: 10px;';
+    newRow.innerHTML = `
+        <input type="number" class="form-control" placeholder="Kills" id="milestone-kills-${milestoneCount}" style="width: 100px;">
+        <input type="number" class="form-control" placeholder="Bonus ₹" id="milestone-bonus-${milestoneCount}">
+        <button class="btn btn-sm btn-danger" onclick="this.parentElement.remove()">
+            <i class="fas fa-minus"></i>
+        </button>
+    `;
+    container.appendChild(newRow);
+}
     </script>
 </body>
 </html>
